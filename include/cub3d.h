@@ -5,7 +5,11 @@
 # include <math.h>
 # include <stdio.h>
 
-# define NUM_ROWS 500
-# define NUM_COLS 500
+#define TILE_SIZE 40
+#define MAP_NUM_ROWS 10
+#define MAP_NUM_COLS 15
+#define WINDOW_WIDTH (MAP_NUM_COLS * TILE_SIZE)
+#define WINDOW_HEIGHT (MAP_NUM_ROWS * TILE_SIZE)
+
 
 #endif
