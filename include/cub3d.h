@@ -4,12 +4,22 @@
 # include "mlx.h"
 # include <math.h>
 # include <stdio.h>
+# include <stdlib.h>
 
-#define TILE_SIZE 40
-#define MAP_NUM_ROWS 10
-#define MAP_NUM_COLS 15
-#define WINDOW_WIDTH (MAP_NUM_COLS * TILE_SIZE)
-#define WINDOW_HEIGHT (MAP_NUM_ROWS * TILE_SIZE)
+# define TILE_SIZE 40
+# define MAP_NUM_ROWS 10
+# define MAP_NUM_COLS 15
+# define WINDOW_WIDTH (MAP_NUM_COLS * TILE_SIZE)
+# define WINDOW_HEIGHT (MAP_NUM_ROWS * TILE_SIZE)
+
+# define ESC 0x00ff1b
+# define W_KEY 0x77
+# define A_KEY 0x61
+# define S_KEY 0x73
+# define D_KEY 0x64
+
+# define POSX 100
+# define POSY 100
 
 typedef struct s_data {
 	void	*img;
@@ -22,6 +32,7 @@ typedef struct s_data {
 typedef struct s_vars {
 	void	*mlx;
 	void	*window;
+	t_data	*data;
 }		t_vars;
 
 const int map[MAP_NUM_ROWS][MAP_NUM_COLS] = {
@@ -39,7 +50,7 @@ const int map[MAP_NUM_ROWS][MAP_NUM_COLS] = {
 
 void    my_pixel_put(t_data *data, int x, int y, int color);
 void    put_rect(t_data *data, int x, int y, int size_x, int size_y, int color);
-void    renderMap(t_vars vars, t_data data);
+void    renderMap(t_vars *vars, t_data *data);
 void    put_circle(t_data *data, int a, int b, int size, int color);
 void    print_str(t_vars *vars,  int x, int y, int color, char *str);
 int     close(t_vars *vars);

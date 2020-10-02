@@ -1,38 +1,17 @@
-# include "mlx.h"
-# include <math.h>
-# include <stdio.h>
+#include "cub3d.h"
 
-#define TILE_SIZE 60
-#define MAP_NUM_ROWS 10
-#define MAP_NUM_COLS 15
-#define WINDOW_WIDTH (MAP_NUM_COLS * TILE_SIZE)
-#define WINDOW_HEIGHT (MAP_NUM_ROWS * TILE_SIZE)
-
-typedef struct s_data {
-	void	*img;
-	char	*addr;
-	int	bits_per_pixel;
-	int	line_length;
-	int	endian;
-}		t_data;
-
-typedef struct s_vars {
-	void	*mlx;
-	void	*window;
-}		t_vars;
-
-const int map[MAP_NUM_ROWS][MAP_NUM_COLS] = {
-    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-    {1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
-    {1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
-    {1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
-    {1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1},
-    {1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1},
-    {1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
-    {1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1},
-    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-};
+//const int map[MAP_NUM_ROWS][MAP_NUM_COLS] = {
+  //  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+    //{1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
+    //{1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
+    //{1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
+    //{1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1},
+    //{1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1},
+    //{1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
+    //{1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1},
+    //{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+    //{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+//};
 
 void	my_pixel_put(t_data *data, int x, int y, int color)
 {
@@ -66,6 +45,7 @@ void    renderMap(t_vars *vars, t_data *data)
     int tileX;
     int tileY;
     int tileColor;
+    
 
     i = 0;
     while (i < MAP_NUM_ROWS)
@@ -77,7 +57,7 @@ void    renderMap(t_vars *vars, t_data *data)
             tileY = i * TILE_SIZE;
             tileColor = map[i][j] != 1 ? 0X00FFFFFF : 0X00000000;
             //render_rectangle(vars, tileX, tileY, tileX + TILE_SIZE, tileY + TILE_SIZE, tileColor);
-			put_rect(&data, tileX, tileY, tileX + TILE_SIZE, tileY + TILE_SIZE, tileColor);
+			put_rect(data, tileX, tileY, tileX + TILE_SIZE, tileY + TILE_SIZE, tileColor);
             j++;
         }
         i++;
@@ -117,38 +97,36 @@ int		keypressed(int key, t_vars *vars)
 	static int		x;
 	static int		y;
 
-	x = 100;
-	y = 100;
 	data.img = mlx_new_image(vars->mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
 	data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);
+	
+	if (key == W_KEY)
+	{
+		y -= 10;
+		printf("%d\n", y);
+	}
+	else if (key == A_KEY)
+	{
+		x -= 10;
+		printf("%d\n", x);
+	}
+	else if (key == S_KEY)
+	{
+		y += 10;
+		printf("%d\n", y);
+	}
+	else if (key == D_KEY)
+	{
+		x += 10;
+		printf("%d\n", x);
+	}
+	else if (key == ESC)
+		return (close(vars));
+	//mlx_string_put(vars->mlx, vars->window, POSX + x, POSY + y, 0x0000ffff, "Funciona, carai");
+	put_circle(&data, POSX+ x, POSY + y, 10, 0x00ff0000);
+	mlx_put_image_to_window(vars->mlx, vars->window, data.img, 0, 0);
 
-	if (key == 113)
-		return(close(&vars));
-	else if (key == 122)
-		//put_circle(data.img, 249, 249, 249, 0x00ff0000);
-		//mlx_string_put(vars->mlx, vars->window, 100, 100, 0x00ff0000, "Funciona, carai");
-		y += 1;
-
-	else if (key == 120)
-//		put_circle(data.img, 249, 249, 249, 0x0000ff00);
-	//mlx_string_put(vars->mlx, vars->window, 200, 100, 0x0000ff00, "Funciona, carai");
-		x -= 1;
-
-	else if (key == 99)
-		//mlx_string_put(vars->mlx, vars->window, 300, 100, 0x000000ff, "Funciona, carai");
-//		put_circle(data.img, 249, 249, 249, 0x000000ff);
-		y -= 1;
-	else if (key == 119)
-	//mlx_string_put(vars->mlx, vars->window, 400, 100, 0x0000ffff, "Funciona, carai");
-//	put_circle(data.img, 249, 249, 249, color);
-		x += 1;
-
-	mlx_string_put(vars->mlx, vars->window, x, y, 0x0000ffff, "Funciona, carai");
-
-	//mlx_put_image_to_window(vars->mlx, vars->window, data.img, 0, 0);
-	//mlx_loop(vars->mlx);
-
-	//return(key);
+	return(key);
 }
 
 
@@ -173,7 +151,7 @@ int		update_frame(t_vars *vars)
 		put_circle(data.img, 249, 249, 249, color);
 	}
 	mlx_put_image_to_window(vars->mlx, vars->window, data.img, 0, 0);
-	mlx_loop(vars->mlx);
+	//mlx_loop(vars->mlx);
 
 }
 
@@ -188,9 +166,9 @@ int	main(void)
 	img.img = mlx_new_image(vars.mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
 
-	//put_circle(&img, 249, 249, 249, 0x0000FF00);
+	put_circle(&img, POSX, POSY, 10, 0x00ff0000);
 	//renderMap(&vars, &img);
-	//mlx_put_image_to_window(vars.mlx, vars.window, img.img, 0, 0);	
+	mlx_put_image_to_window(vars.mlx, vars.window, img.img, 0, 0);	
 	mlx_hook(vars.window, 2, 1L<<0, keypressed, &vars);
 	//mlx_loop_hook(vars.mlx, update_frame, &vars);
 	//sethooks(&vars);
