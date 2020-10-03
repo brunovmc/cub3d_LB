@@ -77,7 +77,7 @@ void    renderMap(t_vars *vars, t_data *data)
             tileY = i * TILE_SIZE;
             tileColor = map[i][j] != 1 ? 0X00FFFFFF : 0X00000000;
             //render_rectangle(vars, tileX, tileY, tileX + TILE_SIZE, tileY + TILE_SIZE, tileColor);
-			put_rect(&data, tileX, tileY, tileX + TILE_SIZE, tileY + TILE_SIZE, tileColor);
+			put_rect(data, tileX, tileY, tileX + TILE_SIZE, tileY + TILE_SIZE, tileColor);
             j++;
         }
         i++;
@@ -181,14 +181,14 @@ int		update_frame(t_vars *vars)
 int	main(void)
 {
 	t_vars	vars;
-	t_data	img;
+	t_data	data;
 
 	vars.mlx = mlx_init();
 	vars.window = mlx_new_window(vars.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "TESTE PRIMEIRO");
-	img.img = mlx_new_image(vars.mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
-	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
+	data.img = mlx_new_image(vars.mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
+	data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);
 
-	//put_circle(&img, 249, 249, 249, 0x0000FF00);
+	//put_circle(&data, 249, 249, 249, 0x0000FF00);
 	//renderMap(&vars, &img);
 	//mlx_put_image_to_window(vars.mlx, vars.window, img.img, 0, 0);	
 	mlx_hook(vars.window, 2, 1L<<0, keypressed, &vars);
