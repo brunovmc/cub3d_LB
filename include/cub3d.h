@@ -21,19 +21,31 @@
 # define POSX 100
 # define POSY 100
 
-typedef struct s_data {
+typedef struct s_point {
+    int       x;
+    int       y;
+    int       color;
+}               t_point;
+
+typedef struct s_player {
+    t_point     *pos;
+}               t_player;
+
+typedef struct  s_data {
 	void	*img;
 	char	*addr;
-	int	bits_per_pixel;
-	int	line_length;
-	int	endian;
-}		t_data;
+	int	    bits_per_pixel;
+	int	    line_length;
+	int	    endian;
+}		        t_data;
 
-typedef struct s_vars {
-	void	*mlx;
-	void	*window;
-	t_data	*data;
-}		t_vars;
+typedef struct  s_vars {
+	void	    *mlx;
+	void	    *window;
+	t_data  	*data;
+    t_player    *player;
+    t_point     *pos;
+}               t_vars;
 
 const int map[MAP_NUM_ROWS][MAP_NUM_COLS] = {
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -55,6 +67,7 @@ void    put_circle(t_data *data, int a, int b, int size, int color);
 void    print_str(t_vars *vars,  int x, int y, int color, char *str);
 int     close(t_vars *vars);
 int     keypressed(int key, t_vars *vars);
+t_data	*create(void *mlx);
 
 
 
