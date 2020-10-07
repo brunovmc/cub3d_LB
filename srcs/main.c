@@ -66,6 +66,8 @@ void    renderMap(t_vars *vars, t_data *data)
     int tileX;
     int tileY;
     int tileColor;
+
+	//data = alloc_data(vars);
     
     i = 0;
     while (i < MAP_NUM_ROWS)
@@ -82,6 +84,7 @@ void    renderMap(t_vars *vars, t_data *data)
         }
         i++;
     }
+	//mlx_put_image_to_window(vars->mlx, vars->window, data.img, 0, 0);
 }
 
 int	close(t_vars *vars)
@@ -115,67 +118,79 @@ int		update_frame(t_vars *vars)
 {
 	t_data data;
 
-	data.img = mlx_new_image(vars->mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
-	data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);
+	// data.img = mlx_new_image(vars->mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
+	// data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);
+	data = alloc_data(vars);
 
-
-	
+	renderMap(&vars , &data);
 	//my_pixel_put(&data, POSX + x, POSY + y, color);
 	put_rect(&data, vars->pos->x, vars->pos->y, 10, 10, 0x00ff0000);
 	//put_circle(&data, POSX + x, POSY + y, 10, 0x00ff0000);
 	
 	mlx_put_image_to_window(vars->mlx, vars->window, data.img, 0, 0);
-	return 0;
+	return (0);
 }
 
 int		keypressed(int key, t_vars *vars)
 {
 	int		color;
-	t_data	data;
-	static int		x;
-	static int		y;
 
 	if (key == W_KEY)
 	{
-		y -= 10;
+		vars->pos->y -= 10;
 		//vars->player->pos->y -= 10;
 		//printf("%d\n", vars->player->pos->y);
 	}
 	else if (key == A_KEY)
 	{
-		x -= 10;
+		vars->pos->x -= 10;
 		//vars->player->pos->x -= 10;
 		//printf("%d\n", vars->player->pos->x);
 	}
 	else if (key == S_KEY)
 	{
-		y += 10;
+		vars->pos->y += 10;
 		//vars->player->pos->y += 10;
 		//printf("%d\n", vars->player->pos->y);
 	}
 	else if (key == D_KEY)
 	{
-		x += 10;
+		vars->pos->x += 10;
 		//vars->player->pos->x += 10;
 		//printf("%d\n", vars->player->pos->x);
 	}
 	else if (key == ESC)
 		return (close(vars));
 
-	vars->pos->x = x;
-	vars->pos->y = y;
 	//teste(vars, 0x0000ffff);
+	
 
 	return(key);
+}
+
+t_data 	alloc_data(t_vars *vars)
+{
+	t_data *data;
+
+	data = ft_calloc(1, sizeof(t_data));
+
+	data->img = mlx_new_image(vars->mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
+	data->addr = mlx_get_data_addr(data->img, &data->bits_per_pixel, &data->line_length, &data->endian);
+
+	return(*data);
 }
 
 int	main(void)
 {
 	t_vars	vars;
 
+
 	vars.mlx = mlx_init();
 	vars.window = mlx_new_window(vars.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "TESTE PRIMEIRO");
-	//renderMap(&vars, vars.data);
+
+	
+
+	
 	mlx_hook(vars.window, 2, 1L<<0, keypressed, &vars);
 	mlx_loop_hook(vars.mlx, update_frame, &vars);
 	mlx_loop(vars.mlx);

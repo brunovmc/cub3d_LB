@@ -68,7 +68,6 @@ void    print_str(t_vars *vars,  int x, int y, int color, char *str);
 int     close(t_vars *vars);
 int     keypressed(int key, t_vars *vars);
 t_data	*create(void *mlx);
-
-
+t_data alloc_data(t_vars *vars);
 
 #endif
