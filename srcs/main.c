@@ -85,11 +85,6 @@ void    renderMap(t_data data)
 
 int		keypressed(int key, t_vars *vars)
 {
-	t_data data;
-
-	data.img = mlx_new_image(vars->mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
-	data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);
-
 	if (key == W_KEY)
 	{
 		vars->pos->y -= 10;
@@ -117,13 +112,25 @@ int		keypressed(int key, t_vars *vars)
 	else if (key == ESC)
 		return (close(vars));
 
-	renderMap(data);
-	put_circle(&data, POSX + vars->pos->x, POSY + vars->pos->y, 7, 0x00ff0000);
-	
 
-	mlx_put_image_to_window(vars->mlx, vars->window, data.img, 0, 0);
+	update_frame(vars);
 	
 	return(key);
+}
+
+int	update_frame(t_vars *vars)
+{
+	t_data data;
+
+	data.img = mlx_new_image(vars->mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
+	data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);
+
+	renderMap(data);
+	put_circle(&data, POSX + vars->pos->x, POSY + vars->pos->y, 7, 0x00ff0000);
+
+	mlx_put_image_to_window(vars->mlx, vars->window, data.img, 0, 0);
+
+	return (0);
 }
 
 int	main(void)
@@ -134,17 +141,17 @@ int	main(void)
 	vars.mlx = mlx_init();
 	vars.window = mlx_new_window(vars.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "TESTE PRIMEIRO");
 
-	data.img = mlx_new_image(vars.mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
+	/*data.img = mlx_new_image(vars.mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
 	data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);
 
 	renderMap(data);
 	put_circle(&data, POSX, POSY, 7, 0x00ff0000);
-
-	//put_rect(&data, vars.pos->x, vars.pos->y, 10, 10, 0x00ff0000);
+	*/
 	
-
+	update_frame(&vars);
 	mlx_hook(vars.window, 2, 1L<<0, keypressed, &vars);
-	mlx_put_image_to_window(vars.mlx, vars.window, data.img, 0, 0);
+	//mlx_loop_hook(vars.mlx, update_frame, &vars);
+	//mlx_put_image_to_window(vars.mlx, vars.window, data.img, 0, 0);
 	
 	mlx_loop(vars.mlx);
 	return (0);
