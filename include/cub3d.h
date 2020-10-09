@@ -61,13 +61,14 @@ const int map[MAP_NUM_ROWS][MAP_NUM_COLS] = {
 };
 
 void    my_pixel_put(t_data *data, int x, int y, int color);
-void    put_rect(t_data *data, int x, int y, int size_x, int size_y, int color);
+void    put_rectangle(t_data *data, int x, int y, int size_x, int size_y, int color);
 void    renderMap(t_data data);
 void    put_circle(t_data *data, int a, int b, int size, int color);
 void    print_str(t_vars *vars,  int x, int y, int color, char *str);
 int     close(t_vars *vars);
 int     keypressed(int key, t_vars *vars);
 int     update_frame(t_vars *vars);
+void	put_line(t_data *data, int x, int y, int size, int color);
 
 
 

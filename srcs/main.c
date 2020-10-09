@@ -22,7 +22,7 @@ void	my_pixel_put(t_data *data, int x, int y, int color)
        *(unsigned int*)dst = color;       
 }
 
-void	put_rect(t_data *data, int x, int y, int size_x, int size_y, int color)
+void	put_rectangle(t_data *data, int x, int y, int size_x, int size_y, int color)
 {
 	int init_x;
 
@@ -37,6 +37,15 @@ void	put_rect(t_data *data, int x, int y, int size_x, int size_y, int color)
 		}
 		y++;
 	}
+}
+
+void	put_line(t_data *data, int x, int y, int size, int color)
+{
+	int	i;
+
+	i = -1;
+	while (++i <= size)
+		my_pixel_put(data, x + i, y, color);
 }
 
 void	put_circle(t_data *data, int a, int b, int size, int color)
@@ -76,7 +85,7 @@ void    renderMap(t_data data)
             tileX = j * TILE_SIZE;
             tileY = i * TILE_SIZE;
             tileColor = map[i][j] != 1 ? 0X00FFFFFF : 0X00000000;
-			put_rect(&data, tileX, tileY, tileX + TILE_SIZE, tileY + TILE_SIZE, tileColor);
+			put_rectangle(&data, tileX, tileY, tileX + TILE_SIZE, tileY + TILE_SIZE, tileColor);
             j++;
         }
         i++;
@@ -126,7 +135,8 @@ int	update_frame(t_vars *vars)
 	data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);
 
 	renderMap(data);
-	put_circle(&data, POSX + vars->pos->x, POSY + vars->pos->y, 7, 0x00ff0000);
+	put_circle(&data, POSX + vars->pos->x, POSY + vars->pos->y, 7, 0x000000ff);
+	put_line(&data, POSX + vars->pos->x, POSY + vars->pos->y, 25, 0x000000ff);
 
 	mlx_put_image_to_window(vars->mlx, vars->window, data.img, 0, 0);
 
