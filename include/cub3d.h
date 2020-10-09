@@ -17,6 +17,9 @@
 # define A_KEY 0x61
 # define S_KEY 0x73
 # define D_KEY 0x64
+# define LEFT_KEY 0xff51
+# define RIGHT_KEY 0xff53
+
 
 # define POSX 100
 # define POSY 100
@@ -28,6 +31,7 @@ typedef struct s_point {
 }               t_point;
 
 typedef struct s_player {
+    double       dir;
     t_point     *pos;
 }               t_player;
 

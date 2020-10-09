@@ -113,6 +113,26 @@ void	put_circle(t_data *data, int a, int b, int size, int color)
 	}
 }
 
+void	put_line(t_data *data, t_vars *vars, int x, int y, int size, int color)
+{
+	double dir;
+	int i;
+	double new_x;
+	double new_y;
+
+	i = 0;
+	dir = (vars->player->dir * 3.14)/180;
+	while (i < size)
+	{
+		new_x = (size - i) * cos(dir);
+		new_y = (size - i) * sin(dir);
+	
+		my_pixel_put(data,x + new_x, y + new_y, color);
+		i++;
+	}
+	
+}
+
 //void	teste(t_vars *vars, int x, int y, int color)
 int		update_frame(t_vars *vars)
 {
@@ -122,11 +142,11 @@ int		update_frame(t_vars *vars)
 	// data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);
 	data = alloc_data(vars);
 
-	renderMap(&vars , &data);
+	//renderMap(&vars , &data);
 	//my_pixel_put(&data, POSX + x, POSY + y, color);
-	put_rect(&data, vars->pos->x, vars->pos->y, 10, 10, 0x00ff0000);
-	//put_circle(&data, POSX + x, POSY + y, 10, 0x00ff0000);
-	
+	//put_rect(&data, vars->pos->x, vars->pos->y, 50, 1, 0x00ff0000);
+	//put_circle(&data, vars->pos->x, vars->pos->y, 10, 0x00ff0000);
+	put_line(&data, vars, vars->pos->x, vars->pos->y, 100, 0x0ff0000);
 	mlx_put_image_to_window(vars->mlx, vars->window, data.img, 0, 0);
 	return (0);
 }
@@ -136,35 +156,27 @@ int		keypressed(int key, t_vars *vars)
 	int		color;
 
 	if (key == W_KEY)
-	{
 		vars->pos->y -= 10;
-		//vars->player->pos->y -= 10;
-		//printf("%d\n", vars->player->pos->y);
-	}
 	else if (key == A_KEY)
-	{
 		vars->pos->x -= 10;
-		//vars->player->pos->x -= 10;
-		//printf("%d\n", vars->player->pos->x);
-	}
 	else if (key == S_KEY)
-	{
 		vars->pos->y += 10;
-		//vars->player->pos->y += 10;
-		//printf("%d\n", vars->player->pos->y);
-	}
 	else if (key == D_KEY)
-	{
 		vars->pos->x += 10;
-		//vars->player->pos->x += 10;
-		//printf("%d\n", vars->player->pos->x);
+	else if (key == RIGHT_KEY)
+	{
+		vars->player->dir += 1.0;
+		printf("%f\n", vars->player->dir);
+	}
+	else if (key == LEFT_KEY)
+	{
+		vars->player->dir -= 1.0;
+		printf("%f\n", vars->player->dir);
 	}
 	else if (key == ESC)
-		return (close(vars));
+	 	return (close(vars));
 
-	//teste(vars, 0x0000ffff);
-	
-
+	update_frame(vars);
 	return(key);
 }
 
@@ -180,19 +192,32 @@ t_data 	alloc_data(t_vars *vars)
 	return(*data);
 }
 
+
+
 int	main(void)
 {
 	t_vars	vars;
+	t_point pos;	
+	t_player player;
 
+	player.dir = 0.0;
+	vars.player = &player;
+	pos.x = POSX;
+	vars.pos = &pos;
+
+	
 
 	vars.mlx = mlx_init();
 	vars.window = mlx_new_window(vars.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "TESTE PRIMEIRO");
 
-	
+	// printf("%i\n", vars.pos->x);
+	// printf("%i\n", pos.x);
 
-	
-	mlx_hook(vars.window, 2, 1L<<0, keypressed, &vars);
-	mlx_loop_hook(vars.mlx, update_frame, &vars);
+	//printf("%f\n", vars.player->dir);
+	printf("%f\n", player.dir);
+
+	mlx_hook(vars.window, 2, 1L << 0, keypressed, &vars);
+	//mlx_loop_hook(vars.mlx, update_frame, &vars);
 	mlx_loop(vars.mlx);
 	return (0);
 }
