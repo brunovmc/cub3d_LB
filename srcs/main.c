@@ -136,22 +136,13 @@ int	update_frame(t_vars *vars)
 int	main(void)
 {
 	t_vars	vars;
-	t_data	data;
 
 	vars.mlx = mlx_init();
 	vars.window = mlx_new_window(vars.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "TESTE PRIMEIRO");
-
-	/*data.img = mlx_new_image(vars.mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
-	data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);
-
-	renderMap(data);
-	put_circle(&data, POSX, POSY, 7, 0x00ff0000);
-	*/
 	
 	update_frame(&vars);
 	mlx_hook(vars.window, 2, 1L<<0, keypressed, &vars);
-	//mlx_loop_hook(vars.mlx, update_frame, &vars);
-	//mlx_put_image_to_window(vars.mlx, vars.window, data.img, 0, 0);
+
 	
 	mlx_loop(vars.mlx);
 	return (0);
