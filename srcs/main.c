@@ -113,21 +113,32 @@ void	put_circle(t_data *data, int a, int b, int size, int color)
 	}
 }
 
-void	put_line(t_data *data, t_vars *vars, int x, int y, int size, int color)
+void	put_line(t_data *data, t_vars *vars, double x, double y, int size, int color)
 {
 	double dir;
 	int i;
-	double new_x;
-	double new_y;
+	// double new_x;
+	// double new_y;
 
 	i = 0;
+	//i = vars->player->walk_forward;
 	dir = (vars->player->dir * 3.14)/180;
 	while (i < size)
 	{
-		new_x = (size - i) * cos(dir);
-		new_y = (size - i) * sin(dir);
-	
-		my_pixel_put(data,x + new_x, y + new_y, color);
+		vars->pos->new_x = (size - i) * cos(dir);
+		printf("new_x = %f\n", vars->pos->new_x);
+		vars->pos->new_y = (size - i) * sin(dir);
+		printf("new_y = %f\n", vars->pos->new_y);
+
+		printf("x = %f\n", x);
+		printf("y = %f\n", y);
+
+		printf("dir = %f\n", vars->player->dir);
+		// printf("walk forward = %f\n", vars->player->walk_forward);
+
+		my_pixel_put(data, x + vars->pos->new_x, y + vars->pos->new_y, color);
+		// vars->player->dir = dir;
+
 		i++;
 	}
 	
@@ -151,26 +162,52 @@ int		update_frame(t_vars *vars)
 	return (0);
 }
 
+void	walk_forward(t_vars *vars)
+{
+	//vars->pos->x += 10;
+	//vars->player->walk_forward += 1;
+	vars->pos->x = vars->pos->x + 10 * vars->pos->new_x;
+	vars->pos->y = vars->pos->y + 10 * vars->pos->new_y;
+}
+
+void walk_backward(t_vars *vars)
+{
+	vars->pos->x = vars->pos->x + -1 * vars->pos->new_x;
+	vars->pos->y = vars->pos->y + -1 * vars->pos->new_y;
+}
+
+void walk_left(t_vars *vars)
+{
+	vars->pos->x = vars->pos->x + 1 * vars->pos->new_y;
+	vars->pos->y = vars->pos->y + 1 * vars->pos->new_x;
+}
+
+void walk_right(t_vars *vars)
+{
+	vars->pos->x = vars->pos->x + -1 * vars->pos->new_y;
+	vars->pos->y = vars->pos->y + -1 * vars->pos->new_x;
+}
+
 int		keypressed(int key, t_vars *vars)
 {
 	int		color;
 
 	if (key == W_KEY)
-		vars->pos->y -= 10;
+		walk_forward(vars);
 	else if (key == A_KEY)
-		vars->pos->x -= 10;
+		walk_left(vars);
 	else if (key == S_KEY)
-		vars->pos->y += 10;
+		walk_backward(vars);
 	else if (key == D_KEY)
-		vars->pos->x += 10;
+		walk_right(vars);
 	else if (key == RIGHT_KEY)
 	{
-		vars->player->dir += 1.0;
+		vars->player->dir += 2.0;
 		printf("%f\n", vars->player->dir);
 	}
 	else if (key == LEFT_KEY)
 	{
-		vars->player->dir -= 1.0;
+		vars->player->dir -= 2.0;
 		printf("%f\n", vars->player->dir);
 	}
 	else if (key == ESC)
@@ -203,6 +240,7 @@ int	main(void)
 	player.dir = 0.0;
 	vars.player = &player;
 	pos.x = POSX;
+	pos.y = POSY;
 	vars.pos = &pos;
 
 	
@@ -213,8 +251,11 @@ int	main(void)
 	// printf("%i\n", vars.pos->x);
 	// printf("%i\n", pos.x);
 
-	//printf("%f\n", vars.player->dir);
+	printf("%f\n", vars.player->dir);
 	printf("%f\n", player.dir);
+	printf("%f\n", pos.x);
+	printf("%f\n", pos.y);
+
 
 	mlx_hook(vars.window, 2, 1L << 0, keypressed, &vars);
 	//mlx_loop_hook(vars.mlx, update_frame, &vars);

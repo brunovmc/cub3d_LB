@@ -25,13 +25,19 @@
 # define POSY 100
 
 typedef struct s_point {
-    int       x;
-    int       y;
+    double       x;
+    double       y;
+    double       new_x;
+    double       new_y;
     int       color;
 }               t_point;
 
 typedef struct s_player {
     double       dir;
+    // double          walk_forward;
+    // double          walk_backward;
+    // int          walk_left;
+    // int          walk_right;
     t_point     *pos;
 }               t_player;
 
