@@ -59,7 +59,7 @@ void	put_rect(t_data *data, int x, int y, int size_x, int size_y, int color)
 	}
 }
 
-void    renderMap(t_vars *vars, t_data *data)
+void    renderMap(t_data data)
 {
     int i;
     int j;
@@ -79,7 +79,7 @@ void    renderMap(t_vars *vars, t_data *data)
             tileY = i * TILE_SIZE;
             tileColor = map[i][j] != 1 ? 0X00FFFFFF : 0X00000000;
             //render_rectangle(vars, tileX, tileY, tileX + TILE_SIZE, tileY + TILE_SIZE, tileColor);
-			put_rect(data, tileX, tileY, tileX + TILE_SIZE, tileY + TILE_SIZE, tileColor);
+			put_rect(&data, tileX, tileY, tileX + TILE_SIZE, tileY + TILE_SIZE, tileColor);
             j++;
         }
         i++;
@@ -130,9 +130,6 @@ void	put_line(t_data *data, t_vars *vars, double x, double y, int size, int colo
 		vars->pos->new_y = (size - i) * sin(dir);
 		printf("new_y = %f\n", vars->pos->new_y);
 
-		printf("x = %f\n", x);
-		printf("y = %f\n", y);
-
 		printf("dir = %f\n", vars->player->dir);
 		// printf("walk forward = %f\n", vars->player->walk_forward);
 
@@ -152,7 +149,7 @@ int		update_frame(t_vars *vars)
 	// data.img = mlx_new_image(vars->mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
 	// data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);
 	data = alloc_data(vars);
-
+	//renderMap(data);
 	//renderMap(&vars , &data);
 	//my_pixel_put(&data, POSX + x, POSY + y, color);
 	//put_rect(&data, vars->pos->x, vars->pos->y, 50, 1, 0x00ff0000);
@@ -176,16 +173,15 @@ void walk_backward(t_vars *vars)
 	vars->pos->y += -WALK_SPEED * vars->pos->new_y;
 }
 
-void walk_left(t_vars *vars)
+void walk_right(t_vars *vars)
 {
-
-	vars->pos->x += WALK_SPEED * vars->pos->new_y;
+	vars->pos->x += -1 * (WALK_SPEED * vars->pos->new_y);
 	vars->pos->y += WALK_SPEED * vars->pos->new_x;
 }
 
-void walk_right(t_vars *vars)
+void walk_left(t_vars *vars)
 {
-	vars->pos->x += -WALK_SPEED * vars->pos->new_y;
+	vars->pos->x += WALK_SPEED * vars->pos->new_y;
 	vars->pos->y += -WALK_SPEED * vars->pos->new_x;
 }
 
@@ -193,8 +189,8 @@ void rotation_sign(t_vars *vars)
 {
 	if (vars->player->dir > 360 - ROTATION_SPEED)
 		vars->player->dir = 0;
-	if (vars->player->dir < -360 + ROTATION_SPEED)
-		vars->player->dir = 0;
+	if (vars->player->dir == - ROTATION_SPEED)
+		vars->player->dir = 360 - ROTATION_SPEED;
 }	
 
 void look_left(t_vars *vars)
@@ -275,6 +271,7 @@ int	main(void)
 	// printf("%f\n", pos.x);
 	// printf("%f\n", pos.y);
 
+	update_frame(&vars);
 
 	mlx_hook(vars.window, 2, 1L << 0, keypressed, &vars);
 	//mlx_loop_hook(vars.mlx, update_frame, &vars);
