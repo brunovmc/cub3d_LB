@@ -24,6 +24,9 @@
 # define POSX 100
 # define POSY 100
 
+# define ROTATION_SPEED 2.0
+# define WALK_SPEED 10
+
 typedef struct s_point {
     double       x;
     double       y;
