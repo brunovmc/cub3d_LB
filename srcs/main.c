@@ -166,26 +166,27 @@ void	walk_forward(t_vars *vars)
 {
 	//vars->pos->x += 10;
 	//vars->player->walk_forward += 1;
-	vars->pos->x = vars->pos->x + WALK_SPEED * vars->pos->new_x;
-	vars->pos->y = vars->pos->y + WALK_SPEED * vars->pos->new_y;
+	vars->pos->x += WALK_SPEED * vars->pos->new_x;
+	vars->pos->y += WALK_SPEED * vars->pos->new_y;
 }
 
 void walk_backward(t_vars *vars)
 {
-	vars->pos->x = vars->pos->x + -WALK_SPEED * vars->pos->new_x;
-	vars->pos->y = vars->pos->y + -WALK_SPEED * vars->pos->new_y;
+	vars->pos->x += -WALK_SPEED * vars->pos->new_x;
+	vars->pos->y += -WALK_SPEED * vars->pos->new_y;
 }
 
 void walk_left(t_vars *vars)
 {
-	vars->pos->x = vars->pos->x + 1 * vars->player->dir -90;
-	vars->pos->y = vars->pos->y + 1 * vars->player->dir -90;
+
+	vars->pos->x += WALK_SPEED * vars->pos->new_y;
+	vars->pos->y += WALK_SPEED * vars->pos->new_x;
 }
 
 void walk_right(t_vars *vars)
 {
-	vars->pos->x = vars->pos->x + -1 * vars->pos->new_y;
-	vars->pos->y = vars->pos->y + -1 * vars->pos->new_x;
+	vars->pos->x += -WALK_SPEED * vars->pos->new_y;
+	vars->pos->y += -WALK_SPEED * vars->pos->new_x;
 }
 
 void rotation_sign(t_vars *vars)
@@ -269,10 +270,10 @@ int	main(void)
 	// printf("%i\n", vars.pos->x);
 	// printf("%i\n", pos.x);
 
-	printf("%f\n", vars.player->dir);
-	printf("%f\n", player.dir);
-	printf("%f\n", pos.x);
-	printf("%f\n", pos.y);
+	// printf("%f\n", vars.player->dir);
+	// printf("%f\n", player.dir);
+	// printf("%f\n", pos.x);
+	// printf("%f\n", pos.y);
 
 
 	mlx_hook(vars.window, 2, 1L << 0, keypressed, &vars);
