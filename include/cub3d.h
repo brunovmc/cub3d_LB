@@ -21,8 +21,8 @@
 # define RIGHT_KEY 0xff53
 
 
-# define POSX 100
-# define POSY 100
+# define POSX 200
+# define POSY 200
 
 # define ROTATION_SPEED 2.0
 # define WALK_SPEED 10

@@ -52,16 +52,17 @@ void put_line(t_data *data, t_vars *vars, double x, double y, int size, int colo
 	while (i < size)
 	{
 		vars->pos->new_x = (size - i) * cos(dir);
-		printf("new_x = %f\n", vars->pos->new_x);
+		//printf("new_x = %f\n", vars->pos->new_x);
 		vars->pos->new_y = (size - i) * sin(dir);
-		printf("new_y = %f\n", vars->pos->new_y);
+		//printf("new_y = %f\n", vars->pos->new_y);
 
 		printf("dir = %f\n", vars->player->dir);
 		// printf("walk forward = %f\n", vars->player->walk_forward);
 
 		my_pixel_put(data, x + vars->pos->new_x, y + vars->pos->new_y, color);
 		// vars->player->dir = dir;
-
+		printf("x + new_x = %f\n", x + vars->pos->new_x);
+		printf("y + new_y = %f\n", y + vars->pos->new_y);
 		i++;
 	}
 }
@@ -109,32 +110,99 @@ void renderMap(t_data data)
 	}
 }
 
+// int returnindex(t_vars *vars, char c, int sign)
+// {
+// 	int i;
+// 	int j;
+// 	int k;
+// 	int h;
+
+// 	i = floor((vars->pos->y + ((sign) * WALK_SPEED) * vars->pos->new_y) / TILE_SIZE);
+// 	j = floor((vars->pos->x + ((sign) * WALK_SPEED) * vars->pos->new_x) / TILE_SIZE);
+// 	k = floor((vars->pos->y + ((sign) * WALK_SPEED) * vars->pos->new_x) / TILE_SIZE);
+// 	h = floor((vars->pos->x + ((sign) * WALK_SPEED) * vars->pos->new_y) / TILE_SIZE);
+// 	if (c == 'i')
+// 		return  (i);
+// 	if (c == 'j')
+// 		return (j);
+// 	if (c == 'k')
+// 		return (k);
+// 	if (c == 'h')
+// 		return (h);
+// }	
+
+void	iscolision(t_vars *vars, char c, int sign)
+{
+	int i;
+	int j;
+
+	if (c == 'w' || c == 's')
+	{
+		i = floor((vars->pos->y + (sign * WALK_SPEED) * vars->pos->new_y) / TILE_SIZE);
+		j = floor((vars->pos->x + (sign * WALK_SPEED) * vars->pos->new_x) / TILE_SIZE);
+		if (!(map[i][j] == 1) && map[i][j] == 0)
+		{
+			vars->pos->x += (sign * WALK_SPEED) * vars->pos->new_x;
+			vars->pos->y += (sign * WALK_SPEED) * vars->pos->new_y;
+		}
+	}
+	if (c == 'a' || c == 'd')
+	{
+		i = floor((vars->pos->y + (-sign * WALK_SPEED) * vars->pos->new_x) / TILE_SIZE);
+		j = floor((vars->pos->x + (sign * WALK_SPEED) * vars->pos->new_y) / TILE_SIZE);
+		if (!(map[i][j] == 1))
+		{
+			vars->pos->x += (sign * WALK_SPEED) * vars->pos->new_y;
+			vars->pos->y += (-sign * WALK_SPEED) * vars->pos->new_x;
+		}
+	}
+}
+
 void walk_forward(t_vars *vars)
 {
-	//vars->pos->x += 10;
-	//vars->player->walk_forward += 1;
-	vars->pos->x += WALK_SPEED * vars->pos->new_x;
-	vars->pos->y += WALK_SPEED * vars->pos->new_y;
+	// int i;
+	// int j;
+
+	// i = floor((vars->pos->y + WALK_SPEED * vars->pos->new_y) / TILE_SIZE);
+	// j = floor((vars->pos->x + WALK_SPEED * vars->pos->new_x) / TILE_SIZE);
+
+	// if (!(map[returnindex(vars, 'i', 1)][returnindex(vars, 'j', 1)] == 1))
+	// {
+	// 	vars->pos->x += WALK_SPEED * vars->pos->new_x;
+	// 	vars->pos->y += WALK_SPEED * vars->pos->new_y;
+	// }
+	iscolision(vars, 'w', 1);
 }
 
 void walk_backward(t_vars *vars)
 {
-	vars->pos->x += -WALK_SPEED * vars->pos->new_x;
-	vars->pos->y += -WALK_SPEED * vars->pos->new_y;
+	// if (!(map[returnindex(vars, 'i', -1)][returnindex(vars, 'j', -1)] == 1))
+	// {
+	// 	vars->pos->x += -WALK_SPEED * vars->pos->new_x;
+	// 	vars->pos->y += -WALK_SPEED * vars->pos->new_y;
+	// }
+	iscolision(vars, 's', -1);
 }
 
 void walk_right(t_vars *vars)
 {
-	vars->pos->x += -1 * (WALK_SPEED * vars->pos->new_y);
-	vars->pos->y += WALK_SPEED * vars->pos->new_x;
+	// if (!(map[returnindex(vars, 'k', -1)][returnindex(vars, 'h', 1)] == 1))
+	// {
+	// 	vars->pos->x += -WALK_SPEED * vars->pos->new_y;
+	// 	vars->pos->y += WALK_SPEED * vars->pos->new_x;
+	// }
+	iscolision(vars, 'd', -1);
 }
 
 void walk_left(t_vars *vars)
 {
-	vars->pos->x += WALK_SPEED * vars->pos->new_y;
-	vars->pos->y += -WALK_SPEED * vars->pos->new_x;
+	// if (!(map[returnindex(vars, 'k', -1)][returnindex(vars, 'h', 1)] == 1))
+	// {
+	// 	vars->pos->x += WALK_SPEED * vars->pos->new_y;
+	// 	vars->pos->y += -WALK_SPEED * vars->pos->new_x;
+	// }
+	iscolision(vars, 'a', 1);
 }
-
 void rotation_sign(t_vars *vars)
 {
 	if (vars->player->dir > 360 - ROTATION_SPEED)
@@ -193,7 +261,7 @@ int update_frame(t_vars *vars)
 	//renderMap(&vars , &data);
 	//my_pixel_put(&data, POSX + x, POSY + y, color);
 	//put_rect(&data, vars->pos->x, vars->pos->y, 50, 1, 0x00ff0000);
-	put_circle(&data, vars->pos->x, vars->pos->y, 10, 0x00ff0000);
+	put_circle(&data, vars->pos->x, vars->pos->y, 2, 0x00ff0000);
 	put_line(&data, vars, vars->pos->x, vars->pos->y, 100, 0x0ff0000);
 	mlx_put_image_to_window(vars->mlx, vars->window, data.img, 0, 0);
 	return (0);
