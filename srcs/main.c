@@ -39,16 +39,32 @@ void put_rectangle(t_data *data, int x, int y, int size_x, int size_y, int color
 	}
 }
 
+int raysize(t_vars *vars)
+{
+	int a;
+	int b;
+	int size;
+
+	a = floor((vars->pos->y + WALK_SPEED * vars->pos->new_y) / TILE_SIZE);
+	b = floor((vars->pos->x + WALK_SPEED * vars->pos->new_x) / TILE_SIZE);
+	if (!(map[a][b] == 1))
+		size += TILE_SIZE;
+	return(size);
+}
+
 void put_line(t_data *data, t_vars *vars, double x, double y, int size, int color)
 {
 	double dir;
 	int i;
+	
 	// double new_x;
 	// double new_y;
+	
 
 	i = 0;
 	//i = vars->player->walk_forward;
 	dir = (vars->player->dir * 3.14) / 180;
+	size = raysize(vars);
 	while (i < size)
 	{
 		vars->pos->new_x = (size - i) * cos(dir);
@@ -58,11 +74,12 @@ void put_line(t_data *data, t_vars *vars, double x, double y, int size, int colo
 
 		printf("dir = %f\n", vars->player->dir);
 		// printf("walk forward = %f\n", vars->player->walk_forward);
-
+		
 		my_pixel_put(data, x + vars->pos->new_x, y + vars->pos->new_y, color);
 		// vars->player->dir = dir;
 		printf("x + new_x = %f\n", x + vars->pos->new_x);
 		printf("y + new_y = %f\n", y + vars->pos->new_y);
+		
 		i++;
 	}
 }
