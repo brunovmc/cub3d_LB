@@ -39,16 +39,21 @@ void put_rectangle(t_data *data, int x, int y, int size_x, int size_y, int color
 	}
 }
 
-int raysize(t_vars *vars)
+int raysize(t_vars *vars, int size)
 {
-	int a;
-	int b;
-	int size;
+	double 	dx;
+	double 	dy;
+	double 	dir;
+	
+	dir = (vars->player->dir * 3.14) / 180;
+	dx = sin(dir);
+	
+	dy = floor((vars->pos->y / TILE_SIZE) * TILE_SIZE);
+	dx = vars->pos->x + ((vars->pos->y - dy) / tan(dir));
+	printf(" dx = %f ", dx);
+	printf(" dy = %f ", dy);
 
-	a = floor((vars->pos->y + WALK_SPEED * vars->pos->new_y) / TILE_SIZE);
-	b = floor((vars->pos->x + WALK_SPEED * vars->pos->new_x) / TILE_SIZE);
-	if (!(map[a][b] == 1))
-		size += TILE_SIZE;
+	size = tan(dir) * (vars->pos->y - dy);
 	return(size);
 }
 
@@ -56,6 +61,9 @@ void put_line(t_data *data, t_vars *vars, double x, double y, int size, int colo
 {
 	double dir;
 	int i;
+	int dist;
+	double dx;
+	double dy;
 	
 	// double new_x;
 	// double new_y;
@@ -64,22 +72,34 @@ void put_line(t_data *data, t_vars *vars, double x, double y, int size, int colo
 	i = 0;
 	//i = vars->player->walk_forward;
 	dir = (vars->player->dir * 3.14) / 180;
-	size = raysize(vars);
-	while (i < size)
+	// size = raysize(vars, size);
+	dist = size + raysize(vars,size);
+	while (i < dist)
 	{
-		vars->pos->new_x = (size - i) * cos(dir);
+		
+		vars->pos->new_x = (dist - i) * cos(dir);
 		//printf("new_x = %f\n", vars->pos->new_x);
-		vars->pos->new_y = (size - i) * sin(dir);
+		vars->pos->new_y = (dist - i) * sin(dir);
 		//printf("new_y = %f\n", vars->pos->new_y);
 
 		printf("dir = %f\n", vars->player->dir);
-		// printf("walk forward = %f\n", vars->player->walk_forward);
 		
-		my_pixel_put(data, x + vars->pos->new_x, y + vars->pos->new_y, color);
+		
 		// vars->player->dir = dir;
-		printf("x + new_x = %f\n", x + vars->pos->new_x);
-		printf("y + new_y = %f\n", y + vars->pos->new_y);
+		// printf("x + new_x = %f\n", x + vars->pos->new_x);
+		// printf("y + new_y = %f\n", y + vars->pos->new_y);
+		// printf("vars->pos->x = %f\n", x );
+		// printf("vars->pos->y = %f\n", y );
+		printf("vars->pos->x/TS = %f\n", x / TILE_SIZE);
+		printf("vars->pos->y/TS = %f\n", y / TILE_SIZE);
+
+		// dx = sqrt(1 + (vars->pos->new_y * vars->pos->new_y) / (vars->pos->new_x * vars->pos->new_x));
+		// dy = sqrt(1 + (vars->pos->new_x * vars->pos->new_x) / (vars->pos->new_y * vars->pos->new_y));
 		
+		// printf("dx = %f ", dx);
+		// printf("dy = %f ", dy);
+
+		my_pixel_put(data, (x + vars->pos->new_x), (y + vars->pos->new_y), color);
 		i++;
 	}
 }
@@ -121,32 +141,13 @@ void renderMap(t_data data)
 			tileY = i * TILE_SIZE;
 			tileColor = map[i][j] != 1 ? 0X00FFFFFF : 0X00000000;
 			put_rectangle(&data, tileX, tileY, tileX + TILE_SIZE, tileY + TILE_SIZE, tileColor);
+			put_rectangle(&data, tileX, tileY, tileX, tileY + TILE_SIZE, 0X00000000);
+			put_rectangle(&data, tileX, tileY, tileX + TILE_SIZE, tileY, 0X00000000);
 			j++;
 		}
 		i++;
 	}
 }
-
-// int returnindex(t_vars *vars, char c, int sign)
-// {
-// 	int i;
-// 	int j;
-// 	int k;
-// 	int h;
-
-// 	i = floor((vars->pos->y + ((sign) * WALK_SPEED) * vars->pos->new_y) / TILE_SIZE);
-// 	j = floor((vars->pos->x + ((sign) * WALK_SPEED) * vars->pos->new_x) / TILE_SIZE);
-// 	k = floor((vars->pos->y + ((sign) * WALK_SPEED) * vars->pos->new_x) / TILE_SIZE);
-// 	h = floor((vars->pos->x + ((sign) * WALK_SPEED) * vars->pos->new_y) / TILE_SIZE);
-// 	if (c == 'i')
-// 		return  (i);
-// 	if (c == 'j')
-// 		return (j);
-// 	if (c == 'k')
-// 		return (k);
-// 	if (c == 'h')
-// 		return (h);
-// }	
 
 void	iscolision(t_vars *vars, char c, int sign)
 {
@@ -279,7 +280,7 @@ int update_frame(t_vars *vars)
 	//my_pixel_put(&data, POSX + x, POSY + y, color);
 	//put_rect(&data, vars->pos->x, vars->pos->y, 50, 1, 0x00ff0000);
 	put_circle(&data, vars->pos->x, vars->pos->y, 2, 0x00ff0000);
-	put_line(&data, vars, vars->pos->x, vars->pos->y, 100, 0x0ff0000);
+	put_line(&data, vars, vars->pos->x, vars->pos->y, 200, 0x0ff0000);
 	mlx_put_image_to_window(vars->mlx, vars->window, data.img, 0, 0);
 	return (0);
 }
