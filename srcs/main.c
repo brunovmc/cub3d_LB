@@ -57,6 +57,97 @@ int raysize(t_vars *vars, int size)
 	return(size);
 }
 
+void   	put_rays(t_data *data, t_vars *vars, double x, double y, int color)
+//&data, vars, vars->pos->x, vars->pos->y, 200, 0x0ff0000
+{
+	double dir = (vars->player->dir * 3.14) / 180;
+	double dirX = cos(dir);
+	double dirY = sin(dir); //initial direction vector
+	double planeX = 0;
+	double planeY = 0.66; //the 2d raycaster version of camera plane
+	double w = 3;
+	double posX = vars->pos->x;
+	double posY = vars->pos->y;
+
+	for(int x = 0; x < w; x++)
+    {
+      //calculate ray position and direction
+      double cameraX = (2 * x) / (w - 1); //x-coordinate in camera space
+      double rayDirX = dirX + planeX * cameraX;
+      double rayDirY = dirY + planeY * cameraX;
+
+	  //which box of the map we're in
+      int mapX = floor(posX);
+      int mapY = floor(posY);
+
+      //length of ray from current position to next x or y-side
+      double sideDistX;
+      double sideDistY;
+
+       //length of ray from one x or y-side to next x or y-side
+      double deltaDistX = (rayDirY == 0) ? 0 : ((rayDirX == 0) ? 1 : fabs(1 / rayDirX));
+      double deltaDistY = (rayDirX == 0) ? 0 : ((rayDirY == 0) ? 1 : fabs(1 / rayDirY));
+      double perpWallDist;
+
+      //what direction to step in x or y-direction (either +1 or -1)
+      int stepX;
+      int stepY;
+
+      int hit = 0; //was there a wall hit?
+      int side; //was a NS or a EW wall hit?
+
+	  //calculate step and initial sideDist
+      if (rayDirX < 0)
+      {
+        stepX = -1;
+        sideDistX = (posX - mapX) * deltaDistX;
+      }
+      else
+      {
+        stepX = 1;
+        sideDistX = (mapX + 1.0 - posX) * deltaDistX;
+      }
+      if (rayDirY < 0)
+      {
+        stepY = -1;
+        sideDistY = (posY - mapY) * deltaDistY;
+      }
+      else
+      {
+        stepY = 1;
+        sideDistY = (mapY + 1.0 - posY) * deltaDistY;
+      }
+
+	  //perform DDA
+      while (hit == 0)
+      {
+        //jump to next map square, OR in x-direction, OR in y-direction
+        if (sideDistX < sideDistY)
+        {
+          sideDistX += deltaDistX;
+          mapX += stepX;
+          side = 0;
+        }
+        else
+        {
+          sideDistY += deltaDistY;
+          mapY += stepY;
+          side = 1;
+        }
+        //Check if ray has hit a wall
+        if (map[mapX][mapY] > 0) hit = 1;
+      } 
+
+	  //Calculate distance projected on camera direction (Euclidean distance will give fisheye effect!)
+      if (side == 0) perpWallDist = (mapX - posX + (1 - stepX) / 2) / rayDirX;
+      else           perpWallDist = (mapY - posY + (1 - stepY) / 2) / rayDirY;
+
+	  put_line(data, vars, vars->pos->x, vars->pos->y, perpWallDist, color);
+	}
+
+	
+}
+
 void put_line(t_data *data, t_vars *vars, double x, double y, int size, int color)
 {
 	double dir;
@@ -73,7 +164,8 @@ void put_line(t_data *data, t_vars *vars, double x, double y, int size, int colo
 	//i = vars->player->walk_forward;
 	dir = (vars->player->dir * 3.14) / 180;
 	// size = raysize(vars, size);
-	dist = size + raysize(vars,size);
+	//dist = size + raysize(vars,size);
+	dist = size;
 	while (i < dist)
 	{
 		
@@ -280,7 +372,8 @@ int update_frame(t_vars *vars)
 	//my_pixel_put(&data, POSX + x, POSY + y, color);
 	//put_rect(&data, vars->pos->x, vars->pos->y, 50, 1, 0x00ff0000);
 	put_circle(&data, vars->pos->x, vars->pos->y, 2, 0x00ff0000);
-	put_line(&data, vars, vars->pos->x, vars->pos->y, 200, 0x0ff0000);
+	//put_line(&data, vars, vars->pos->x, vars->pos->y, 200, 0x0ff0000);
+	put_rays(&data, vars, vars->pos->x, vars->pos->y, 0x0ff0000);
 	mlx_put_image_to_window(vars->mlx, vars->window, data.img, 0, 0);
 	return (0);
 }

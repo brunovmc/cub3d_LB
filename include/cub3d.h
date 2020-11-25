@@ -20,7 +20,6 @@
 # define LEFT_KEY 0xff51
 # define RIGHT_KEY 0xff53
 
-
 # define POSX 200
 # define POSY 200
 
@@ -77,7 +76,8 @@ void    my_pixel_put(t_data *data, int x, int y, int color);
 void    put_rect(t_data *data, int x, int y, int size_x, int size_y, int color);
 void    renderMap(t_data data);
 void    put_line(t_data *data, t_vars *vars, double x, double y, int size, int color);
-void put_circle(t_data *data, int a, int b, int size, int color);
+void   	put_rays(t_data *data, t_vars *vars, double x, double y, int color);
+void    put_circle(t_data *data, int a, int b, int size, int color);
 void    print_str(t_vars *vars,  int x, int y, int color, char *str);
 int     close(t_vars *vars);
 int     keypressed(int key, t_vars *vars);
