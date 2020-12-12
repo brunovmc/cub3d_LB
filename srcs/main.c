@@ -57,6 +57,29 @@ int raysize(t_vars *vars, int size)
 	return(size);
 }
 
+void	put_rays_G(t_data *data, t_vars *vars, double x, double y, int color)
+{
+	double rayAngle = ((vars->player->dir) * 3.14) / 180 - 30 * 3.14/180;
+	//double rayAngle = dir; //(FOV_ANGLE / 2);
+
+	//COLOCAR NO .h posteriormente
+	int WALL_STRIP_WIDTH = 10;
+	double NUM_RAYS = WINDOW_WIDTH / WALL_STRIP_WIDTH;
+
+	int i = 0;
+	while (i < NUM_RAYS)
+	{
+		//if (i % 2 != 0)
+		put_line_G(data, vars, vars->pos->x, vars->pos->y, rayAngle, 0x00ff0000);
+		//else
+		//put_line(data, vars, vars->pos->x, vars->pos->y, 100, 0x0000ff00);
+		
+		//rayAngle += 60 / NUM_RAYS;
+		rayAngle += 3.14/180;
+		i++;
+	}
+}
+
 void   	put_rays(t_data *data, t_vars *vars, double x, double y, int color)
 //&data, vars, vars->pos->x, vars->pos->y, 200, 0x0ff0000
 {
@@ -147,6 +170,20 @@ void   	put_rays(t_data *data, t_vars *vars, double x, double y, int color)
 
 	
 }
+
+void	put_line_G(t_data *data,t_vars *vars, double x, double y, double dir, int color)
+{
+	int i;
+	int size = 90; //tamanho do raio
+
+	i = 0;
+	while (i < size)
+	{
+		my_pixel_put(data, (x + cos(dir) * i), (y + sin(dir) * i), color);
+		i++;
+	}
+}
+
 
 void put_line(t_data *data, t_vars *vars, double x, double y, int size, int color)
 {
@@ -371,9 +408,10 @@ int update_frame(t_vars *vars)
 	//renderMap(&vars , &data);
 	//my_pixel_put(&data, POSX + x, POSY + y, color);
 	//put_rect(&data, vars->pos->x, vars->pos->y, 50, 1, 0x00ff0000);
+	put_line(&data, vars, vars->pos->x, vars->pos->y, 200, 0x0000ff00);
+	//put_rays(&data, vars, vars->pos->x, vars->pos->y, 0x0ff0000);
+	put_rays_G(&data, vars, vars->pos->x, vars->pos->y, 0x00ff0000);
 	put_circle(&data, vars->pos->x, vars->pos->y, 2, 0x00ff0000);
-	//put_line(&data, vars, vars->pos->x, vars->pos->y, 200, 0x0ff0000);
-	put_rays(&data, vars, vars->pos->x, vars->pos->y, 0x0ff0000);
 	mlx_put_image_to_window(vars->mlx, vars->window, data.img, 0, 0);
 	return (0);
 }

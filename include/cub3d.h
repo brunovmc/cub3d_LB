@@ -81,6 +81,7 @@ void    put_circle(t_data *data, int a, int b, int size, int color);
 void    print_str(t_vars *vars,  int x, int y, int color, char *str);
 int     close(t_vars *vars);
 int     keypressed(int key, t_vars *vars);
+void	put_line_G(t_data *data,t_vars *vars, double x, double y, double dir, int color);
 int update_frame(t_vars *vars);
     t_data *create(void *mlx);
 t_data alloc_data(t_vars *vars);
