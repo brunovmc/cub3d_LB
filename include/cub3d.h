@@ -36,6 +36,7 @@ typedef struct s_point {
 
 typedef struct s_player {
     double       dir;
+    double       dir_rad;
     // double          walk_forward;
     // double          walk_backward;
     // int          walk_left;

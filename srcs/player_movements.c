@@ -71,14 +71,14 @@ void look_left(t_vars *vars)
 {
     vars->player->dir -= ROTATION_SPEED;
     rotation_sign(vars);
-    printf("vars->player->dir = %f\n", vars->player->dir);
+    //printf("vars->player->dir = %f\n", vars->player->dir);
 }
 
 void look_right(t_vars *vars)
 {
     vars->player->dir += ROTATION_SPEED;
     rotation_sign(vars);
-    printf("vars->player->dir %f\n", vars->player->dir);
+    //printf("vars->player->dir %f\n", vars->player->dir);
 }
 
 int keypressed(int key, t_vars *vars)
