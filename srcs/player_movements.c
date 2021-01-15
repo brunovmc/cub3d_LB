@@ -40,6 +40,31 @@ void iscolision(t_vars *vars, char c, int sign)
     }
 }
 
+int iscolision2(double posx, double posy)
+{
+    int i;
+    int j;
+
+    int map[MAP_NUM_ROWS][MAP_NUM_COLS] = {
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+        {1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
+        {1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
+        {1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
+        {1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1},
+        {1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1},
+        {1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
+        {1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1},
+        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+    };
+
+    i = floor((posy / TILE_SIZE));
+    j = floor((posx / TILE_SIZE));
+    if (!(map[i][j] == 1))
+        return (1);
+    return (0);
+}
+
 void walk_forward(t_vars *vars)
 {
     iscolision(vars, 'w', 1);

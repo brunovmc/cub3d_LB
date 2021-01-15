@@ -87,24 +87,24 @@ void put_line_G(t_data *data, t_vars *vars, double x, double y, double dir, int 
     bx = ax + xstep;
     by = ay - ystep;
 
-   // size = sqrt((ax - x) * (ax  - x) + (ay - y) * (ay - y));
+    size = sqrt((ax - x) * (ax  - x) + (ay - y) * (ay - y));
 
     a = floor(ax / TILE_SIZE);
     b = floor(bx / TILE_SIZE);
 
-    step = 0;
-    while (!(map[a][b] == 1))
-    {
-        a += 1;
-        b -= 1;
-        step++;
-    }
-
-    //size += sqrt((bx - ax) * (bx - ax) + (by - ay) * (by - ay));
+    // step = 0;
+    // while (!(map[a][b] == 1))
+    // {
+    //     a += 1;
+    //     b -= 1;
+    //     step++;
+    // }
 
     size += sqrt((bx - ax) * (bx - ax) + (by - ay) * (by - ay));
 
-    size *= step;
+    //size += sqrt((bx - ax) * (bx - ax) + (by - ay) * (by - ay));
+
+    //size *= step;
 
     i = 0;
     while (i < size)
