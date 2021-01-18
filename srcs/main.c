@@ -52,7 +52,7 @@ int update_frame(t_vars *vars)
 	data.img = mlx_new_image(vars->mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
 	data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);
 	renderMap(data);
-	put_line(&data, vars, vars->pos->x, vars->pos->y, 200, 0x0000ff00);
+	put_line(&data, vars, vars->pos->x, vars->pos->y, 100, 0x0000ff00);
 	put_rays_G(&data, vars, vars->pos->x, vars->pos->y, 0x00ff0000);
 	put_circle(&data, vars->pos->x, vars->pos->y, 2, 0x00000000);
 	mlx_put_image_to_window(vars->mlx, vars->window, data.img, 0, 0);

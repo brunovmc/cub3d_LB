@@ -85,5 +85,7 @@ int     close(t_vars *vars);
 int     keypressed(int key, t_vars *vars);
 void	put_line_G(t_data *data,t_vars *vars, double x, double y, double dir, int color);
 int     update_frame(t_vars *vars);
+double  distancebetweenpoints(double x1, double y1, double x2, double y2);
+
 
 #endif

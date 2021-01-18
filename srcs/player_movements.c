@@ -58,11 +58,14 @@ int iscolision2(double posx, double posy)
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
     };
 
-    i = floor((posy / TILE_SIZE));
-    j = floor((posx / TILE_SIZE));
-    if (!(map[i][j] == 1))
-        return (1);
-    return (0);
+    i = floor(posy / TILE_SIZE);
+    j = floor(posx / TILE_SIZE);
+    //printf("D posy = %f | posx = %f\n", posy, posx);
+    //printf("E posy/TILESIZE = %f | posx/TILESIZE = %f\n", posy/TILE_SIZE, posx/TILE_SIZE);
+    //printf("F i = %d | j = %d | map[i][j] = %d\n", i, j, map[i][j]);
+    if (map[i][j] != 1)
+        return (0);
+    return (1);
 }
 
 void walk_forward(t_vars *vars)
