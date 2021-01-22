@@ -87,26 +87,49 @@ void walk_left(t_vars *vars)
 {
     iscolision(vars, 'a', 1);
 }
-void rotation_sign(t_vars *vars)
+double rotation_sign(t_vars *vars, int sign)
 {
-    if (vars->player->dir > 360 - ROTATION_SPEED)
-        vars->player->dir = 0;
-    if (vars->player->dir == -ROTATION_SPEED)
-        vars->player->dir = 360 - ROTATION_SPEED;
+
+    // angle = vars->player->dir;
+
+    // angle = angle % (2 * 3.14);
+    // if (angle < 0)
+    //     angle = angle + (2 * 3.14);
+
+    // angle = (int)vars->player->dir;
+    if (vars->player->dir > 360)
+        vars->player->dir = fmod(vars->player->dir, (2 * 3.14));
+     if (vars->player->dir < 0)
+     {
+         vars->player->dir = vars->player->dir * -1;
+         sign *= -1;
+     }
+         
+
+    return (vars->player->dir += sign);
+
+    // vars->player->dir = angle;
+
+    // if (vars->player->dir > 360 - ROTATION_SPEED)
+    //     vars->player->dir = 0;
+    // if (vars->player->dir == -ROTATION_SPEED)
+    //     vars->player->dir = 360 - ROTATION_SPEED;
 }
 
 void look_left(t_vars *vars)
 {
-    vars->player->dir -= ROTATION_SPEED;
-    rotation_sign(vars);
-    //printf("vars->player->dir = %f\n", vars->player->dir);
+    rotation_sign(vars, -ROTATION_SPEED);
+    //vars->player->dir -= ROTATION_SPEED;
+    //rotation_sign(vars);
+    printf("vars->player->dir = %f\n", vars->player->dir);
 }
 
 void look_right(t_vars *vars)
 {
-    vars->player->dir += ROTATION_SPEED;
-    rotation_sign(vars);
-    //printf("vars->player->dir %f\n", vars->player->dir);
+    rotation_sign(vars, ROTATION_SPEED);
+    //vars->player->dir += ROTATION_SPEED;
+    //rotation_sign(vars);
+    printf("vars->player->dir %f\n", vars->player->dir);
 }
 
 int keypressed(int key, t_vars *vars)

@@ -92,7 +92,7 @@ void put_line_G(t_data *data, t_vars *vars, double x, double y, double dir, int 
     israyfacingdown = (dir > 0 && dir < 3.14); //? 1 : 0;
     israyfacingup = !israyfacingdown;
 
-    israyfacingright = (dir < 0.5 * 3.14 || dir > 1.5 * 3.14); // ? 1 : 0;
+    israyfacingright = (dir < 0.5 * 3.14 || dir > 1.5 * 3.14);// ? 1 : 0;
     israyfacingleft = !israyfacingright;
 
     yintercept = floor(y / TILE_SIZE) * TILE_SIZE;
