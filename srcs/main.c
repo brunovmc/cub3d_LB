@@ -1,11 +1,5 @@
 #include "../include/cub3d.h"
 
-int close(t_vars *vars)
-{
-	mlx_destroy_window(vars->mlx, vars->window);
-	exit(0);
-}
-
 void renderMap(t_data data)
 {
 	int i;
@@ -76,7 +70,7 @@ int main(void)
 
 	update_frame(&vars);
 	mlx_hook(vars.window, 2, 1L << 0, keypressed, &vars);
-
+	//adicionar keyreleased
 	mlx_loop(vars.mlx);
 	return (0);
 }
