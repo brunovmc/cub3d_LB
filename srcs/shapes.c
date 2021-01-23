@@ -234,19 +234,20 @@ void put_line(t_data *data, t_vars *vars, double x, double y, int size, int colo
     }
 }
 
-void put_circle(t_data *data, int a, int b, int size, int color)
+void put_player(t_data *data, t_player *player)
 {
     int x;
     int y;
 
     x = 0;
-    while (x <= (a + size))
+    while (x <= (player->x + player->radius))
     {
         y = 0;
-        while (y <= (b + size))
+        while (y <= (player->y + player->radius))
         {
-            if ((x - a) * (x - a) + (y - b) * (y - b) <= size * size)
-                my_pixel_put(data, x, y, color);
+            if ((x - player->x) * (x - player->x) + (y - player->y) * 
+                (y - player->y) <= player->radius * player->radius)
+                my_pixel_put(data, x, y, 0x00000000);
             y++;
         }
         x++;

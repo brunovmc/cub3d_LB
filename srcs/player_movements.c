@@ -15,9 +15,19 @@ void update_player()//recebe struc do player
     }
 }
 
-void render_player()
+float normalize_angle(float angle)
+{
+    angle = fmod(angle, (2 * PI));
+    if (angle < 0)
+        angle = angle + 2 * PI;
+    return (angle);
+}
+
+void render_player(t_data data, t_player *player)
 {
     // renderizar o player circulo + posicao;
+    put_player(&data, &player);
+    put_rays();
 }
 
 int keypressed(int key, t_vars *vars)
@@ -25,20 +35,39 @@ int keypressed(int key, t_vars *vars)
     int color;
 
     if (key == W_KEY)
-        walk_forward(vars);
+        player->walk_direction = +1;
     else if (key == A_KEY)
         walk_left(vars);
     else if (key == S_KEY)
-        walk_backward(vars);
+        player->walk_direction = -1;
     else if (key == D_KEY)
         walk_right(vars);
     else if (key == LEFT_KEY)
-        look_left(vars);
+        player->turn_direction = -1;
     else if (key == RIGHT_KEY)
-        look_right(vars);
+        player->turn_direction = +1;
     else if (key == ESC)
         return (close(vars));
+    update_frame(vars);
+    return (key);
+}
 
+int keyreleased(int key, t_vars *vars)
+{
+    int color;
+
+    if (key == W_KEY)
+        player->walk_direction = 0;
+    else if (key == A_KEY)
+        walk_left(vars);
+    else if (key == S_KEY)
+        player->walk_direction = 0;
+    else if (key == D_KEY)
+        walk_right(vars);
+    else if (key == LEFT_KEY)
+        player->turn_direction = 0;
+    else if (key == RIGHT_KEY)
+        player->turn_direction = 0;
     update_frame(vars);
     return (key);
 }

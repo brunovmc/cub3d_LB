@@ -1,44 +1,5 @@
 #include "../include/cub3d.h"
 
-void renderMap(t_data data)
-{
-	int i;
-	int j;
-	int tileX;
-	int tileY;
-	int tileColor;
-
-	static int map[MAP_NUM_ROWS][MAP_NUM_COLS] = {
-		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-		{1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
-		{1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1},
-		{1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
-		{1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-	};
-
-	i = 0;
-	while (i < MAP_NUM_ROWS)
-	{
-		j = 0;
-		while (j < MAP_NUM_COLS)
-		{
-			tileX = j * TILE_SIZE;
-			tileY = i * TILE_SIZE;
-			tileColor = map[i][j] != 1 ? 0X00FFFFFF : 0X00000000;
-			put_rectangle(&data, tileX, tileY, tileX + TILE_SIZE, tileY + TILE_SIZE, tileColor);
-			put_rectangle(&data, tileX, tileY, tileX, tileY + TILE_SIZE, 0X00000000);
-			put_rectangle(&data, tileX, tileY, tileX + TILE_SIZE, tileY, 0X00000000);
-			j++;
-		}
-		i++;
-	}
-}
-
 int update_frame(t_vars *vars)
 {
 	t_data data;

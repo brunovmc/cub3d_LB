@@ -13,7 +13,7 @@ has_wall_at(float x, float y) //adicionar argumento com grid aka mapa
     return (grid[map_grid_index_y][map_grid_index_x] != 0);
 }
 
-void render_map()
+void render_map(t_data data) //eventualmente mapa como argumento
 {
     int i;
     int k;
@@ -29,10 +29,11 @@ void render_map()
         {
             tile_x = (k * TILE_SIZE) * MINIMAP_SCALE_FACTOR;
             tile_y = (i * TILE_SIZE) * MINIMAP_SCALE_FACTOR;
-            tile_color = grid[i][k] == 1 ? "#222" : "#fff";
-            put_rect(tile_x, tile_y, MINIMAP_SCALE_FACTOR * TILE_SIZE,
-             MINIMAP_SCALE_FACTOR * TILE_SIZE);
-                k++;
+            tile_color = grid[i][k] == 1 ? 0X00FFFFFF : 0X00000000;
+            put_rectangle(&data, tile_x, tile_y, tile_x + TILE_SIZE, tile_y + TILE_SIZE, tileColor);
+            put_rectangle(&data, tile_x, tile_y, tile_x, tile_y + TILE_SIZE, 0X00000000);
+            put_rectangle(&data, tile_x, tile_y, tile_x + TILE_SIZE, tile_y, 0X00000000);
+            k++;
         }
         i++;
     }
