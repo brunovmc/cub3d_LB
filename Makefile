@@ -5,7 +5,10 @@ MLX_DIR = 	minilibx-linux
 MLX = 		$(MLX_DIR)/libmlx.a
 SRCS = 		$(SRCS_DIR)/main.c \
 				$(SRCS_DIR)/player_movements.c \
-				$(SRCS_DIR)/shapes.c 
+				$(SRCS_DIR)/shapes.c \
+				$(SRCS_DIR)/rays.c \
+				$(SRCS_DIR)/map.c \
+				$(SRCS_DIR)/aux_functions.c 
 
 OBJS = $(patsubst $(SRCS_DIR)%.c,  $(OBJS_DIR)%.o,  $(SRCS))
 

@@ -1,7 +1,19 @@
-#include "../include/cub3d.h"
+#include "cub3d.h"
 
-has_wall_at(float x, float y) //adicionar argumento com grid aka mapa
+int has_wall_at(float x, float y) //adicionar argumento com grid aka mapa
 {
+    int grid[MAP_NUM_ROWS][MAP_NUM_COLS] = {
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+        {1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
+        {1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
+        {1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
+        {1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1},
+        {1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1},
+        {1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
+        {1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1},
+        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+    };
     int map_grid_index_x;
     int map_grid_index_y;
 
@@ -21,6 +33,19 @@ void render_map(t_data data) //eventualmente mapa como argumento
     int tile_y;
     int tile_color;
 
+    int grid[MAP_NUM_ROWS][MAP_NUM_COLS] = {
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+        {1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
+        {1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
+        {1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
+        {1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1},
+        {1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1},
+        {1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
+        {1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1},
+        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+    };
+
     i = 0;
     while (i < MAP_NUM_ROWS)
     {
@@ -29,8 +54,8 @@ void render_map(t_data data) //eventualmente mapa como argumento
         {
             tile_x = (k * TILE_SIZE) * MINIMAP_SCALE_FACTOR;
             tile_y = (i * TILE_SIZE) * MINIMAP_SCALE_FACTOR;
-            tile_color = grid[i][k] == 1 ? 0X00FFFFFF : 0X00000000;
-            put_rectangle(&data, tile_x, tile_y, tile_x + TILE_SIZE, tile_y + TILE_SIZE, tileColor);
+            tile_color = grid[i][k] == 0 ? 0X00FFFFFF : 0X00000000;
+            put_rectangle(&data, tile_x, tile_y, tile_x + TILE_SIZE, tile_y + TILE_SIZE, tile_color);
             put_rectangle(&data, tile_x, tile_y, tile_x, tile_y + TILE_SIZE, 0X00000000);
             put_rectangle(&data, tile_x, tile_y, tile_x + TILE_SIZE, tile_y, 0X00000000);
             k++;
