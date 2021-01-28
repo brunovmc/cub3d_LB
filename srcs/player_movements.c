@@ -17,9 +17,9 @@ void update_player(t_player *player)
 
 float normalize_angle(float angle)
 {
-    angle = fmod(angle, (2 * PI));
+    angle = remainder(angle, 2 * PI);
     if (angle < 0)
-        angle = angle + 2 * PI;
+        angle += (2 * PI);
     return (angle);
 }
 

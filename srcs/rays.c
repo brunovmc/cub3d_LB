@@ -7,15 +7,13 @@ void    cast_all_rays(t_data *data, t_player *player)
     int col;
     t_ray ray;
 
-    
-
     rayangle = normalize_angle(player->rotation_angle) - (FOV_ANGLE / 2);
     col = 0;
     while (col < NUM_RAYS)
     {
         rays[col] = ray_size(&ray, player);
         rayangle += FOV_ANGLE / NUM_RAYS;
-        put_ray(data, player, rays[col]);
+        //put_ray(data, player, rays[col]);
         col++;
     }
 }
