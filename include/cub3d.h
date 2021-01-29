@@ -65,6 +65,7 @@ typedef struct s_ray {
     float   wallhitx;
     float   wallhity;
     int     washitvert;
+    float   current_ray; //rayangle do gustavo
 }              t_ray;
 
 typedef struct s_player {
@@ -128,7 +129,7 @@ void    vert_intercept(t_ray *ray, t_player *player);
 int     increment_vert_step(t_ray *ray, t_player *player);
 int     ray_facing_down(int rotation_angle);
 int     ray_facing_right(int rotation_angle);
-void    put_ray(t_data *data, t_player *player, float distance);
+void    put_ray(t_data *data, t_player *player, float angle, float distance);
 void    put_player(t_data *data, t_player *player);
 float   normalize_angle(float angle);
 

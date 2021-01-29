@@ -7,13 +7,16 @@ void    cast_all_rays(t_data *data, t_player *player)
     int col;
     t_ray ray;
 
-    rayangle = normalize_angle(player->rotation_angle) - (FOV_ANGLE / 2);
+    ray.current_ray = normalize_angle(player->rotation_angle) - (FOV_ANGLE / 2);
+    //ray.current_ray = normalize_angle(player->rotation_angle);
     col = 0;
     while (col < NUM_RAYS)
-    {
+    //while (col < 1)
+    {   
         rays[col] = ray_size(&ray, player);
-        rayangle += FOV_ANGLE / NUM_RAYS;
-        //put_ray(data, player, rays[col]);
+        //printf("ray[%d]: %f\n", col, rays[col]);
+        put_ray(data, player, ray.current_ray, rays[col]);
+        ray.current_ray = normalize_angle(ray.current_ray + FOV_ANGLE / NUM_RAYS);
         col++;
     }
 }
@@ -25,8 +28,10 @@ float    ray_size(t_ray *ray, t_player *player)
 
     horz_intercept(ray, player);
     foundhorzwallhit = increment_horz_step(ray, player);
+    //printf("foundhorz: %i\n", foundhorzwallhit);
     vert_intercept(ray, player);
     foundvertwallhit = increment_vert_step(ray, player);
+    //printf("foundvert: %i\n", foundvertwallhit);
     ray->horzhitdist = foundhorzwallhit ? distancebetweenpoints(player->x,
      player->y, ray->horzwallhitx, ray->horzwallhity) : MAX_VALUE;
     ray->verthitdist = foundvertwallhit ? distancebetweenpoints(player->x,
@@ -53,38 +58,45 @@ void    horz_intercept(t_ray *ray, t_player *player)
     float y_intercept;
     
     y_intercept = floor(player->y / TILE_SIZE) * TILE_SIZE;
-    y_intercept += ray_facing_down(player->rotation_angle) ? TILE_SIZE : 0;
+    y_intercept += ray_facing_down(ray->current_ray) ? TILE_SIZE : 0;
     x_intercept = player->x + (y_intercept - player->y) 
-        / tan(player->rotation_angle);
+        / tan(ray->current_ray);
     ray->ystep = TILE_SIZE;
-    ray->ystep *= !ray_facing_down(player->rotation_angle) ? -1 : 1;
-    ray->xstep = TILE_SIZE / tan(player->rotation_angle);
-    ray->xstep *= (!ray_facing_right(player->rotation_angle)
+    ray->ystep *= !ray_facing_down(ray->current_ray) ? -1 : 1;
+    ray->xstep = TILE_SIZE / tan(ray->current_ray);
+    ray->xstep *= (!ray_facing_right(ray->current_ray)
      && ray->xstep > 0) ? -1 : 1;
-    ray->xstep *= (ray_facing_right(player->rotation_angle)
+    ray->xstep *= (ray_facing_right(ray->current_ray)
      && ray->xstep < 0) ? -1 : 1;
     ray->nexthorztouchx = x_intercept;
     ray->nexthorztouchy = y_intercept;
+    //printf("nexthorztouchx: %f - nexthorztouchy: %f\n", ray->nexthorztouchx, ray->nexthorztouchy);
 }
 
 int increment_horz_step(t_ray *ray, t_player *player)
 {
+    //printf("facingdown: %i\n", ray_facing_down(ray->current_ray));
+    //printf("nexthorzx: %f - nexthorzy: %f\n", ray->nexthorztouchx, ray->nexthorztouchy);
+    int up_or_down = !ray_facing_down(ray->current_ray) ? 1 : 0;
     while(ray->nexthorztouchx >= 0 && ray->nexthorztouchx <= WINDOW_WIDTH && 
      ray->nexthorztouchy >= 0 && ray->nexthorztouchy <= WINDOW_HEIGHT)
     {
-        if (has_wall_at(ray->horzwallhitx, ray->horzwallhity - (!ray_facing_down(player->rotation_angle) ? 1 : 0)))
+        if (has_wall_at(ray->nexthorztouchx, ray->nexthorztouchy - up_or_down))
         {
            ray->horzwallhitx = ray->nexthorztouchx; 
            ray->horzwallhity = ray->nexthorztouchy;
-           return (TRUE); 
+           //printf("horzwallhitx: %f - horzwallhity: %f\n", ray->horzwallhitx, ray->horzwallhity);
+           break;
+           //return (TRUE); 
         }
         else
         {
             ray->nexthorztouchx += ray->xstep;
             ray->nexthorztouchy += ray->ystep;
+           //printf("AAAAAAA\n");
         }
     }
-    return (FALSE);
+    return (TRUE);
 }
 
 void vert_intercept(t_ray *ray, t_player *player)
@@ -93,35 +105,43 @@ void vert_intercept(t_ray *ray, t_player *player)
     float   y_intercept;
 
     x_intercept = floor(player->x / TILE_SIZE) * TILE_SIZE;
-    x_intercept += ray_facing_right(player->rotation_angle) ? TILE_SIZE : 0;
-    y_intercept = player->y + (x_intercept - player->x) / tan(player->rotation_angle);
+    x_intercept += ray_facing_right(ray->current_ray) ? TILE_SIZE : 0;
+    y_intercept = player->y + (x_intercept - player->x) / tan(ray->current_ray);
     ray->xstep = TILE_SIZE;
-    ray->xstep *= !ray_facing_right(player->rotation_angle) ? -1 : 1;
-    ray->ystep = TILE_SIZE * tan(player->rotation_angle);
-    ray->ystep *= (!ray_facing_down(player->rotation_angle) && ray->ystep > 0) ? -1 : 1;
-    ray->ystep *= (ray_facing_down(player->rotation_angle) && ray->ystep < 0) ? -1 : 1;
+    ray->xstep *= !ray_facing_right(ray->current_ray) ? -1 : 1;
+    ray->ystep = TILE_SIZE * tan(ray->current_ray);
+    ray->ystep *= (!ray_facing_down(ray->current_ray) && ray->ystep > 0) ? -1 : 1;
+    ray->ystep *= (ray_facing_down(ray->current_ray) && ray->ystep < 0) ? -1 : 1;
     ray->nextverttouchx = x_intercept;
     ray->nextverttouchy = y_intercept;
+    //printf("nextverttouchx: %f - nextverttouchy: %f\n", ray->nextverttouchx, ray->nextverttouchy);
+
 }
 
 int increment_vert_step(t_ray *ray, t_player *player)
 {
+    int left_or_right = !ray_facing_right(ray->current_ray) ? 1 : 0;
+    //int i = 0;
     while (ray->nextverttouchx >= 0 && ray->nextverttouchx <= WINDOW_WIDTH &&
            ray->nextverttouchy >= 0 && ray->nextverttouchy <= WINDOW_HEIGHT)
     {
-        if (has_wall_at(ray->vertwallhitx, ray->vertwallhity - (!ray_facing_right(player->rotation_angle) ? 1 : 0)))
+        //printf("i: %i\n", i++);
+        if (has_wall_at(ray->nextverttouchx - left_or_right, ray->nextverttouchy))
         {
             ray->vertwallhitx = ray->nextverttouchx;
             ray->vertwallhity = ray->nextverttouchy;
-            return (TRUE);
+            //printf("vertwallhitx: %f - vertwallhity: %f\n", ray->vertwallhitx, ray->vertwallhity);
+            break;
+            //return (TRUE);
         }
         else
         {
+            //printf("xstep: %f , ystep: %f\n", ray->xstep, ray->ystep);
             ray->nextverttouchx += ray->xstep;
             ray->nextverttouchy += ray->ystep;
         }
     }
-    return (FALSE);
+    return (TRUE);
 }
 
 int ray_facing_down(int rotation_angle)
@@ -134,15 +154,15 @@ int ray_facing_right(int rotation_angle)
     return ((rotation_angle < 0.5 * PI || rotation_angle > 1.5 * PI));
 }
 
-void put_ray(t_data *data, t_player *player, float distance)
+void put_ray(t_data *data, t_player *player, float angle, float distance)
 {
     int i;
 
     i = 0;
     while (i < distance)
     {
-        my_pixel_put(data, (player->x + cos(player->rotation_angle) * i),
-                     (player->y + sin(player->rotation_angle) * i), 0x00ff0000);
+        my_pixel_put(data, (player->x + cos(angle) * i),
+                     (player->y + sin(angle) * i), 0x00ff0000);
         i++;
     }
 }

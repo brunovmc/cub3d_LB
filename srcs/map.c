@@ -21,6 +21,8 @@ int has_wall_at(float x, float y) //adicionar argumento com grid aka mapa
         return (TRUE);
     map_grid_index_x = floor(x / TILE_SIZE);
     map_grid_index_y = floor(y / TILE_SIZE);
+    //if (grid[map_grid_index_y][map_grid_index_x] != 0)
+    //    printf("grid[x][y]: %i\n", grid[map_grid_index_y][map_grid_index_x]);
 
     return (grid[map_grid_index_y][map_grid_index_x] != 0);
 }
