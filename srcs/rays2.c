@@ -20,6 +20,8 @@ void cast_all_rays2(t_data *data, t_player *player)
 
 float ray_size2(t_ray *ray, t_player *player)
 {
+    //PRIMEIRA INTERSECÇÃO HORIZONTAL
+
     int foundhorzwallhit;
     float y_intercept;
     float x_intercept;
@@ -32,6 +34,8 @@ float ray_size2(t_ray *ray, t_player *player)
     ray->xstep = TILE_SIZE / tan(ray->current_ray);
     ray->xstep *= (!ray_facing_right(ray->current_ray) && ray->xstep > 0) ? -1 : 1;
     ray->xstep *= (ray_facing_right(ray->current_ray) && ray->xstep < 0) ? -1 : 1;
+
+    // INTERSECÇÃO HORIZONTAL COM O GRID
 
     ray->nexthorztouchx = x_intercept;
     ray->nexthorztouchy = y_intercept;
@@ -54,9 +58,65 @@ float ray_size2(t_ray *ray, t_player *player)
         }
     }
 
+    //PRIMEIRA INTERSECÇÃO VERTICAL
+
+    int foundvertwallhit;
+    //float y_intercept;
+    //float x_intercept;
+
+    x_intercept = floor(player->x / TILE_SIZE) * TILE_SIZE;
+    x_intercept += ray_facing_right(ray->current_ray) ? TILE_SIZE : 0;
+    y_intercept = player->y + (x_intercept - player->x) * tan(ray->current_ray);
+    ray->xstep = TILE_SIZE;
+    ray->xstep *= !ray_facing_right(ray->current_ray) ? -1 : 1;
+    ray->ystep = TILE_SIZE * tan(ray->current_ray);
+    ray->ystep *= (!ray_facing_down(ray->current_ray) && ray->ystep > 0) ? -1 : 1;
+    ray->ystep *= (ray_facing_down(ray->current_ray) && ray->ystep < 0) ? -1 : 1;
+
+    //INTERSECÇÃO VERTICAL COM O GRID
+
+    ray->nextverttouchx = x_intercept;
+    ray->nextverttouchy = y_intercept;
+
+    while(ray->nextverttouchx >= 0 &&  ray->nextverttouchx <= WINDOW_WIDTH 
+        && ray->nextverttouchy >= 0 && ray->nextverttouchy <= WINDOW_HEIGHT)
+    {
+        if (has_wall_at(ray->nextverttouchx - (!ray_facing_right(ray->current_ray) ? 1 : 0), 
+            ray->nextverttouchy))
+        {
+            foundvertwallhit = TRUE;
+            ray->vertwallhitx = ray->nextverttouchx;
+            ray->vertwallhity = ray->nextverttouchy;
+            break;
+        }
+        else 
+        {
+            ray->nextverttouchx += ray->xstep;
+            ray->nextverttouchy += ray->ystep;
+        }
+    }
+
+    // CÁLCULO DA DISTÂNCIA HORIZONTAL COM O MURO
+
     ray->horzhitdist = (foundhorzwallhit) ? 
     distancebetweenpoints(player->x, player->y,
      ray->horzwallhitx, ray->horzwallhity) : MAX_VALUE;
+    ray->verthitdist = (foundvertwallhit) ? 
+    distancebetweenpoints(player->x, player->y,
+     ray->vertwallhitx, ray->vertwallhity) : MAX_VALUE;
 
-    return (ray->horzhitdist);
+    if (ray->verthitdist < ray->horzhitdist)
+    {
+        ray->wallhitx = ray->vertwallhitx;
+        ray->wallhity = ray->vertwallhity;
+        ray->washitvert = TRUE;
+        return (ray->verthitdist);
+    }
+    else
+    {
+        ray->wallhitx = ray->horzwallhitx;
+        ray->wallhity = ray->horzwallhity;
+        ray->washitvert = FALSE;
+        return (ray->horzhitdist);
+    }
 }
