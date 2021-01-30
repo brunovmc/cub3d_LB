@@ -13,7 +13,7 @@ int update_frame(t_vars *vars)
 	
 	update_player(vars->player);
 	put_player(&data, vars->player);
-	cast_all_rays(&data, vars->player);
+	cast_all_rays2(&data, vars->player);
 	mlx_put_image_to_window(vars->mlx, vars->window, data.img, 0, 0);
 	return (0);
 }
@@ -23,7 +23,7 @@ int main(void)
 	t_vars vars;
 	t_player player;
 
-	player.rotation_angle = PI/2;
+	player.rotation_angle = 3 * PI/2;
 	player.radius = 10;
 	player.move_speed = 7.0;
 	player.rotation_speed = 7 * (PI / 180);

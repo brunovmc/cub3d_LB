@@ -133,4 +133,7 @@ void    put_ray(t_data *data, t_player *player, float angle, float distance);
 void    put_player(t_data *data, t_player *player);
 float   normalize_angle(float angle);
 
+float   ray_size2(t_ray *ray, t_player *player);
+void cast_all_rays2(t_data *data, t_player *player);
+
 #endif
