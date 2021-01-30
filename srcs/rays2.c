@@ -11,7 +11,7 @@ void cast_all_rays2(t_data *data, t_player *player)
     while(col < NUM_RAYS)
     {
         rays[col] = ray_size2(&ray, player);
-        ray.current_ray += FOV_ANGLE / NUM_RAYS;
+        ray.current_ray = normalize_angle(ray.current_ray + FOV_ANGLE / NUM_RAYS);
         put_ray(data, player, ray.current_ray, rays[col]);
         col++;
     }

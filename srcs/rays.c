@@ -60,7 +60,7 @@ void    horz_intercept(t_ray *ray, t_player *player)
     y_intercept = floor(player->y / TILE_SIZE) * TILE_SIZE;
     y_intercept += ray_facing_down(ray->current_ray) ? TILE_SIZE : 0;
     x_intercept = player->x + (y_intercept - player->y) 
-        / tan(ray->current_ray);
+        / tan(ray->current_ray); // /tan ou *tan
     ray->ystep = TILE_SIZE;
     ray->ystep *= !ray_facing_down(ray->current_ray) ? -1 : 1;
     ray->xstep = TILE_SIZE / tan(ray->current_ray);
@@ -106,7 +106,7 @@ void vert_intercept(t_ray *ray, t_player *player)
 
     x_intercept = floor(player->x / TILE_SIZE) * TILE_SIZE;
     x_intercept += ray_facing_right(ray->current_ray) ? TILE_SIZE : 0;
-    y_intercept = player->y + (x_intercept - player->x) / tan(ray->current_ray);
+    y_intercept = player->y + (x_intercept - player->x) / tan(ray->current_ray); // /tan ou *tan
     ray->xstep = TILE_SIZE;
     ray->xstep *= !ray_facing_right(ray->current_ray) ? -1 : 1;
     ray->ystep = TILE_SIZE * tan(ray->current_ray);
@@ -120,11 +120,16 @@ void vert_intercept(t_ray *ray, t_player *player)
 
 int increment_vert_step(t_ray *ray, t_player *player)
 {
+    //float check_x;
+    //float check_y;
+
     int left_or_right = !ray_facing_right(ray->current_ray) ? 1 : 0;
     //int i = 0;
     while (ray->nextverttouchx >= 0 && ray->nextverttouchx <= WINDOW_WIDTH &&
            ray->nextverttouchy >= 0 && ray->nextverttouchy <= WINDOW_HEIGHT)
     {
+        //check_x = ray->nextverttouchx + left_or_right;
+        //check_x += ray_facing_right(ray->current_ray) + 1;
         //printf("i: %i\n", i++);
         if (has_wall_at(ray->nextverttouchx - left_or_right, ray->nextverttouchy))
         {
@@ -144,12 +149,12 @@ int increment_vert_step(t_ray *ray, t_player *player)
     return (TRUE);
 }
 
-int ray_facing_down(int rotation_angle)
+int ray_facing_down(float rotation_angle)
 {
     return ((rotation_angle > 0 && rotation_angle < PI));
 }
 
-int ray_facing_right(int rotation_angle)
+int ray_facing_right(float rotation_angle)
 {
     return ((rotation_angle < 0.5 * PI || rotation_angle > 1.5 * PI));
 }
