@@ -2,7 +2,7 @@
 
 void update_player(t_player *player)
 {
-    float move_step;
+    double move_step;
 
     player->rotation_angle += player->turn_direction * player->rotation_speed;
     move_step =  player->walk_direction * player->move_speed;
@@ -15,7 +15,7 @@ void update_player(t_player *player)
     }
 }
 
-float normalize_angle(float angle)
+double normalize_angle(double angle)
 {
     angle = remainder(angle, 2 * PI);
     if (angle < 0)

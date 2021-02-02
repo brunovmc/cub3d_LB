@@ -2,8 +2,8 @@
 
 void    cast_all_rays(t_data *data, t_player *player)
 {
-    float rayangle;
-    float rays[NUM_RAYS];
+    double rayangle;
+    double rays[NUM_RAYS];
     int col;
     t_ray ray;
 
@@ -21,7 +21,7 @@ void    cast_all_rays(t_data *data, t_player *player)
     }
 }
 
-float    ray_size(t_ray *ray, t_player *player)
+double    ray_size(t_ray *ray, t_player *player)
 {
     int foundhorzwallhit;
     int foundvertwallhit;
@@ -54,8 +54,8 @@ float    ray_size(t_ray *ray, t_player *player)
 
 void    horz_intercept(t_ray *ray, t_player *player)
 {
-    float x_intercept;
-    float y_intercept;
+    double x_intercept;
+    double y_intercept;
     
     y_intercept = floor(player->y / TILE_SIZE) * TILE_SIZE;
     y_intercept += ray_facing_down(ray->current_ray) ? TILE_SIZE : 0;
@@ -101,8 +101,8 @@ int increment_horz_step(t_ray *ray, t_player *player)
 
 void vert_intercept(t_ray *ray, t_player *player)
 { 
-    float   x_intercept;
-    float   y_intercept;
+    double   x_intercept;
+    double   y_intercept;
 
     x_intercept = floor(player->x / TILE_SIZE) * TILE_SIZE;
     x_intercept += ray_facing_right(ray->current_ray) ? TILE_SIZE : 0;
@@ -120,8 +120,8 @@ void vert_intercept(t_ray *ray, t_player *player)
 
 int increment_vert_step(t_ray *ray, t_player *player)
 {
-    //float check_x;
-    //float check_y;
+    //double check_x;
+    //double check_y;
 
     int left_or_right = !ray_facing_right(ray->current_ray) ? 1 : 0;
     //int i = 0;
@@ -149,17 +149,17 @@ int increment_vert_step(t_ray *ray, t_player *player)
     return (TRUE);
 }
 
-int ray_facing_down(float rotation_angle)
+int ray_facing_down(double rotation_angle)
 {
     return ((rotation_angle > 0 && rotation_angle < PI));
 }
 
-int ray_facing_right(float rotation_angle)
+int ray_facing_right(double rotation_angle)
 {
     return ((rotation_angle < 0.5 * PI || rotation_angle > 1.5 * PI));
 }
 
-void put_ray(t_data *data, t_player *player, float angle, float distance)
+void put_ray(t_data *data, t_player *player, double angle, double distance)
 {
     int i;
 

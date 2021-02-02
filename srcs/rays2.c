@@ -2,7 +2,7 @@
 
 void cast_all_rays2(t_data *data, t_player *player)
 {
-    float    rays[NUM_RAYS];
+    double   rays[NUM_RAYS];
     int     col;
     t_ray   ray;
 
@@ -11,20 +11,22 @@ void cast_all_rays2(t_data *data, t_player *player)
     while(col < NUM_RAYS)
     {
         rays[col] = ray_size2(&ray, player);
-        ray.current_ray = normalize_angle(ray.current_ray + FOV_ANGLE / NUM_RAYS);
         put_ray(data, player, ray.current_ray, rays[col]);
+        ray.current_ray = normalize_angle(ray.current_ray + FOV_ANGLE / NUM_RAYS);
         col++;
     }
 
 }
 
-float ray_size2(t_ray *ray, t_player *player)
+double ray_size2(t_ray *ray, t_player *player)
 {
     //PRIMEIRA INTERSECÇÃO HORIZONTAL
 
     int foundhorzwallhit;
-    float y_intercept;
-    float x_intercept;
+    double y_intercept;
+    double x_intercept;
+
+    foundhorzwallhit = FALSE;
 
     y_intercept = floor(player->y / TILE_SIZE) * TILE_SIZE;
     y_intercept += ray_facing_down(ray->current_ray) ? TILE_SIZE : 0;
@@ -61,8 +63,10 @@ float ray_size2(t_ray *ray, t_player *player)
     //PRIMEIRA INTERSECÇÃO VERTICAL
 
     int foundvertwallhit;
-    //float y_intercept;
-    //float x_intercept;
+    //double y_intercept;
+    //double x_intercept;
+
+    foundvertwallhit = FALSE;
 
     x_intercept = floor(player->x / TILE_SIZE) * TILE_SIZE;
     x_intercept += ray_facing_right(ray->current_ray) ? TILE_SIZE : 0;

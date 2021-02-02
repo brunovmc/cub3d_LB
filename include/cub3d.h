@@ -50,22 +50,22 @@
 # define WALK_SPEED 10
 
 typedef struct s_ray {
-    float   nexthorztouchx;
-    float   nexthorztouchy;
-    float   nextverttouchx;
-    float   nextverttouchy;
-    float   horzwallhitx;
-    float   horzwallhity;
-    float   vertwallhitx;
-    float   vertwallhity;
-    float   ystep;
-    float   xstep;
-    float   horzhitdist;
-    float   verthitdist;
-    float   wallhitx;
-    float   wallhity;
+    double   nexthorztouchx;
+    double   nexthorztouchy;
+    double   nextverttouchx;
+    double   nextverttouchy;
+    double   horzwallhitx;
+    double   horzwallhity;
+    double   vertwallhitx;
+    double   vertwallhity;
+    double   ystep;
+    double   xstep;
+    double   horzhitdist;
+    double   verthitdist;
+    double   wallhitx;
+    double   wallhity;
     int     washitvert;
-    float   current_ray; //rayangle do gustavo
+    double   current_ray; //rayangle do gustavo
 }              t_ray;
 
 typedef struct s_player {
@@ -118,22 +118,22 @@ void    print_str(t_vars *vars,  int x, int y, int color, char *str);
 int     close(t_vars *vars);
 int     keypressed(int key, t_vars *vars);
 int     keyreleased(int key, t_vars *vars);
-double  distancebetweenpoints(double x1, double y1, double x2, double y2);
+double   distancebetweenpoints(double x1, double y1, double x2, double y2);
 void    update_player(t_player *player);
-int     has_wall_at(float x, float y);
+int     has_wall_at(double x, double y);
 void    cast_all_rays(t_data *data, t_player *player);
-float   ray_size(t_ray *ray, t_player *player);
+double   ray_size(t_ray *ray, t_player *player);
 void    horz_intercept(t_ray *ray, t_player *player);
 int     increment_horz_step(t_ray *ray, t_player *player); 
 void    vert_intercept(t_ray *ray, t_player *player);
 int     increment_vert_step(t_ray *ray, t_player *player);
-int     ray_facing_down(float rotation_angle);
-int     ray_facing_right(float rotation_angle);
-void    put_ray(t_data *data, t_player *player, float angle, float distance);
+int     ray_facing_down(double rotation_angle);
+int     ray_facing_right(double rotation_angle);
+void    put_ray(t_data *data, t_player *player, double angle, double distance);
 void    put_player(t_data *data, t_player *player);
-float   normalize_angle(float angle);
+double   normalize_angle(double angle);
 
-float   ray_size2(t_ray *ray, t_player *player);
+double   ray_size2(t_ray *ray, t_player *player);
 void cast_all_rays2(t_data *data, t_player *player);
 
 #endif

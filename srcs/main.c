@@ -23,7 +23,7 @@ int main(void)
 	t_vars vars;
 	t_player player;
 
-	player.rotation_angle = 3 * PI/2;
+	player.rotation_angle = 2 * PI;
 	player.radius = 10;
 	player.move_speed = 7.0;
 	player.rotation_speed = 7 * (PI / 180);
