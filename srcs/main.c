@@ -18,11 +18,13 @@ int update_frame(t_vars *vars)
 	return (0);
 }
 
-int main(void)
+int main(int argc, char **argv)
 {
 	t_vars vars;
 	t_player player;
 
+	map_reader(argc, argv);
+	
 	player.rotation_angle = 2 * PI;
 	player.radius = 10;
 	player.move_speed = 7.0;

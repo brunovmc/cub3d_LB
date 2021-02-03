@@ -5,6 +5,8 @@
 # include <math.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <unistd.h>
+# include <fcntl.h>
 
 // ====  teclas ====
 # define ESC 0x00ff1b
@@ -48,6 +50,24 @@
 
 # define ROTATION_SPEED 1.0
 # define WALK_SPEED 10
+
+// mensagens de erro
+
+static char     g_errors[][50] =
+{
+    "Too few arguments",
+    "Too many arguments",
+};
+
+enum    e_errors {
+    MISSING_ARGUMENT,
+    TOO_MANY_ARGUMENTS,
+
+};
+
+typedef struct s_map {
+    char **map;
+}              t_map; 
 
 typedef struct s_ray {
     double   nexthorztouchx;
@@ -135,7 +155,8 @@ int     ray_facing_down(double rotation_angle);
 int     ray_facing_right(double rotation_angle);
 void    put_ray(t_data *data, t_player *player, double angle, double distance);
 void    put_player(t_data *data, t_player *player);
-double   normalize_angle(double angle);
+double  normalize_angle(double angle);
 
+int      map_reader(int argc, char **argv);
 
 #endif
