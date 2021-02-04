@@ -57,11 +57,24 @@ static char     g_errors[][50] =
 {
     "Too few arguments",
     "Too many arguments",
+    "Did you mean --save?",
+    "Wrong file type. Must be .cub",
+    "Map file not found",
+    //validacao mapa
+    "Invalid map file",
+    "Wrong character in map"
 };
 
-enum    e_errors {
+enum e_errors
+{
     MISSING_ARGUMENT,
     TOO_MANY_ARGUMENTS,
+    SAVE_TYPO,
+    WRONG_FILE_TYPE,
+    FILE_NOT_FOUND,
+    //validacao mapa
+    INVALID_FILE,
+    WRONG_CHARACTER
 
 };
 
