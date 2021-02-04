@@ -36,8 +36,13 @@ static char     *read_file(const char *argv)
     {
         if (!check_header()) //verif linha a linha do header
            get_header_values(line); //coloca os valores do header
-        else if (check_header()) //chegou no mapa comeca a guardar
-            map.map = ft_strjoin(map.map, line);
+        else if (check_header())
+        {
+            //max_line_len
+            map.map[i][0] = ft_strjoin(map.map[i], line);
+            i++;
+        } //chegou no mapa comeca a guardar
+            
         free(line);
         if (ret <= 0)
             break;
@@ -54,6 +59,7 @@ int     check_header() //enquanto os valores nao forem passados retorna falso
     //sprites
     //teto
     //chao
+    
 }
 
 int     get_header_values(char *line)
@@ -63,9 +69,9 @@ int     get_header_values(char *line)
     i = 0;
     while (line[i])
     {
-        if (line[0] != ) //R N S W E C F
+        if (line[0] != ) //R S C F usar ft_strnstr alterada
             return (ft_error(INVALID_FILE));
-        if (line[1] != ) //O E A ' '
+        if (line[1] != ) //O E A ' ' \0
             return (ft_error(INVALID_FILE));
         if (line[0] == '\n')
             break;
