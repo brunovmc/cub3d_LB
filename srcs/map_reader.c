@@ -52,32 +52,35 @@ static char     *read_file(const char *argv)
     return (); //retorna mapa e joga map no vars na main?
 }
 
-int     check_header() //enquanto os valores nao forem passados retorna falso
+int     check_header(char * line) //enquanto os valores nao forem passados retorna falso
 {
-    //resolucao
-    //texturas
-    //sprites
-    //teto
-    //chao
-    
+    if (ft_is_strnstr(line, "R ", 2))
+        check_resolution(line);
+    else if (ft_is_strnstr(line, "NO", 2))
+        check_texture(line, "NO");
+    else if (ft_is_strnstr(line, "SO", 2))
+        check_texture(line, "SO");
+    else if (ft_is_strnstr(line, "WE", 2))
+        check_texture(line, "WE");
+    else if (ft_is_strnstr(line, "EA", 2))
+        check_texture(line, "EA");
+    else if (ft_is_strnstr(line, "S ", 2))
+        check_sprite(line);
+    else if (ft_is_strnstr(line, "C ", 2))
+        check_rgb(line, 'C');
+    else if (ft_is_strnstr(line, "F ", 2))
+        check_rgb(line, 'F');
+    else if (ft_is_strnstr(line, "\n", 1))
+        return (FALSE);
+    else if (header_values())
+        return (TRUE);
+    else
+        return (FALSE);
 }
 
 int     get_header_values(char *line)
 {
-    int i;
 
-    i = 0;
-    while (line[i])
-    {
-        if (line[0] != ) //R S C F usar ft_strnstr alterada
-            return (ft_error(INVALID_FILE));
-        if (line[1] != ) //O E A ' ' \0
-            return (ft_error(INVALID_FILE));
-        if (line[0] == '\n')
-            break;
-        i++;
-    }
-    return (TRUE);
 }
 
 int     check_map()
@@ -103,4 +106,38 @@ int     ft_error(int error_num)
 {
     ft_putstr(g_errors[error_num]);
     return (-1);
+}
+
+int     ft_is_strnstr(char * haystack, char *needle, int len)
+{
+    size_t i;
+    size_t j;
+    size_t n_len;
+
+    i = 0;
+    n_len = ft_strlen(needle);
+    if (needle[i] == '\0')
+        return (FALSE);
+    while (haystack[i] && i < len)
+    {
+        j = 0;
+        while (haystack[i + j] == needle[j] && i + j < len)
+        {
+            if (j = n_len -1)
+                return (TRUE);
+            j++;
+        }
+        i++;
+    }
+    return (FALSE);
+}
+
+int     ft_strlen(char *str)
+{
+    int i;
+
+    i = 0;
+    while (str[i])
+        i++;
+    return (i);
 }
