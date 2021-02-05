@@ -79,7 +79,16 @@ enum e_errors
 };
 
 typedef struct s_map {
-    char **map;
+    char     **map;
+    int      rows;
+    int      cols;
+    char     no[50]; 
+    char     so[50]; 
+    char     we[50]; 
+    char     ea[50];
+    char     s[50];
+    int      floor;
+    int      ceiling;
 }              t_map; 
 
 typedef struct s_ray {
@@ -97,41 +106,44 @@ typedef struct s_ray {
     double   verthitdist;
     double   wallhitx;
     double   wallhity;
-    int     washitvert;
+    int      washitvert;
     double   current_ray; //rayangle do gustavo
-    int     foundhorzwallhit;
-    int     foundvertwallhit;
-    double  x_intercept;
-    double  y_intercept;
+    int      foundhorzwallhit;
+    int      foundvertwallhit;
+    double   x_intercept;
+    double   y_intercept;
 }              t_ray;
 
 typedef struct s_player {
-    float x;
-    float y;
-    float new_x;
-    float new_y;
-    int radius;
-    int turn_direction; 
-    int walk_direction;
-    float rotation_angle; //antigo dir
-    float move_speed;
-    float rotation_speed;
-}               t_player;
+    float    x;
+    float    y;
+    float    new_x;
+    float    new_y;
+    int      radius;
+    int      turn_direction; 
+    int      walk_direction;
+    float    rotation_angle; //antigo dir
+    float    move_speed;
+    float    rotation_speed;
+}              t_player;
 
-typedef struct  s_data {
-	void	*img;
-	char	*addr;
-	int	    bits_per_pixel;
-	int	    line_length;
-	int	    endian;
-}		        t_data;
+typedef struct s_data {
+	void	 *img;
+	char	 *addr;
+	int	     bits_per_pixel;
+	int	     line_length;
+	int	     endian;
+}		       t_data;
 
-typedef struct  s_vars {
-	void	    *mlx;
-	void	    *window;
-	t_data  	*data;
-    t_player    *player;
-}               t_vars;
+typedef struct s_vars {
+	void	 *mlx;
+	void	 *window;
+    int      width;
+    int      height;
+	t_data   *data;
+    t_player *player;
+    t_map    *map;
+}              t_vars;
 
 // const int map[MAP_NUM_ROWS][MAP_NUM_COLS] = {
 //     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -155,7 +167,7 @@ void    print_str(t_vars *vars,  int x, int y, int color, char *str);
 int     close(t_vars *vars);
 int     keypressed(int key, t_vars *vars);
 int     keyreleased(int key, t_vars *vars);
-double   distancebetweenpoints(double x1, double y1, double x2, double y2);
+double  distancebetweenpoints(double x1, double y1, double x2, double y2);
 void    update_player(t_player *player);
 int     has_wall_at(double x, double y);
 void    cast_all_rays(t_data *data, t_player *player);
@@ -170,6 +182,6 @@ void    put_ray(t_data *data, t_player *player, double angle, double distance);
 void    put_player(t_data *data, t_player *player);
 double  normalize_angle(double angle);
 
-int      map_reader(int argc, char **argv);
+int     map_reader(int argc, char **argv, t_vars *vars);
 
 #endif

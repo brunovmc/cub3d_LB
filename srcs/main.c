@@ -20,11 +20,14 @@ int update_frame(t_vars *vars)
 
 int main(int argc, char **argv)
 {
-	t_vars vars;
-	t_player player;
+	t_vars		vars;
+	t_player 	player;
+	t_map		map; //achei melhor lancar map aqui
 
-	map_reader(argc, argv);
-	
+	vars.player = &player; 
+	vars.map = &map;
+	map_reader(argc, argv, &vars);
+
 	player.rotation_angle = 2 * PI;
 	player.radius = 10;
 	player.move_speed = 7.0;
@@ -33,7 +36,7 @@ int main(int argc, char **argv)
 	player.turn_direction = 0;
 
 
-	vars.player = &player;
+	//vars.player = &player;
 	player.x = POSX;
 	player.y = POSY;
 

@@ -1,10 +1,10 @@
 #include "cub3d.h"
 
-int     map_reader(int argc, char **argv)
+int     map_reader(int argc, char **argv, t_vars *vars)
 {
     // pensei em fazer um if aqui, se qualquer uma dessa der erro map reader retorna erro e fecha la na main
     check_args(argc, argv);
-    read_file(argv[1]);
+    read_file(argv[1], vars);
     check_map();   
 }
 
@@ -22,21 +22,21 @@ int    check_args(argc, argv)
     
 }
 
-static char     *read_file(const char *argv)
+static char     *read_file(const char *argv, t_vars *vars)
 {
     int fd;
     int ret;
     char *line;
-    t_map  map;
+    //t_map  map;  acho melhor tirar t map daqui
 
     fd = open(argv, O_RDONLY);
     ret = get_next_line(fd, &line);
     while (line)
     {
-        if (check_header())
+        if (check_header(line, *vars))
         {
             //max_line_len
-            map.map[i][0] = ft_strjoin(map.map[i], line);
+            vars->map->map[i][0] = ft_strjoin(vars->map->map[i], line);
             i++;
         } //chegou no mapa comeca a guardar
             
@@ -46,27 +46,27 @@ static char     *read_file(const char *argv)
         ret = get_next_line(fd, &line);
     }
     close(fd);
-    return (); //retorna mapa e joga map no vars na main?
+    return (); 
 }
 
-int     check_header(char * line) //enquanto os valores nao forem passados retorna falso
+int     check_header(char * line, t_vars *vars) //enquanto os valores nao forem passados retorna falso
 {
     if (ft_is_strnstr(line, "R ", 2)) //lembrar de checar se valor de r ja existe
-        return(check_resolution(line));
+        return(check_resolution(line, vars));
     else if (ft_is_strnstr(line, "NO ", 3))
-        check_texture(line, "NO");
+        check_texture(line, "NO", vars);
     else if (ft_is_strnstr(line, "SO ", 3))
-        check_texture(line, "SO");
+        check_texture(line, "SO", vars);
     else if (ft_is_strnstr(line, "WE ", 3))
-        check_texture(line, "WE");
+        check_texture(line, "WE", vars);
     else if (ft_is_strnstr(line, "EA ", 3))
-        check_texture(line, "EA");
+        check_texture(line, "EA", vars);
     else if (ft_is_strnstr(line, "S ", 2))
-        check_sprite(line);
+        check_sprite(line, vars);
     else if (ft_is_strnstr(line, "C ", 2))
-        check_rgb(line, 'C');
+        check_rgb(line, 'C', vars);
     else if (ft_is_strnstr(line, "F ", 2))
-        check_rgb(line, 'F');
+        check_rgb(line, 'F', vars);
     else if (ft_is_strnstr(line, "\n", 1))
         return (FALSE);
     else if (header_values())
@@ -75,9 +75,38 @@ int     check_header(char * line) //enquanto os valores nao forem passados retor
         return (FALSE);
 }
 
-int     get_header_values(char *line)
+int     check_resolution(char *line, t_vars *vars)
 {
+    int i;
+    int width;
+    int height;
 
+    width = 0;
+    height = 0;
+    i = 2; //pra pular o "R "
+    while (ft_isnum(line[i]) || line[i] != ' ')
+    { 
+        if (ft_insum(line[i]) && width == 0)
+        {
+            //width = atoi
+            //vars->width = width;
+        }
+        else if (ft_insum(line[i]) && height == 0 && width != 0)
+        {
+                //height = atoi
+                //vars->height = height;
+        }
+        else if (ft_insum(line[i]) && width > 0 && height > 0)
+            return(ft_error(/*WRONG_RESOLUTION*/));
+        i++;
+    }
+    return ((width > 0 && height > 0) ?
+     TRUE : ft_error(/*WRONG_RESOLUTION*/));
+}
+
+int     check_texture(char *line, char *side, t_vars *vars)
+{
+    
 }
 
 int     check_map()
