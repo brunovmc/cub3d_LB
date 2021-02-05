@@ -5,7 +5,6 @@ int     map_reader(int argc, char **argv)
     // pensei em fazer um if aqui, se qualquer uma dessa der erro map reader retorna erro e fecha la na main
     check_args(argc, argv);
     read_file(argv[1]);
-    check_header();
     check_map();   
 }
 
@@ -34,9 +33,7 @@ static char     *read_file(const char *argv)
     ret = get_next_line(fd, &line);
     while (line)
     {
-        if (!check_header()) //verif linha a linha do header
-           get_header_values(line); //coloca os valores do header
-        else if (check_header())
+        if (check_header())
         {
             //max_line_len
             map.map[i][0] = ft_strjoin(map.map[i], line);
@@ -54,15 +51,15 @@ static char     *read_file(const char *argv)
 
 int     check_header(char * line) //enquanto os valores nao forem passados retorna falso
 {
-    if (ft_is_strnstr(line, "R ", 2))
-        check_resolution(line);
-    else if (ft_is_strnstr(line, "NO", 2))
+    if (ft_is_strnstr(line, "R ", 2)) //lembrar de checar se valor de r ja existe
+        return(check_resolution(line));
+    else if (ft_is_strnstr(line, "NO ", 3))
         check_texture(line, "NO");
-    else if (ft_is_strnstr(line, "SO", 2))
+    else if (ft_is_strnstr(line, "SO ", 3))
         check_texture(line, "SO");
-    else if (ft_is_strnstr(line, "WE", 2))
+    else if (ft_is_strnstr(line, "WE ", 3))
         check_texture(line, "WE");
-    else if (ft_is_strnstr(line, "EA", 2))
+    else if (ft_is_strnstr(line, "EA ", 3))
         check_texture(line, "EA");
     else if (ft_is_strnstr(line, "S ", 2))
         check_sprite(line);
@@ -105,7 +102,7 @@ int     normalize_map()
 int     ft_error(int error_num)
 {
     ft_putstr(g_errors[error_num]);
-    return (-1);
+    exit(0);
 }
 
 int     ft_is_strnstr(char * haystack, char *needle, int len)
