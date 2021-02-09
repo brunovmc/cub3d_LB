@@ -22,15 +22,17 @@ int    check_args(argc, argv)
     
 }
 
-static char     *read_file(const char *argv, t_vars *vars)
+int     read_file(const char *argv, t_vars *vars)
 {
-    int fd;
-    int ret;
-    char *line;
+    int     fd;
+    int     ret;
+    char    *line;
+    int     i;
     //t_map  map;  acho melhor tirar t map daqui
 
     fd = open(argv, O_RDONLY);
     ret = get_next_line(fd, &line);
+    i = 0;
     while (line)
     {
         if (check_header(line, *vars))
@@ -39,7 +41,6 @@ static char     *read_file(const char *argv, t_vars *vars)
             vars->map->map[i][0] = ft_strjoin(vars->map->map[i], line);
             i++;
         } //chegou no mapa comeca a guardar
-            
         free(line);
         if (ret <= 0)
             break;
@@ -51,7 +52,9 @@ static char     *read_file(const char *argv, t_vars *vars)
 
 int     check_header(char * line, t_vars *vars) //enquanto os valores nao forem passados retorna falso
 {
-    if (ft_is_strnstr(line, "R ", 2)) //lembrar de checar se valor de r ja existe
+    if (header_values())
+        return (TRUE);
+    else if (ft_is_strnstr(line, "R ", 2)) //lembrar de checar se valor de r ja existe
         return(check_resolution(line, vars));
     else if (ft_is_strnstr(line, "NO ", 3))
         check_texture(line, "NO", vars);
@@ -69,8 +72,6 @@ int     check_header(char * line, t_vars *vars) //enquanto os valores nao forem 
         check_rgb(line, 'F', vars);
     else if (ft_is_strnstr(line, "\n", 1))
         return (FALSE);
-    else if (header_values())
-        return (TRUE);
     else
         return (FALSE);
 }
@@ -84,29 +85,28 @@ int     check_resolution(char *line, t_vars *vars)
     width = 0;
     height = 0;
     i = 2; //pra pular o "R "
-    while (ft_isnum(line[i]) || line[i] != ' ')
+    while (ft_isnum(line[i]) || line[i] == ' ')
     { 
-        if (ft_insum(line[i]) && width == 0)
-        {
-            //width = atoi
-            //vars->width = width;
-        }
-        else if (ft_insum(line[i]) && height == 0 && width != 0)
-        {
-                //height = atoi
-                //vars->height = height;
-        }
-        else if (ft_insum(line[i]) && width > 0 && height > 0)
+        if (ft_isnum(line[i]) && vars->width == 0)
+            width = (width * 10) + (line[i] + '0'); 
+        else if (ft_isnum(line[i]) && vars->height == 0)
+            height = (height * 10) + (line[i] + '0');
+        else if (ft_isnum(line[i]) && vars->width > 0 
+            && vars->height > 0)
             return(ft_error(/*WRONG_RESOLUTION*/));
+        else if (line[i] == ' ' && width > 0)
+            vars->width = width;
+        else if (vars->width > 0 && height > 0)
+            vars->height = height;
         i++;
     }
-    return ((width > 0 && height > 0) ?
-     TRUE : ft_error(/*WRONG_RESOLUTION*/));
+    return ((vars->width > 0 && vars->height > 0 && line[i] != '\n') 
+        ? TRUE : ft_error(/*WRONG_RESOLUTION*/));
 }
 
 int     check_texture(char *line, char *side, t_vars *vars)
 {
-    
+
 }
 
 int     check_map()
