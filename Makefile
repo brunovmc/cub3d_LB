@@ -8,6 +8,7 @@ SRCS = 		$(SRCS_DIR)/main.c \
 				$(SRCS_DIR)/shapes.c \
 				$(SRCS_DIR)/rays.c \
 				$(SRCS_DIR)/map.c \
+				$(SRCS_DIR)/map_reader.c \
 				$(SRCS_DIR)/aux_functions.c 
 
 OBJS = $(patsubst $(SRCS_DIR)%.c,  $(OBJS_DIR)%.o,  $(SRCS))

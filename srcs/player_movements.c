@@ -40,7 +40,7 @@ int keypressed(int key, t_vars *vars)
     else if (key == RIGHT_KEY)
         vars->player->turn_direction = +1;
     else if (key == ESC)
-        return (close(vars));
+        return (ft_close(vars));
     update_frame(vars);
     return (key);
 }

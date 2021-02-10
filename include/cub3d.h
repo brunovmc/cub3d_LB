@@ -42,7 +42,7 @@
 # define MINIMAP_SCALE_FACTOR 1
 
 
-
+# define BUFFER_SIZE 40
 
 
 # define POSX 200
@@ -62,7 +62,9 @@ static char     g_errors[][50] =
     "Map file not found",
     //validacao mapa
     "Invalid map file",
-    "Wrong character in map"
+    "Wrong character in map",
+    //resolucao
+    "something wrong with resolution"
 };
 
 enum e_errors
@@ -74,7 +76,9 @@ enum e_errors
     FILE_NOT_FOUND,
     //validacao mapa
     INVALID_FILE,
-    WRONG_CHARACTER
+    WRONG_CHARACTER,
+    //resolucao
+    WRONG_RESOLUTION
 
 };
 
@@ -164,7 +168,7 @@ void    put_rectangle(t_data *data, int x, int y, int size_x, int size_y, int co
 void    render_map(t_data data);
 void    put_circle(t_data *data, int a, int b, int size, int color);
 void    print_str(t_vars *vars,  int x, int y, int color, char *str);
-int     close(t_vars *vars);
+int     ft_close(t_vars *vars);
 int     keypressed(int key, t_vars *vars);
 int     keyreleased(int key, t_vars *vars);
 double  distancebetweenpoints(double x1, double y1, double x2, double y2);
@@ -182,6 +186,26 @@ void    put_ray(t_data *data, t_player *player, double angle, double distance);
 void    put_player(t_data *data, t_player *player);
 double  normalize_angle(double angle);
 
+int     ft_error(int error_num);
 int     map_reader(int argc, char **argv, t_vars *vars);
+int     read_file(const char *argv, t_vars *vars);
+int     check_args(int argc, char **argv);
+int     check_header(char *line, t_vars *vars);
+int     header_values(t_vars *vars);
+int     check_resolution(char *line, t_vars *vars);
+
+int    ft_putchar(char c);
+int     ft_is_strnstr(char *haystack, char *needle, int len);
+void    ft_putstr(char *str);
+char *ft_calloc(size_t count, size_t size);
+void ft_bzero(char *str);
+size_t ft_strlcpy(char *dst, char *src, size_t dstsize);
+int ft_strlen(char *str);
+int ft_isnum(int c);
+
+int newline(char *s_line);
+char *cleanline(char **line, char *s_line, int j);
+char *ft_strjoin(char *s1, char *s2);
+int get_next_line(int fd, char **line);
 
 #endif
