@@ -30,15 +30,16 @@ int     read_file(const char *argv, t_vars *vars)
     int     ret;
     char    *line;
     int     i;
-    //t_map  map;  acho melhor tirar t map daqui
+
     fd = open(argv, O_RDONLY);
     ret = get_next_line(fd, &line);
     i = 0;
     while (line)
     {
-        printf("%s\n", line);
-        if (check_header(line, vars))
+        //printf("%s\n", line);
+        if (check_header(line, vars) == TRUE)
         {
+            printf("entrou");
             //max_line_len
             //vars->map->map[i][0] = ft_strjoin(vars->map->map[i], line);
             //i++;
@@ -55,18 +56,18 @@ int     read_file(const char *argv, t_vars *vars)
 
 int     check_header(char *line, t_vars *vars) //enquanto os valores nao forem passados retorna falso
 {
-    //if (header_values(vars))
-        //return (TRUE);
+    // if (header_values(vars))
+    //     return (header_values(vars));
     if (ft_is_strnstr(line, "R ", 2)) //lembrar de checar se valor de r ja existe
         return(check_resolution(line, vars));
-    // else if (ft_is_strnstr(line, "NO ", 3))
-    //     check_texture(line, "NO", vars);
-    // else if (ft_is_strnstr(line, "SO ", 3))
-    //     check_texture(line, "SO", vars);
-    // else if (ft_is_strnstr(line, "WE ", 3))
-    //     check_texture(line, "WE", vars);
-    // else if (ft_is_strnstr(line, "EA ", 3))
-    //     check_texture(line, "EA", vars);
+    else if (ft_is_strnstr(line, "NO ", 3))
+        return(check_texture(line, 'N', vars));
+    else if (ft_is_strnstr(line, "SO ", 3))
+        return(check_texture(line, 'S', vars));
+    else if (ft_is_strnstr(line, "WE ", 3))
+        return(check_texture(line, 'W', vars));
+    else if (ft_is_strnstr(line, "EA ", 3))
+        return(check_texture(line, 'E', vars));
     // else if (ft_is_strnstr(line, "S ", 2))
     //     check_sprite(line, vars);
     // else if (ft_is_strnstr(line, "C ", 2))
@@ -111,34 +112,83 @@ int     check_resolution(char *line, t_vars *vars)
     printf("vars->w = %i \n", vars->width);
     printf("vars->h = %i \n", vars->height);
     return ((vars->width > 0 && vars->height > 0) 
-        ? TRUE : ft_error(WRONG_RESOLUTION));
+        ? FALSE : ft_error(WRONG_RESOLUTION));
 }
 
-// int     check_texture(char *line, char *side, t_vars *vars)
-// {
+int     check_texture(char *line, char side, t_vars *vars)
+{
+    int i;
+    int j;
+    char *str;
 
-// }
+    str = ft_calloc(50, sizeof(char));
+    i = 2; //pra pular o "XX "
+    while (line[i] == ' ')
+        i++;
+    j = 0;
+    while (line[i])
+    {
+        str[j] = line[i];
+        j++;
+        i++;
+    }
+    if (side == 'N')
+    {
+        vars->map->no = ft_calloc(50, sizeof(char));
+        ft_strlcpy(vars->map->no, str, ft_strlen(str) + 1);
+    } 
+    else if (side == 'S')
+    {
+        vars->map->so = ft_calloc(50, sizeof(char));
+        ft_strlcpy(vars->map->so, str, ft_strlen(str) + 1);
+    }
+    else if (side == 'W')
+    {
+        vars->map->we = ft_calloc(50, sizeof(char));
+        ft_strlcpy(vars->map->we, str, ft_strlen(str) + 1);
+    }
+    else if (side == 'E')
+    {
+        vars->map->ea = ft_calloc(50, sizeof(char));
+        ft_strlcpy(vars->map->ea, str, ft_strlen(str) + 1);
+    }
+    printf("str = %s \n", str);
+    printf("vars->map->no = %s \n", vars->map->no);
+    printf("vars->map->so = %s \n", vars->map->so);
+    printf("vars->map->we = %s \n", vars->map->we);
+    printf("vars->map->ea = %s \n", vars->map->ea);
+    free(str);
+    // if (vars->map->no != '\0' && vars->map->so != '\0' && 
+    //     vars->map->we != '\0' && vars->map->ea != '\0')
+    //     return (TRUE);
+    return (FALSE);
+}
 
-// int     check_map()
-// {
-//     check_map_character();
+int check_texture2(char *line, char side, t_vars *vars)
+{
     
-// }
+}
 
-// int check_map_character(char c)
-// {
-//     if (c != 0 || c != 1 || c != 2 || c != 'N' ||
-//      c != 'S' || c != 'E' || c != 'W')
-//         return (ft_error(WRONG_CHARACTER));
-//     return (TRUE);
-// }
+    // int     check_map()
+    // {
+    //     check_map_character();
 
-// int     normalize_map()
-// {
+    // }
 
-// }
+    // int check_map_character(char c)
+    // {
+    //     if (c != 0 || c != 1 || c != 2 || c != 'N' ||
+    //      c != 'S' || c != 'E' || c != 'W')
+    //         return (ft_error(WRONG_CHARACTER));
+    //     return (TRUE);
+    // }
 
-int     ft_error(int error_num)
+    // int     normalize_map()
+    // {
+
+    // }
+
+    int ft_error(int error_num)
 {
     ft_putstr(g_errors[error_num]);
     exit(0);
@@ -365,4 +415,23 @@ size_t ft_strlcpy(char *dst, char *src, size_t dstsize)
         dst[i] = '\0';
     }
     return (ft_strlen(src));
+}
+
+void    *ft_memcpy(void *dst, const void *src, size_t n)
+{
+    size_t i;
+    unsigned char *dst_c;
+    const unsigned char *src_c;
+
+    if (!dst && !src)
+        return (dst);
+    i = 0;
+    dst_c = (unsigned char *)dst;
+    src_c = (unsigned char *)src;
+    while (i < n)
+    {
+        dst_c[i] = src_c[i];
+        i++;
+    }
+    return (dst_c);
 }

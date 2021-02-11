@@ -26,6 +26,12 @@ int main(int argc, char **argv)
 
 	vars.player = &player; 
 	vars.map = &map;
+
+	// vars.map->no = '\0';
+	// vars.map->so = '\0';
+	// vars.map->we = '\0';
+	// vars.map->ea = '\0';
+
 	map_reader(argc, argv, &vars);
 
 	player.rotation_angle = 2 * PI;

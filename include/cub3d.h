@@ -86,10 +86,10 @@ typedef struct s_map {
     char     **map;
     int      rows;
     int      cols;
-    char     no[50]; 
-    char     so[50]; 
-    char     we[50]; 
-    char     ea[50];
+    char     *no; 
+    char     *so; 
+    char     *we; 
+    char     *ea;
     char     s[50];
     int      floor;
     int      ceiling;
@@ -193,8 +193,9 @@ int     check_args(int argc, char **argv);
 int     check_header(char *line, t_vars *vars);
 int     header_values(t_vars *vars);
 int     check_resolution(char *line, t_vars *vars);
+int     check_texture(char *line, char side, t_vars *vars);
 
-int    ft_putchar(char c);
+int     ft_putchar(char c);
 int     ft_is_strnstr(char *haystack, char *needle, int len);
 void    ft_putstr(char *str);
 char *ft_calloc(size_t count, size_t size);
@@ -202,8 +203,9 @@ void ft_bzero(char *str);
 size_t ft_strlcpy(char *dst, char *src, size_t dstsize);
 int ft_strlen(char *str);
 int ft_isnum(int c);
+void *ft_memcpy(void *dst, const void *src, size_t n);
 
-int newline(char *s_line);
+    int newline(char *s_line);
 char *cleanline(char **line, char *s_line, int j);
 char *ft_strjoin(char *s1, char *s2);
 int get_next_line(int fd, char **line);
