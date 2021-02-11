@@ -116,7 +116,7 @@ int     check_texture(char *line, char c, t_vars *vars)
 
     path = ft_split(line, ' ');
     ext = ft_split(path[1], '.');
-    if (ft_strncmp(ext[1], "xpm", 3) != 0)
+    if (ft_strncmp(ext[1], "xpm", ft_strlen(ext[1])) != 0)
         ft_error(NOT_XPM);
     if (path[2])
         ft_error(TOO_MANY_TXT_ARGS);
@@ -160,6 +160,8 @@ int     check_resolution(char *line, t_vars *vars)
     int     i;
 
     resolution = ft_split(line, ' ');
+    if (ft_strncmp(resolution[0], "R", ft_strlen(resolution[0])) != 0)
+        ft_error(WRONG_RESOLUTION);
     if (resolution[3])
         ft_error(WRONG_RESOLUTION);
     if (!aredigits(resolution[1]) || !aredigits(resolution[2]))
