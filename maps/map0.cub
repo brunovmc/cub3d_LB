@@ -5,8 +5,8 @@ WE textures32/stone.xpm
 EA textures32/wood.xpm
 
 S textures32/sprites/pillar.xpm
-C 138,71,124
-F 255,0,0
+C 0,255,0
+F 0,0,255
 
         1111111111111111111111111
         1000000000110000000000001

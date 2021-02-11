@@ -36,10 +36,9 @@ int     read_file(const char *argv, t_vars *vars)
     i = 0;
     while (line)
     {
-        //printf("%s\n", line);
         if (check_header(line, vars) == TRUE)
         {
-            printf("entrou");
+            printf("entrou AAAAA\n");
             //max_line_len
             //vars->map->map[i][0] = ft_strjoin(vars->map->map[i], line);
             //i++;
@@ -54,6 +53,125 @@ int     read_file(const char *argv, t_vars *vars)
     return (TRUE); 
 }
 
+int     check_header(char *line, t_vars *vars)
+{
+    //printf("line[0]: %c\n", line[0]);
+    if (ft_strchr(line, 'R') == &line[0])
+        return(check_resolution(line, vars));
+    else if (ft_strncmp(line, "NO ", 3) == 0)
+        return(check_texture(line, 'N', vars));
+    else if (ft_strncmp(line, "SO ", 3) == 0)
+        return(check_texture(line, 'S', vars));
+    else if (ft_strncmp(line, "WE ", 3) == 0)
+        return(check_texture(line, 'W', vars));
+    else if (ft_strncmp(line, "EA ", 3) == 0)
+        return(check_texture(line, 'E', vars));
+    else if (ft_strncmp(line, "S ", 2) == 0)
+        return(check_texture(line, 'X', vars));
+    else if (ft_strncmp(line, "C ", 2) == 0)
+        return (check_rgb(line, 'C', vars));
+    else if (ft_strncmp(line, "F ", 2) == 0)
+        return (check_rgb(line, 'F', vars));
+    return (TRUE);
+}
+
+unsigned long int   rgb_hex(int r, int g, int b)
+{
+    return (((r & 0xff) << 16) + ((g & 0xff) << 8) + (b & 0xff)); 
+}
+
+int     check_rgb(char *line, char c, t_vars *vars)
+{
+    char **nums;
+    char **rgb;
+
+
+    nums = ft_split(line, ' ');
+    rgb = ft_split(nums[1], ',');
+
+    printf("num[0]: %s\n", nums[0]);
+    printf("num[1]: %s\n", nums[1]);
+    printf("rgb[0]: %s\n", rgb[0]);
+    printf("rgb[1]: %s\n", rgb[1]);
+    printf("rgb[2]: %s\n", rgb[2]);
+    if (nums[2] || rgb[3])
+        ft_error(TOO_MANY_RGB_ARGS);
+    if (!(aredigits(rgb[0])) || !(aredigits(rgb[1])) || !(aredigits(rgb[2]))
+        || ft_atoi(rgb[0]) < 0 || ft_atoi(rgb[0]) > 255 || ft_atoi(rgb[1]) < 0
+        || ft_atoi(rgb[1]) > 255 || ft_atoi(rgb[2]) < 0 || ft_atoi(rgb[2]) > 255)
+        ft_error(NOT_RGB_NUMBER);
+    if (c == 'C')
+        vars->map->ceiling = rgb_hex(ft_atoi(rgb[0]), ft_atoi(rgb[1]),ft_atoi(rgb[2]));
+    if (c == 'F')
+        vars->map->floor = rgb_hex(ft_atoi(rgb[0]), ft_atoi(rgb[1]),ft_atoi(rgb[2]));
+    printf("ceiling: %x\n", vars->map->ceiling);
+    printf("floor  : %x\n", vars->map->floor);
+    return (0);
+}
+
+int     check_texture(char *line, char c, t_vars *vars)
+{
+    char    **path;
+    char    **ext;
+
+    path = ft_split(line, ' ');
+    ext = ft_split(path[1], '.');
+    if (ft_strncmp(ext[1], "xpm", 3) != 0)
+        ft_error(NOT_XPM);
+    if (path[2])
+        ft_error(TOO_MANY_TXT_ARGS);
+    if (c == 'N')
+        vars->map->no = path[1];
+    else if (c == 'S')
+        vars->map->so = path[1];
+    else if (c == 'W')
+        vars->map->we = path[1];
+    else if (c == 'E')
+        vars->map->ea = path[1];
+    else if (c == 'X')
+        vars->map->s = path[1];
+    
+    printf("NO: %s\n", vars->map->no);
+    printf("SO: %s\n", vars->map->so);
+    printf("WE: %s\n", vars->map->we);
+    printf("EA: %s\n", vars->map->ea);
+    printf("S: %s\n", vars->map->s);
+    return (0);
+}
+
+
+int     aredigits(char *str)
+{
+    int i;
+
+    i = 0;
+    while (str[i])
+    {
+        if (!(ft_isdigit(str[i])))
+            return (FALSE);
+        i++;
+    }
+    return (TRUE);
+}
+
+int     check_resolution(char *line, t_vars *vars)
+{
+    char    **resolution;
+    int     i;
+
+    resolution = ft_split(line, ' ');
+    if (resolution[3])
+        ft_error(WRONG_RESOLUTION);
+    if (!aredigits(resolution[1]) || !aredigits(resolution[2]))
+        ft_error(WRONG_RESOLUTION);
+    vars->width = ft_atoi(resolution[1]);
+    vars->height = ft_atoi(resolution[2]);
+    printf("witdh: %i\n", vars->width);
+    printf("height: %i\n", vars->height);
+    return (0);
+}
+
+/*
 int     check_header(char *line, t_vars *vars) //enquanto os valores nao forem passados retorna falso
 {
     // if (header_values(vars))
@@ -98,11 +216,11 @@ int     check_resolution(char *line, t_vars *vars)
     vars->width = 0;
     vars->height = 0;
     i = 2; //pra pular o "R "
-    while (ft_isnum(line[i]) || line[i] == ' ')
+    while (ft_isdigit(line[i]) || line[i] == ' ')
     { 
-        if (ft_isnum(line[i]) && vars->width == 0)
+        if (ft_isdigit(line[i]) && vars->width == 0)
             width = (width * 10) + (line[i] - '0');
-        else if (ft_isnum(line[i]) && vars->height == 0)
+        else if (ft_isdigit(line[i]) && vars->height == 0)
             height = (height * 10) + (line[i] - '0');
         else if (line[i] == ' ' && width > 0)
             vars->width = width;
@@ -166,7 +284,7 @@ int     check_texture(char *line, char side, t_vars *vars)
 
 int check_texture2(char *line, char side, t_vars *vars)
 {
-    
+    return (0);
 }
 
     // int     check_map()
@@ -188,9 +306,11 @@ int check_texture2(char *line, char side, t_vars *vars)
 
     // }
 
+*/
+
     int ft_error(int error_num)
 {
-    ft_putstr(g_errors[error_num]);
+    ft_putstr_fd(g_errors[error_num], 1);
     exit(0);
 }
 
@@ -218,42 +338,19 @@ int     ft_is_strnstr(char * haystack, char *needle, int len)
     return (FALSE);
 }
 
-int     ft_strlen(char *str)
+void	ft_bzero_gnl(char *str)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (str[i])
-        i++;
-    return (i);
-}
-
-int    ft_putchar(char c)
-{
-    write(1, &c, 1);
-    return (1);
-}
-
-int ft_isnum(int c)
-{
-    if (c >= 48 && c <= 57)
-        return (1);
-    return (0);
-}
-
-void    ft_putstr(char *str)
-{
-    unsigned int i;
-
-    i = 0;
-    if  (str != 0)
-    {
-        while (str[i])
-        {
-            ft_putchar(str[i]);
-            i++;
-        }
-    }
+	i = 0;
+	if (str)
+	{
+		while (i < BUFFER_SIZE && i < 1000000)
+		{
+			str[i] = '\0';
+			i++;
+		}
+	}
 }
 
 int get_next_line(int fd, char **line)
@@ -274,7 +371,7 @@ int get_next_line(int fd, char **line)
         result = read(fd, l_buffer, BUFFER_SIZE);
         if (result >= 1 && result <= BUFFER_SIZE && s_line)
             s_line = ft_strjoin(s_line, l_buffer);
-        ft_bzero(l_buffer);
+        ft_bzero_gnl(l_buffer);
     }
     if (result >= 0 && result <= BUFFER_SIZE)
         s_line = cleanline(line, s_line, newline(s_line));
@@ -284,34 +381,7 @@ int get_next_line(int fd, char **line)
     return (result == 0 ? 0 : -1);
 }
 
-/*
-** Responsável por concatenar duas strings
-*/
 
-char *ft_strjoin(char *s1, char *s2)
-{
-    char *str;
-    register int i;
-    register int j;
-
-    i = ft_strlen(s1);
-    j = ft_strlen(s2);
-    str = (char *)ft_calloc(i + j + 1, sizeof(char));
-    i = 0;
-    while (s1[i])
-    {
-        str[i] = s1[i];
-        i++;
-    }
-    j = 0;
-    while (s2[j])
-    {
-        str[i + j] = s2[j];
-        j++;
-    }
-    free(s1);
-    return (str);
-}
 
 /*
 ** A função recebe como parâmetro **line e *s_line, que contem uma string
@@ -361,77 +431,4 @@ int newline(char *s_line)
         i++;
     }
     return (-1);
-}
-
-void ft_bzero(char *str)
-{
-    int i;
-
-    i = 0;
-    if (str)
-    {
-        while (i < BUFFER_SIZE && i < 1000000)
-        {
-            str[i] = '\0';
-            i++;
-        }
-    }
-}
-
-char *ft_calloc(size_t count, size_t size)
-{
-    char *str;
-    size_t i;
-
-    if (count > 1000000)
-        count = 1000000;
-    str = (char *)malloc(count * size);
-    i = 0;
-    if (str)
-    {
-        while (i < count)
-        {
-            str[i] = '\0';
-            i++;
-        }
-    }
-    return (str);
-}
-
-size_t ft_strlcpy(char *dst, char *src, size_t dstsize)
-{
-    size_t i;
-
-    if (src == 0)
-        return (0);
-    if (dstsize > 0)
-    {
-        i = 0;
-        while (src[i] != '\0' && i < (dstsize - 1))
-        {
-            dst[i] = src[i];
-            i++;
-        }
-        dst[i] = '\0';
-    }
-    return (ft_strlen(src));
-}
-
-void    *ft_memcpy(void *dst, const void *src, size_t n)
-{
-    size_t i;
-    unsigned char *dst_c;
-    const unsigned char *src_c;
-
-    if (!dst && !src)
-        return (dst);
-    i = 0;
-    dst_c = (unsigned char *)dst;
-    src_c = (unsigned char *)src;
-    while (i < n)
-    {
-        dst_c[i] = src_c[i];
-        i++;
-    }
-    return (dst_c);
 }
