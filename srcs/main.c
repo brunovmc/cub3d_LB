@@ -12,6 +12,7 @@ int update_frame(t_vars *vars)
 	//put_circle(&data, vars->pos->x, vars->pos->y, 2, 0x00000000);
 	
 	update_player(vars->player);
+	update_player_sideways(vars->player);
 	put_player(&data, vars->player);
 	cast_all_rays(&data, vars->player);
 	mlx_put_image_to_window(vars->mlx, vars->window, data.img, 0, 0);

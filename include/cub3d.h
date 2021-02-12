@@ -186,6 +186,7 @@ int     keypressed(int key, t_vars *vars);
 int     keyreleased(int key, t_vars *vars);
 double  distancebetweenpoints(double x1, double y1, double x2, double y2);
 void    update_player(t_player *player);
+void    update_player_sideways(t_player *player);
 int     has_wall_at(double x, double y);
 void    cast_all_rays(t_data *data, t_player *player);
 double  ray_size(t_ray *ray, t_player *player);
