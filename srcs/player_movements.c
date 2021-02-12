@@ -7,20 +7,15 @@ void update_player(t_player *player)
     player->rotation_angle += player->turn_direction * player->rotation_speed;
     if (player->walk_direction != 0)
         move_step = player->walk_direction * player->move_speed;
-    if(player->walk_sideways != 0)
+    if (player->walk_sideways != 0)
         move_step = player->move_speed;
     player->new_x = player->x + cos(player->rotation_angle - player->walk_sideways * PI/2) * move_step;
     player->new_y = player->y + sin(player->rotation_angle - player->walk_sideways * PI/2) * move_step;
-    if (!has_wall_at(player->new_x, player->new_y))// && player->walk_direction != 0)
+    if (!has_wall_at(player->new_x, player->new_y))
     {
         player->x = player->new_x;
         player->y = player->new_y;
     }
-    //else if (!has_wall_at(-player->new_y, player->new_x) && player->walk_sideways != 0)
-    //{
-    //    player->x = -player->new_y;
-    //    player->y = player->new_x;
-    //}
 }
 
 double normalize_angle(double angle)
