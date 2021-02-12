@@ -138,6 +138,7 @@ typedef struct s_player {
     int      radius;
     int      turn_direction; 
     int      walk_direction;
+    int      walk_sideways;
     float    rotation_angle; //antigo dir
     float    move_speed;
     float    rotation_speed;
