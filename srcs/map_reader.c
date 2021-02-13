@@ -30,14 +30,28 @@ int     read_file(const char *argv, t_vars *vars)
     int     fd;
     int     ret;
     char    *line;
+    int     i;
 
     fd = open(argv, O_RDONLY);
     ret = get_next_line(fd, &line);
-    while (line)
+    i = 0;
+    while (line[i])
     {
         if (check_header(line, vars) && line[0])
         {
-            //strchr
+            if(ft_strchr("102 NSWE", line[i]))
+            {
+                //get_player
+                if (ft_strchr("NSWE", line[i]))
+                {
+                    vars->player->x = /*ate a posicao de line[i]*/;
+                    vars->player->y = vars->map->rows;
+                }
+                else if (vars->player->x != 0 || vars->player->y != 0)
+                    ft_error(/*TOO_MANY_PLAYERS*/);
+            }
+            else
+                ft_error(/*WRONG_MAP_CHAR*/);
             if (ft_strlen(line) > vars->map->cols)
                 vars->map->cols = ft_strlen(line);
             allocate_map(line, vars);
@@ -47,6 +61,7 @@ int     read_file(const char *argv, t_vars *vars)
         if (ret <= 0)
             break;
         ret = get_next_line(fd, &line);
+        i++;
     }
     
     printf("rows = %i\n", vars->map->rows);

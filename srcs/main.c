@@ -44,8 +44,8 @@ int main(int argc, char **argv)
 
 
 	//vars.player = &player;
-	player.x = POSX;
-	player.y = POSY;
+	// player.x = POSX;
+	// player.y = POSY;
 
 	vars.mlx = mlx_init();
 	vars.window = mlx_new_window(vars.mlx, vars.width, vars.height, "TESTE MILHAO E MEIO");

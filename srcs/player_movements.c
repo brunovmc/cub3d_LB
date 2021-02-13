@@ -1,6 +1,6 @@
 #include "cub3d.h"
 
-void update_player_sideways(t_player *player)
+void update_player_sideways(t_vars *vars, t_player *player)
 {
     double move_step;
 
@@ -11,14 +11,14 @@ void update_player_sideways(t_player *player)
         move_step = player->walk_sideways * player->move_speed;
     player->new_x = player->x + cos(player->rotation_angle - PI/2) * move_step;
     player->new_y = player->y + sin(player->rotation_angle - PI/2) * move_step;
-    if (!has_wall_at(player->new_x, player->new_y))
+    if (!has_wall_at(vars, player->new_x, player->new_y))
     {
         player->x = player->new_x;
         player->y = player->new_y;
     }
 }
 
-void update_player(t_player *player)
+void update_player(t_vars *vars, t_player *player)
 {
     double move_step;
 
@@ -29,7 +29,7 @@ void update_player(t_player *player)
     //    move_step = player->move_speed;
     player->new_x = player->x + cos(player->rotation_angle) * move_step;
     player->new_y = player->y + sin(player->rotation_angle) * move_step;
-    if (!has_wall_at(player->new_x, player->new_y))
+    if (!has_wall_at(vars, player->new_x, player->new_y))
     {
         player->x = player->new_x;
         player->y = player->new_y;

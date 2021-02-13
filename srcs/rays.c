@@ -66,8 +66,8 @@ void increment_horz_step(t_vars * vars, t_ray *ray)
     ray->nexthorztouchy = ray->y_intercept;
     while (ray->nexthorztouchx >= 0 && ray->nexthorztouchx <= vars->width && ray->nexthorztouchy >= 0 && ray->nexthorztouchy <= vars->height)
     {
-        if (has_wall_at(ray->nexthorztouchx,
-                        ray->nexthorztouchy - (!ray_facing_down(ray->current_ray) ? 1 : 0), vars))
+        if (has_wall_at(vars, ray->nexthorztouchx,
+                        ray->nexthorztouchy - (!ray_facing_down(ray->current_ray) ? 1 : 0)))
         {
             ray->foundhorzwallhit = TRUE;
             ray->horzwallhitx = ray->nexthorztouchx;
@@ -101,8 +101,8 @@ void increment_vert_step(t_vars *vars, t_ray *ray)
     ray->nextverttouchy = ray->y_intercept;
     while (ray->nextverttouchx >= 0 && ray->nextverttouchx <= vars->width && ray->nextverttouchy >= 0 && ray->nextverttouchy <= vars->height)
     {
-        if (has_wall_at(ray->nextverttouchx - (!ray_facing_right(ray->current_ray) ? 1 : 0),
-                        ray->nextverttouchy, vars))
+        if (has_wall_at(vars, ray->nextverttouchx - (!ray_facing_right(ray->current_ray) ? 1 : 0),
+                        ray->nextverttouchy))
         {
             ray->foundvertwallhit = TRUE;
             ray->vertwallhitx = ray->nextverttouchx;

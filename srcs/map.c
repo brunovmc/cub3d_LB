@@ -1,6 +1,6 @@
 #include "cub3d.h"
 
-int has_wall_at(double x, double y, t_vars *vars) //adicionar argumento com grid aka mapa
+int has_wall_at(t_vars *vars, double x, double y) //adicionar argumento com grid aka mapa
 {
     int map_grid_index_x;
     int map_grid_index_y;
