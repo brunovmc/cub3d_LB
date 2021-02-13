@@ -56,22 +56,26 @@
 
 static char     g_errors[][50] =
 {
-    "Too few arguments",
-    "Too many arguments",
-    "Did you mean --save?",
-    "Wrong file type. Must be .cub",
-    "Map file not found",
+    "Too few arguments\n",
+    "Too many arguments\n",
+    "Unknown flag. Did you mean --save?\n",
+    "Wrong file type. Must be .cub\n",
+    "Map file not found\n",
     //validacao mapa
-    "Invalid map file",
-    "Wrong character in map",
+    "Invalid map file\n",
+    "Wrong character in map\n",
+    //header
+    "Header is invalid\n",
+    "Some value is duplicated on header\n",
     //resolucao
-    "Something wrong with resolution",
+    "Something wrong with resolution\n",
     //texture
-    "Too many texture arguments",
-    "File extension must be .xpm",
+    "Too many texture arguments\n",
+    "File extension must be .xpm\n",
     //rgb
-    "Too many rgb arguments",
-    "RGB number must be between 0 and 255"
+    "Too many rgb arguments\n",
+    "Invalid rgb number passed\n",
+    "RGB number must be between 0 and 255\n",
 };
 
 enum e_errors
@@ -84,6 +88,9 @@ enum e_errors
     //validacao mapa
     INVALID_FILE,
     WRONG_CHARACTER,
+    //header
+    INVALID_HEADER,
+    ALREADY_ASSIGNED,
     //resolucao
     WRONG_RESOLUTION,
     //texture
@@ -91,6 +98,7 @@ enum e_errors
     NOT_XPM,
     //rgb
     TOO_MANY_RGB_ARGS,
+    WRONG_RGB,
     NOT_RGB_NUMBER
 };
 
@@ -158,6 +166,8 @@ typedef struct s_vars {
 	void	 *window;
     int      width;
     int      height;
+    int      max_width;
+    int      max_height;
 	t_data   *data;
     t_player *player;
     t_map    *map;
@@ -203,6 +213,8 @@ int     allocate_map(char *line, t_vars *vars);
 char    **matrix_buffer(char **map, char *line, int cols);
 int     normalize_map(int rows, int cols, t_vars *vars);
 int     clear_pointer(char **p);
+void    init_header(t_vars *vars);
+int     header_full(t_vars *vars);
 
 int     newline(char *s_line);
 char    *cleanline(char **line, char *s_line, int j);

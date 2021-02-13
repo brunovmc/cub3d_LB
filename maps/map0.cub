@@ -1,11 +1,11 @@
-R 400 500
+R 4000 5000
 NO textures32/brick.xpm
 SO textures32/metal.xpm
 WE textures32/stone.xpm
 EA textures32/wood.xpm
 
 S textures32/sprites/pillar.xpm
-C 0,255,0
+C 0,0,0
 F 0,0,255
 
         1111111111111111111111111

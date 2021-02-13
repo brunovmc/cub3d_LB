@@ -33,6 +33,7 @@ int main(int argc, char **argv)
 	// vars.map->we = '\0';
 	// vars.map->ea = '\0';
 
+	vars.mlx = mlx_init();
 	map_reader(argc, argv, &vars);
 
 	player.rotation_angle = 2 * PI;
@@ -47,7 +48,7 @@ int main(int argc, char **argv)
 	player.x = POSX;
 	player.y = POSY;
 
-	vars.mlx = mlx_init();
+	// vars.mlx = mlx_init();
 	vars.window = mlx_new_window(vars.mlx, vars.width, vars.height, "TESTE PRIMEIRO");
 
 	update_frame(&vars);
