@@ -23,6 +23,10 @@
 # define PI 3.141592
 # define TRUE 1
 # define FALSE 0
+# define NORTH  (1.5 * PI)
+# define SOUTH (0.5 * PI)
+# define EAST 0
+# define WEST (PI)
 
 
 // ==== defines gustavo ====
@@ -42,12 +46,7 @@
 
 # define MINIMAP_SCALE_FACTOR 1
 
-
 # define BUFFER_SIZE 40
-
-
-# define POSX 200
-# define POSY 200
 
 # define ROTATION_SPEED 1.0
 # define WALK_SPEED 10
@@ -218,7 +217,7 @@ int     clear_pointer(char **p);
 void    init_header(t_vars *vars);
 int     header_full(t_vars *vars);
 int     check_character_map(t_vars *vars, char *line);
-
+void    init_player(t_vars *vars,char direction,int x,int y);
 
 int     newline(char *s_line);
 char    *cleanline(char **line, char *s_line, int j);

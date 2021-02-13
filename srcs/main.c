@@ -36,7 +36,7 @@ int main(int argc, char **argv)
 	vars.mlx = mlx_init();
 	map_reader(argc, argv, &vars);
 
-	player.rotation_angle = 2 * PI;
+	//player.rotation_angle = 2 * PI;
 	player.radius = 10;
 	player.move_speed = 7.0;
 	player.rotation_speed = 7 * (PI / 180);
