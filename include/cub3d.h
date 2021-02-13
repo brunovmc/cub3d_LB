@@ -65,7 +65,7 @@ static char     g_errors[][50] =
     "Invalid map file",
     "Wrong character in map",
     //resolucao
-    "something wrong with resolution",
+    "Something wrong with resolution",
     //texture
     "Too many texture arguments",
     "File extension must be .xpm",
@@ -162,19 +162,6 @@ typedef struct s_vars {
     t_player *player;
     t_map    *map;
 }              t_vars;
-
-// const int map[MAP_NUM_ROWS][MAP_NUM_COLS] = {
-//     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-//     {1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
-//     {1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
-//     {1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
-//     {1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1},
-//     {1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1},
-//     {1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
-//     {1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1},
-//     {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-//     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-// };
 
 int     update_frame(t_vars *vars);
 void    my_pixel_put(t_data *data, int x, int y, int color);

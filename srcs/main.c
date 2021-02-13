@@ -48,11 +48,12 @@ int main(int argc, char **argv)
 	player.y = POSY;
 
 	vars.mlx = mlx_init();
-	vars.window = mlx_new_window(vars.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "TESTE PRIMEIRO");
+	vars.window = mlx_new_window(vars.mlx, vars.width, vars.height, "TESTE PRIMEIRO");
 
 	update_frame(&vars);
 	mlx_hook(vars.window, 2, (1L << 0), keypressed, &vars);
 	mlx_hook(vars.window, 3, (1L << 1), keyreleased, &vars);
+	mlx_hook(vars.window, 17, (1L << 17), ft_close, &vars);
 	mlx_loop(vars.mlx);
 	return (0);
 }

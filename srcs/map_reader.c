@@ -154,7 +154,7 @@ int     check_header(char *line, t_vars *vars)
     else if (ft_strncmp(line, "C ", 2) == 0)
         return (check_rgb(line, 'C', vars));
     else if (ft_strncmp(line, "F ", 2) == 0)
-        return (check_rgb(line, 'F', vars));
+        return (check_rgb(line, 'F', vars));    
     return (TRUE);
 }
 
@@ -395,6 +395,7 @@ int check_texture2(char *line, char side, t_vars *vars)
 
     int ft_error(int error_num)
 {
+    ft_putstr_fd("ERROR\n", 1);
     ft_putstr_fd(g_errors[error_num], 1);
     exit(0);
 }
