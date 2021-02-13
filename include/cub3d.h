@@ -27,18 +27,18 @@
 
 // ==== defines gustavo ====
 # define TILE_SIZE 64
-# define MAP_NUM_ROWS 10
-# define MAP_NUM_COLS 15
+//# define MAP_NUM_ROWS 10
+//# define MAP_NUM_COLS 15
 
 # define MAX_VALUE 3.40282e+038
 
-# define WINDOW_WIDTH (MAP_NUM_COLS * TILE_SIZE)
-# define WINDOW_HEIGHT (MAP_NUM_ROWS * TILE_SIZE)
+//# define WINDOW_WIDTH (MAP_NUM_COLS * TILE_SIZE)
+//# define WINDOW_HEIGHT (MAP_NUM_ROWS * TILE_SIZE)
 
 # define FOV_ANGLE (60 * PI / 180)
 
 # define WALL_STRIP_WIDTH 1
-# define NUM_RAYS (WINDOW_WIDTH / WALL_STRIP_WIDTH)
+//# define NUM_RAYS (WINDOW_WIDTH / WALL_STRIP_WIDTH)
 
 # define MINIMAP_SCALE_FACTOR 1
 
@@ -98,6 +98,7 @@ typedef struct s_map {
     char     **map;
     int      rows;
     int      cols;
+    char     **grid;
     char     *no; 
     char     *so; 
     char     *we; 
@@ -178,7 +179,7 @@ typedef struct s_vars {
 int     update_frame(t_vars *vars);
 void    my_pixel_put(t_data *data, int x, int y, int color);
 void    put_rectangle(t_data *data, int x, int y, int size_x, int size_y, int color);
-void    render_map(t_data data);
+void    render_map(t_vars *vars, t_data data);
 void    put_circle(t_data *data, int a, int b, int size, int color);
 void    print_str(t_vars *vars,  int x, int y, int color, char *str);
 int     ft_close(t_vars *vars);
@@ -187,13 +188,13 @@ int     keyreleased(int key, t_vars *vars);
 double  distancebetweenpoints(double x1, double y1, double x2, double y2);
 void    update_player(t_player *player);
 void    update_player_sideways(t_player *player);
-int     has_wall_at(double x, double y);
-void    cast_all_rays(t_data *data, t_player *player);
-double  ray_size(t_ray *ray, t_player *player);
+int     has_wall_at(double x, double y, t_vars *vars);
+void    cast_all_rays(t_vars *vars, t_data *data, t_player *player);
+double  ray_size(t_vars *vars, t_ray *ray, t_player *player);
 void    horz_intercept(t_ray *ray, t_player *player);
-void    increment_horz_step(t_ray *ray);
+void    increment_horz_step(t_vars *vars, t_ray *ray);
 void    vert_intercept(t_ray *ray, t_player *player);
-void    increment_vert_step(t_ray *ray);
+void    increment_vert_step(t_vars *vars, t_ray *ray);
 int     ray_facing_down(double rotation_angle);
 int     ray_facing_right(double rotation_angle);
 void    put_ray(t_data *data, t_player *player, double angle, double distance);
@@ -212,6 +213,10 @@ int     aredigits(char * str);   //colocar na libft?
 unsigned long int   rgb_hex(int r, int g, int b);
 int     check_rgb(char *line, char c, t_vars *vars);
 
+int     allocate_map(char *line, t_vars *vars);
+char    **matrix_buffer(char **map, char *line, int cols);
+int     normalize_map(int rows, int cols, t_vars *vars);
+int     clear_pointer(char **p);
 
 int     newline(char *s_line);
 char    *cleanline(char **line, char *s_line, int j);

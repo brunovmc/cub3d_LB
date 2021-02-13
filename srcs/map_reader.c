@@ -5,9 +5,10 @@ int     map_reader(int argc, char **argv, t_vars *vars)
     // pensei em fazer um if aqui, se qualquer uma dessa der erro map reader retorna erro e fecha la na main
     check_args(argc, argv);
     read_file(argv[1], vars);
+    normalize_map(vars->map->rows, vars->map->cols, vars);
     //printf("%s\n", argv[1]);
-    //check_map(); 
-    return (TRUE);  
+    //check_map();
+    return (TRUE);
 }
 
 int    check_args(int argc, char **argv)
@@ -16,8 +17,8 @@ int    check_args(int argc, char **argv)
         return (ft_error(MISSING_ARGUMENT));
     else if (argc > 3)
         return (ft_error(TOO_MANY_ARGUMENTS));
-    // else if (argv[2] != "--save")
-    //     return (ft_error(SAVE_TYPO));
+    // else if (ft_strncmp(argv[2], "--save", ft_strlen(argv[2])) != 0)
+    //      return (ft_error(SAVE_TYPO));
     else
         return (TRUE);
     
@@ -29,28 +30,109 @@ int     read_file(const char *argv, t_vars *vars)
     int     fd;
     int     ret;
     char    *line;
-    int     i;
 
     fd = open(argv, O_RDONLY);
     ret = get_next_line(fd, &line);
-    i = 0;
     while (line)
     {
-        if (check_header(line, vars) == TRUE)
+        if (check_header(line, vars) && line[0])
         {
-            printf("entrou AAAAA\n");
-            //max_line_len
-            //vars->map->map[i][0] = ft_strjoin(vars->map->map[i], line);
-            //i++;
+            //strchr
+            if (ft_strlen(line) > vars->map->cols)
+                vars->map->cols = ft_strlen(line);
+            allocate_map(line, vars);
+            vars->map->rows++;
         }
         free(line);
-        
         if (ret <= 0)
             break;
         ret = get_next_line(fd, &line);
     }
+    
+    printf("rows = %i\n", vars->map->rows);
+    printf("cols = %i\n", vars->map->cols);
     close(fd);
     return (TRUE); 
+}
+
+int allocate_map(char *line, t_vars *vars)
+{
+    int i;
+
+    i = 0;
+
+    if (!vars->map->rows)
+    {
+        if (ft_strlen(line))
+        {
+            vars->map->map = (char **)ft_calloc(sizeof(char *), 1);
+            vars->map->map[0] = ft_strdup(line);
+        }
+    }
+    else
+        vars->map->map = matrix_buffer(vars->map->map, ft_strdup(line), vars->map->rows);
+    return (0);
+}
+
+char **matrix_buffer(char **map, char *line, int cols)
+{
+    char **tmp;
+    int i;
+
+    i = 0;
+    tmp = (char **)ft_calloc(sizeof(char *), (cols + 1));
+    while (i < cols)
+    {
+        tmp[i] = map[i];
+        i++;
+    }
+    tmp[i] = line;
+    free(map);
+    return (tmp);
+}
+
+int     normalize_map(int rows, int cols, t_vars *vars)
+{
+    //char **map;
+    int i;
+    int j;
+    int len;
+
+    i = 0;
+    vars->map->grid = (char **)ft_calloc(sizeof(char *), rows + 1);
+    while (i < (rows - 1))
+    {
+        j = 0;
+        vars->map->grid[i] = (char *)ft_calloc(sizeof(char), cols + 1);
+        len = ft_strlen(vars->map->map[i]);
+        while (j < cols)
+        {
+            if (j < len)
+                vars->map->grid[i][j] = vars->map->map[i][j];
+            else
+                vars->map->grid[i][j] = ' ';
+            j++;
+        }
+        vars->map->grid[i][j] = '\0';
+        i++;
+    }
+    vars->map->grid[i] = NULL;
+    clear_pointer(vars->map->map);
+    return (0);
+}
+
+int clear_pointer(char **p)
+{
+    int i;
+
+    i = 0;
+    while (p[i])
+    {
+        free(p[i]);
+        i++;
+    }
+    free(p);
+    return (0);
 }
 
 int     check_header(char *line, t_vars *vars)
@@ -312,6 +394,7 @@ int check_texture2(char *line, char side, t_vars *vars)
 
     int ft_error(int error_num)
 {
+    ft_putstr_fd("ERROR:\n", 1);
     ft_putstr_fd(g_errors[error_num], 1);
     exit(0);
 }
