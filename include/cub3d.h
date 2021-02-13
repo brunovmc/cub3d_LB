@@ -96,6 +96,7 @@ enum e_errors
 
 typedef struct s_map {
     char     **map;
+    char     **grid;
     int      rows;
     int      cols;
     char     *no; 
@@ -211,7 +212,10 @@ int     check_texture(char *line, char c, t_vars *vars);
 int     aredigits(char * str);   //colocar na libft?
 unsigned long int   rgb_hex(int r, int g, int b);
 int     check_rgb(char *line, char c, t_vars *vars);
-
+int     allocate_map(char *line, t_vars *vars);
+char    **matrix_buffer(char **map, char *line, int cols);
+int     normalize_map(int rows, int cols, t_vars *vars);
+int     clear_pointer(char **p);
 
 int     newline(char *s_line);
 char    *cleanline(char **line, char *s_line, int j);

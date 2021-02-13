@@ -8,7 +8,7 @@ void update_player_sideways(t_player *player)
     //if (player->walk_direction != 0)
     //    move_step = player->walk_direction * player->move_speed;
     //if (player->walk_sideways != 0)
-        move_step = player->walk_sideways * player->move_speed;
+    move_step = player->walk_sideways * player->move_speed;
     player->new_x = player->x + cos(player->rotation_angle - PI/2) * move_step;
     player->new_y = player->y + sin(player->rotation_angle - PI/2) * move_step;
     if (!has_wall_at(player->new_x, player->new_y))
@@ -27,6 +27,8 @@ void update_player(t_player *player)
         move_step = player->walk_direction * player->move_speed;
     //if (player->walk_sideways != 0)
     //    move_step = player->move_speed;
+           //if (player->walk_direction != 0)
+
     player->new_x = player->x + cos(player->rotation_angle) * move_step;
     player->new_y = player->y + sin(player->rotation_angle) * move_step;
     if (!has_wall_at(player->new_x, player->new_y))
