@@ -113,6 +113,7 @@ typedef struct s_map {
     char     *we; 
     char     *ea;
     char     *s;
+    int      quantsprites;
     int      floor;
     int      ceiling;
 }              t_map; 

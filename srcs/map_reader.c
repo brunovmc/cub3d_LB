@@ -44,24 +44,24 @@ void    init_player(t_vars *vars,char direction,int x,int y)
 int     check_character_map(t_vars *vars, char *line)
 {
     int i;
-    int quantplayer;
+    int quant;
 
     i = 0;
-    quantplayer = 0;
+    quant = 0; //quant player
     while (line[i] && ft_strchr(" 012NSWE\n\t", line[i]))
     {
         if (line[i] == 'N' || line[i] == 'S' || line[i] == 'E' || line[i] == 'W')
         {
             init_player(vars, line[i], vars->map->rows, i);
-            //vars->player->x = vars->map->rows;
-            //vars->player->y = i; 
-            quantplayer++;
+            quant++;
         }
+        if (line[i] == '2')
+            vars->map->quantsprites++;
         i++;
     }
     if (i != ft_strlen(line))
         return (ft_error(WRONG_CHARACTER));
-    return (quantplayer);
+    return (quant);
 }
 
 
@@ -92,6 +92,7 @@ int     read_file(const char *argv, t_vars *vars)
         ret = get_next_line(fd, &line);
     }
     printf("quantplayer: %i\n", quantplayer);
+    printf("quantsprite: %i\n", vars->map->quantsprites);
     if (quantplayer != 1)
         ft_error(WRONG_PLAYER);
     printf("rows = %i\n", vars->map->rows);
@@ -218,6 +219,7 @@ void    init_header(t_vars *vars)
     vars->map->s = NULL;
     vars->map->ceiling = -1;
     vars->map->floor = -1;
+    vars->map->quantsprites = 0;
     mlx_get_screen_size(vars->mlx, &vars->max_width, &vars->max_height);
 }
 
