@@ -217,7 +217,7 @@ int     normalize_map(int rows, int cols, t_vars *vars);
 int     clear_pointer(char **p);
 void    init_header(t_vars *vars);
 int     header_full(t_vars *vars);
-int     check_character_map(char *line);
+int     check_character_map(t_vars *vars, char *line);
 
 
 int     newline(char *s_line);

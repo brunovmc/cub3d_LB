@@ -26,17 +26,21 @@ int    check_args(int argc, char **argv)
     
 }
 
-int     check_character_map(char *line)
+int     check_character_map(t_vars *vars, char *line)
 {
     int i;
     int quantplayer;
 
     i = 0;
     quantplayer = 0;
-    while (line[i] && ft_strchr(" 012NSWE\n", line[i]))
+    while (line[i] && ft_strchr(" 012NSWE\n\t", line[i]))
     {
         if (line[i] == 'N' || line[i] == 'S' || line[i] == 'E' || line[i] == 'W')
+        {
+            vars->player->x = vars->map->rows;
+            vars->player->y = i; 
             quantplayer++;
+        }
         i++;
     }
     if (i != ft_strlen(line))
@@ -60,7 +64,7 @@ int     read_file(const char *argv, t_vars *vars)
         if (line[0] && check_header(line, vars))
         {
             //strchr
-            quantplayer += check_character_map(line);
+            quantplayer += check_character_map(vars, line);
             if (ft_strlen(line) > vars->map->cols)
                 vars->map->cols = ft_strlen(line);
             allocate_map(line, vars);
