@@ -64,6 +64,7 @@ static char     g_errors[][50] =
     //validacao mapa
     "Invalid map file\n",
     "Wrong character in map\n",
+    "wrong number of players\n",
     //header
     "Header is invalid\n",
     "Some value is duplicated on header\n",
@@ -88,6 +89,7 @@ enum e_errors
     //validacao mapa
     INVALID_FILE,
     WRONG_CHARACTER,
+    WRONG_PLAYER,
     //header
     INVALID_HEADER,
     ALREADY_ASSIGNED,
@@ -215,6 +217,8 @@ int     normalize_map(int rows, int cols, t_vars *vars);
 int     clear_pointer(char **p);
 void    init_header(t_vars *vars);
 int     header_full(t_vars *vars);
+int     check_character_map(char *line);
+
 
 int     newline(char *s_line);
 char    *cleanline(char **line, char *s_line, int j);
