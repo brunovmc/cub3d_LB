@@ -37,7 +37,6 @@ int     check_character_map(char *line)
     {
         if (line[i] == 'N' || line[i] == 'S' || line[i] == 'E' || line[i] == 'W')
             quantplayer++;
-        if (line)
         i++;
     }
     if (i != ft_strlen(line))
