@@ -62,7 +62,7 @@ void render_map(t_vars *vars, t_data data) //eventualmente mapa como argumento
 
     //printf("\nAQUI\n");
     i = 0;
-    while (i < (vars->map->rows - 1))
+    while (i < vars->map->rows)
     {
         k = 0;
         while (k < vars->map->cols)

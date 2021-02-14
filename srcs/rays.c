@@ -50,12 +50,12 @@ double    ray_size(t_ray *ray, t_player *player, t_vars *vars)
 void    horz_intercept(t_ray *ray, t_player *player)
 {
     ray->foundhorzwallhit = FALSE;
-    ray->y_intercept = floor(player->y / TILE_SIZE) * TILE_SIZE;
-    ray->y_intercept += ray_facing_down(ray->current_ray) ? TILE_SIZE : 0;
+    ray->y_intercept = floor(player->y / TILE_SIZE) * TILE_SIZE * MINIMAP_SCALE_FACTOR;
+    ray->y_intercept += ray_facing_down(ray->current_ray) ? TILE_SIZE * MINIMAP_SCALE_FACTOR : 0;
     ray->x_intercept = player->x + (ray->y_intercept - player->y) / tan(ray->current_ray);
-    ray->ystep = TILE_SIZE;
+    ray->ystep = TILE_SIZE * MINIMAP_SCALE_FACTOR;
     ray->ystep *= !ray_facing_down(ray->current_ray) ? -1 : 1;
-    ray->xstep = TILE_SIZE / tan(ray->current_ray);
+    ray->xstep = TILE_SIZE * MINIMAP_SCALE_FACTOR / tan(ray->current_ray);
     ray->xstep *= (!ray_facing_right(ray->current_ray) && ray->xstep > 0) ? -1 : 1;
     ray->xstep *= (ray_facing_right(ray->current_ray) && ray->xstep < 0) ? -1 : 1;
 }
@@ -64,7 +64,7 @@ void increment_horz_step(t_ray *ray, t_vars *vars)
 {
     ray->nexthorztouchx = ray->x_intercept;
     ray->nexthorztouchy = ray->y_intercept;
-    while (ray->nexthorztouchx >= 0 && ray->nexthorztouchx <= WINDOW_WIDTH && ray->nexthorztouchy >= 0 && ray->nexthorztouchy <= WINDOW_HEIGHT)
+    while (ray->nexthorztouchx >= 0 && ray->nexthorztouchx <= vars->width && ray->nexthorztouchy >= 0 && ray->nexthorztouchy <= vars->height)
     {
         if (has_wall_at(ray->nexthorztouchx,
                         ray->nexthorztouchy - (!ray_facing_down(ray->current_ray) ? 1 : 0), vars))
@@ -85,12 +85,12 @@ void increment_horz_step(t_ray *ray, t_vars *vars)
 void vert_intercept(t_ray *ray, t_player *player)
 {
     ray->foundvertwallhit = FALSE;
-    ray->x_intercept = floor(player->x / TILE_SIZE) * TILE_SIZE;
-    ray->x_intercept += ray_facing_right(ray->current_ray) ? TILE_SIZE : 0;
+    ray->x_intercept = floor(player->x / TILE_SIZE) * TILE_SIZE * MINIMAP_SCALE_FACTOR;
+    ray->x_intercept += ray_facing_right(ray->current_ray) ? TILE_SIZE * MINIMAP_SCALE_FACTOR : 0;
     ray->y_intercept = player->y + (ray->x_intercept - player->x) * tan(ray->current_ray);
-    ray->xstep = TILE_SIZE;
+    ray->xstep = TILE_SIZE * MINIMAP_SCALE_FACTOR;
     ray->xstep *= !ray_facing_right(ray->current_ray) ? -1 : 1;
-    ray->ystep = TILE_SIZE * tan(ray->current_ray);
+    ray->ystep = TILE_SIZE * MINIMAP_SCALE_FACTOR * tan(ray->current_ray);
     ray->ystep *= (!ray_facing_down(ray->current_ray) && ray->ystep > 0) ? -1 : 1;
     ray->ystep *= (ray_facing_down(ray->current_ray) && ray->ystep < 0) ? -1 : 1;
 }

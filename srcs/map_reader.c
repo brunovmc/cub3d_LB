@@ -28,8 +28,8 @@ int    check_args(int argc, char **argv)
 
 void    init_player(t_vars *vars, char direction, int x, int y)
 {
-    vars->player->x = x;
-    vars->player->y = y;
+    vars->player->x = (y * TILE_SIZE + TILE_SIZE/2) * MINIMAP_SCALE_FACTOR;
+    vars->player->y = (x * TILE_SIZE + TILE_SIZE/2) * MINIMAP_SCALE_FACTOR;
     if (direction == 'N')
         vars->player->rotation_angle = NORTH;
     else if (direction == 'S')
@@ -145,7 +145,7 @@ int     normalize_map(int rows, int cols, t_vars *vars)
 
     i = 0;
     vars->map->grid = (char **)ft_calloc(sizeof(char *), rows + 1);
-    while (i < (rows - 1))
+    while (i < (rows)) //aqui tinha um rows - 1
     {
         j = 0;
         vars->map->grid[i] = (char *)ft_calloc(sizeof(char), cols + 1);
