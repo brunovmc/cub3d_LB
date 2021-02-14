@@ -26,7 +26,7 @@ int    check_args(int argc, char **argv)
     
 }
 
-void    init_player(t_vars *vars,char direction,int x,int y)
+void    init_player(t_vars *vars, char direction, int x, int y)
 {
     vars->player->x = x;
     vars->player->y = y;

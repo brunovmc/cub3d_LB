@@ -13,8 +13,8 @@ int update_frame(t_vars *vars)
 	
 	update_player(vars->player);
 	update_player_sideways(vars->player);
-	//put_player(&data, vars->player);
-	//cast_all_rays(&data, vars->player);
+	put_player(&data, vars->player);
+	cast_all_rays(&data, vars->player);
 	mlx_put_image_to_window(vars->mlx, vars->window, data.img, 0, 0);
 	return (0);
 }
@@ -37,7 +37,7 @@ int main(int argc, char **argv)
 	map_reader(argc, argv, &vars);
 
 	//player.rotation_angle = 2 * PI;
-	player.radius = 10;
+	player.radius = 3;
 	player.move_speed = 7.0;
 	player.rotation_speed = 7 * (PI / 180);
 	player.walk_direction = 0;
