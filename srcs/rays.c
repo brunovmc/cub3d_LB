@@ -77,7 +77,7 @@ void increment_horz_step(t_ray *ray, t_vars *vars)
     while (ray->nexthorztouchx >= 0 && ray->nexthorztouchx <= vars->map->cols * TILE_SIZE && ray->nexthorztouchy >= 0 && ray->nexthorztouchy <= vars->map->cols * TILE_SIZE)
     {
         if (has_wall_at(ray->nexthorztouchx,
-                        ray->nexthorztouchy - (!ray_facing_down(ray->current_ray) ? 1 : 0), vars))
+                        ray->nexthorztouchy - (!ray_facing_down(ray->current_ray) ? 1 : 0), vars) == '1')
         {
             ray->foundhorzwallhit = TRUE;
             ray->horzwallhitx = ray->nexthorztouchx;
@@ -117,7 +117,7 @@ void increment_vert_step(t_ray *ray, t_vars *vars)
     while (ray->nextverttouchx >= 0 && ray->nextverttouchx <= vars->map->cols * TILE_SIZE && ray->nextverttouchy >= 0 && ray->nextverttouchy <= vars->map->rows * TILE_SIZE)
     {
         if (has_wall_at(ray->nextverttouchx - (!ray_facing_right(ray->current_ray) ? 1 : 0),
-                        ray->nextverttouchy, vars))
+                        ray->nextverttouchy, vars) == '1')
         {
             ray->foundvertwallhit = TRUE;
             ray->vertwallhitx = ray->nextverttouchx;
