@@ -28,8 +28,8 @@ int    check_args(int argc, char **argv)
 
 void    init_player(t_vars *vars, char direction, int x, int y)
 {
-    vars->player->x = (y * TILE_SIZE + TILE_SIZE/2) * MINIMAP_SCALE_FACTOR;
-    vars->player->y = (x * TILE_SIZE + TILE_SIZE/2) * MINIMAP_SCALE_FACTOR;
+    vars->player->x = (y * TILE_SIZE + TILE_SIZE/2);// * MINIMAP_SCALE_FACTOR;
+    vars->player->y = (x * TILE_SIZE + TILE_SIZE/2);// * MINIMAP_SCALE_FACTOR;
     if (direction == 'N')
         vars->player->rotation_angle = NORTH;
     else if (direction == 'S')

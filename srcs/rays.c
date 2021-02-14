@@ -3,26 +3,31 @@
 void    cast_all_rays(t_data *data, t_player *player, t_vars *vars)
 {
     double rayangle;
-    double rays[NUM_RAYS];
+    //double rays[NUM_RAYS];
+    double rays[vars->map->cols * TILE_SIZE];
     int col;
     t_ray ray;
 
+    //vars->player->tilex = vars->width / vars->map->cols;
+    //vars->player->tiley = vars->height / vars->map->rows;
     ray.current_ray = normalize_angle(player->rotation_angle) - (FOV_ANGLE / 2);
     col = 0;
-    while (col < NUM_RAYS)
+    //while (col < NUM_RAYS)
+    while (col < vars->map->cols * TILE_SIZE) ////////////////tamanho do width do minimap
     {   
         rays[col] = ray_size(&ray, player, vars);
         put_ray(data, player, ray.current_ray, rays[col]);
-        ray.current_ray = normalize_angle(ray.current_ray + FOV_ANGLE / NUM_RAYS);
+        //ray.current_ray = normalize_angle(ray.current_ray + FOV_ANGLE / NUM_RAYS);
+        ray.current_ray = normalize_angle(ray.current_ray + FOV_ANGLE / (vars->map->cols * TILE_SIZE));
         col++;
     }
 }
 
 double    ray_size(t_ray *ray, t_player *player, t_vars *vars)
 {
-    horz_intercept(ray, player);
+    horz_intercept(ray, player, vars);
     increment_horz_step(ray, vars);
-    vert_intercept(ray, player);
+    vert_intercept(ray, player, vars);
     increment_vert_step(ray, vars);
     ray->horzhitdist = (ray->foundhorzwallhit) ? 
     distancebetweenpoints(player->x, player->y,
@@ -47,15 +52,20 @@ double    ray_size(t_ray *ray, t_player *player, t_vars *vars)
     }
 }
 
-void    horz_intercept(t_ray *ray, t_player *player)
+void    horz_intercept(t_ray *ray, t_player *player, t_vars *vars)
 {
+    float tile_x;
+    float tile_y;
+
+    tile_x = TILE_SIZE;
+    tile_y = TILE_SIZE;
     ray->foundhorzwallhit = FALSE;
-    ray->y_intercept = floor(player->y / TILE_SIZE) * TILE_SIZE * MINIMAP_SCALE_FACTOR;
-    ray->y_intercept += ray_facing_down(ray->current_ray) ? TILE_SIZE * MINIMAP_SCALE_FACTOR : 0;
+    ray->y_intercept = floor(player->y / TILE_SIZE) * TILE_SIZE;
+    ray->y_intercept += ray_facing_down(ray->current_ray) ? TILE_SIZE : 0;
     ray->x_intercept = player->x + (ray->y_intercept - player->y) / tan(ray->current_ray);
-    ray->ystep = TILE_SIZE * MINIMAP_SCALE_FACTOR;
+    ray->ystep = tile_y;
     ray->ystep *= !ray_facing_down(ray->current_ray) ? -1 : 1;
-    ray->xstep = TILE_SIZE * MINIMAP_SCALE_FACTOR / tan(ray->current_ray);
+    ray->xstep = tile_x / tan(ray->current_ray);
     ray->xstep *= (!ray_facing_right(ray->current_ray) && ray->xstep > 0) ? -1 : 1;
     ray->xstep *= (ray_facing_right(ray->current_ray) && ray->xstep < 0) ? -1 : 1;
 }
@@ -82,15 +92,20 @@ void increment_horz_step(t_ray *ray, t_vars *vars)
     }
 }
 
-void vert_intercept(t_ray *ray, t_player *player)
+void vert_intercept(t_ray *ray, t_player *player, t_vars *vars)
 {
+    float tile_x;
+    float tile_y;
+
+    tile_x = TILE_SIZE;
+    tile_y = TILE_SIZE;
     ray->foundvertwallhit = FALSE;
-    ray->x_intercept = floor(player->x / TILE_SIZE) * TILE_SIZE * MINIMAP_SCALE_FACTOR;
-    ray->x_intercept += ray_facing_right(ray->current_ray) ? TILE_SIZE * MINIMAP_SCALE_FACTOR : 0;
+    ray->x_intercept = floor(player->x / TILE_SIZE) * TILE_SIZE;
+    ray->x_intercept += ray_facing_right(ray->current_ray) ? TILE_SIZE : 0;
     ray->y_intercept = player->y + (ray->x_intercept - player->x) * tan(ray->current_ray);
-    ray->xstep = TILE_SIZE * MINIMAP_SCALE_FACTOR;
+    ray->xstep = tile_x;
     ray->xstep *= !ray_facing_right(ray->current_ray) ? -1 : 1;
-    ray->ystep = TILE_SIZE * MINIMAP_SCALE_FACTOR * tan(ray->current_ray);
+    ray->ystep = tile_y * tan(ray->current_ray);
     ray->ystep *= (!ray_facing_down(ray->current_ray) && ray->ystep > 0) ? -1 : 1;
     ray->ystep *= (ray_facing_down(ray->current_ray) && ray->ystep < 0) ? -1 : 1;
 }

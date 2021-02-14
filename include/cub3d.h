@@ -30,7 +30,7 @@
 
 
 // ==== defines gustavo ====
-# define TILE_SIZE 64
+# define TILE_SIZE 30
 # define MAP_NUM_ROWS 10
 # define MAP_NUM_COLS 15
 
@@ -148,6 +148,8 @@ typedef struct s_player {
     float    y;
     float    new_x;
     float    new_y;
+    //float    tilex;
+    //float    tiley;
     int      radius;
     int      turn_direction; 
     int      walk_direction;
@@ -193,9 +195,9 @@ void    update_player_sideways(t_player *player, t_vars *vars);
 int     has_wall_at(double x, double y, t_vars *vars);
 void    cast_all_rays(t_data *data, t_player *player, t_vars *vars);
 double  ray_size(t_ray *ray, t_player *player, t_vars *vars);
-void    horz_intercept(t_ray *ray, t_player *player);
+void    horz_intercept(t_ray *ray, t_player *player, t_vars *vars);
 void    increment_horz_step(t_ray *ray, t_vars *vars);
-void    vert_intercept(t_ray *ray, t_player *player);
+void    vert_intercept(t_ray *ray, t_player *player, t_vars *vars);
 void    increment_vert_step(t_ray *ray, t_vars *vars);
 int     ray_facing_down(double rotation_angle);
 int     ray_facing_right(double rotation_angle);
