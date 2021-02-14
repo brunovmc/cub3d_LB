@@ -47,7 +47,7 @@ int     check_character_map(t_vars *vars, char *line)
     int quant;
 
     i = 0;
-    quant = 0; //quant player
+    quant = 0; //quant players
     while (line[i] && ft_strchr(" 012NSWE\n\t", line[i]))
     {
         if (line[i] == 'N' || line[i] == 'S' || line[i] == 'E' || line[i] == 'W')

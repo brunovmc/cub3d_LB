@@ -64,6 +64,7 @@ static char     g_errors[][50] =
     "Invalid map file\n",
     "Wrong character in map\n",
     "wrong number of players\n",
+    "Map does not support empty line\n",
     //header
     "Header is invalid\n",
     "Some value is duplicated on header\n",
@@ -89,6 +90,7 @@ enum e_errors
     INVALID_FILE,
     WRONG_CHARACTER,
     WRONG_PLAYER,
+    EMPTY_LINE,
     //header
     INVALID_HEADER,
     ALREADY_ASSIGNED,
@@ -186,15 +188,15 @@ int     ft_close(t_vars *vars);
 int     keypressed(int key, t_vars *vars);
 int     keyreleased(int key, t_vars *vars);
 double  distancebetweenpoints(double x1, double y1, double x2, double y2);
-void    update_player(t_player *player);
-void    update_player_sideways(t_player *player);
-int     has_wall_at(double x, double y);
-void    cast_all_rays(t_data *data, t_player *player);
-double  ray_size(t_ray *ray, t_player *player);
+void    update_player(t_vars *vars);
+void    update_player_sideways(t_player *player, t_vars *vars);
+int     has_wall_at(double x, double y, t_vars *vars);
+void    cast_all_rays(t_data *data, t_player *player, t_vars *vars);
+double  ray_size(t_ray *ray, t_player *player, t_vars *vars);
 void    horz_intercept(t_ray *ray, t_player *player);
-void    increment_horz_step(t_ray *ray);
+void    increment_horz_step(t_ray *ray, t_vars *vars);
 void    vert_intercept(t_ray *ray, t_player *player);
-void    increment_vert_step(t_ray *ray);
+void    increment_vert_step(t_ray *ray, t_vars *vars);
 int     ray_facing_down(double rotation_angle);
 int     ray_facing_right(double rotation_angle);
 void    put_ray(t_data *data, t_player *player, double angle, double distance);

@@ -1,6 +1,6 @@
 #include "cub3d.h"
 
-int has_wall_at(double x, double y) //adicionar argumento com grid aka mapa
+int has_wall_at(double x, double y, t_vars *vars) //adicionar argumento com grid aka mapa
 {
     int grid[MAP_NUM_ROWS][MAP_NUM_COLS] = {
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -29,14 +29,14 @@ int has_wall_at(double x, double y) //adicionar argumento com grid aka mapa
     int map_grid_index_x;
     int map_grid_index_y;
 
-    if (x < 0 || x > WINDOW_WIDTH || y < 0 || y > WINDOW_HEIGHT)
+    if (x < 0 || x > vars->width || y < 0 || y > vars->height)
         return (TRUE);
     map_grid_index_x = floor(x / TILE_SIZE);
     map_grid_index_y = floor(y / TILE_SIZE);
     //if (grid[map_grid_index_y][map_grid_index_x] != 0)
     //    printf("grid[x][y]: %i\n", grid[map_grid_index_y][map_grid_index_x]);
 
-    return (grid[map_grid_index_y][map_grid_index_x] != 0);
+    return (vars->map->grid[map_grid_index_y][map_grid_index_x] != 0);
 }
 
 void render_map(t_vars *vars, t_data data) //eventualmente mapa como argumento

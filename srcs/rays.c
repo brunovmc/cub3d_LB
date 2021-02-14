@@ -1,6 +1,6 @@
 #include "cub3d.h"
 
-void    cast_all_rays(t_data *data, t_player *player)
+void    cast_all_rays(t_data *data, t_player *player, t_vars *vars)
 {
     double rayangle;
     double rays[NUM_RAYS];
@@ -11,19 +11,19 @@ void    cast_all_rays(t_data *data, t_player *player)
     col = 0;
     while (col < NUM_RAYS)
     {   
-        rays[col] = ray_size(&ray, player);
+        rays[col] = ray_size(&ray, player, vars);
         put_ray(data, player, ray.current_ray, rays[col]);
         ray.current_ray = normalize_angle(ray.current_ray + FOV_ANGLE / NUM_RAYS);
         col++;
     }
 }
 
-double    ray_size(t_ray *ray, t_player *player)
+double    ray_size(t_ray *ray, t_player *player, t_vars *vars)
 {
     horz_intercept(ray, player);
-    increment_horz_step(ray);
+    increment_horz_step(ray, vars);
     vert_intercept(ray, player);
-    increment_vert_step(ray);
+    increment_vert_step(ray, vars);
     ray->horzhitdist = (ray->foundhorzwallhit) ? 
     distancebetweenpoints(player->x, player->y,
      ray->horzwallhitx, ray->horzwallhity) : MAX_VALUE;
@@ -60,14 +60,14 @@ void    horz_intercept(t_ray *ray, t_player *player)
     ray->xstep *= (ray_facing_right(ray->current_ray) && ray->xstep < 0) ? -1 : 1;
 }
 
-void increment_horz_step(t_ray *ray)
+void increment_horz_step(t_ray *ray, t_vars *vars)
 {
     ray->nexthorztouchx = ray->x_intercept;
     ray->nexthorztouchy = ray->y_intercept;
     while (ray->nexthorztouchx >= 0 && ray->nexthorztouchx <= WINDOW_WIDTH && ray->nexthorztouchy >= 0 && ray->nexthorztouchy <= WINDOW_HEIGHT)
     {
         if (has_wall_at(ray->nexthorztouchx,
-                        ray->nexthorztouchy - (!ray_facing_down(ray->current_ray) ? 1 : 0)))
+                        ray->nexthorztouchy - (!ray_facing_down(ray->current_ray) ? 1 : 0), vars))
         {
             ray->foundhorzwallhit = TRUE;
             ray->horzwallhitx = ray->nexthorztouchx;
@@ -95,14 +95,14 @@ void vert_intercept(t_ray *ray, t_player *player)
     ray->ystep *= (ray_facing_down(ray->current_ray) && ray->ystep < 0) ? -1 : 1;
 }
 
-void increment_vert_step(t_ray *ray)
+void increment_vert_step(t_ray *ray, t_vars *vars)
 {
     ray->nextverttouchx = ray->x_intercept;
     ray->nextverttouchy = ray->y_intercept;
     while (ray->nextverttouchx >= 0 && ray->nextverttouchx <= WINDOW_WIDTH && ray->nextverttouchy >= 0 && ray->nextverttouchy <= WINDOW_HEIGHT)
     {
         if (has_wall_at(ray->nextverttouchx - (!ray_facing_right(ray->current_ray) ? 1 : 0),
-                        ray->nextverttouchy))
+                        ray->nextverttouchy, vars))
         {
             ray->foundvertwallhit = TRUE;
             ray->vertwallhitx = ray->nextverttouchx;

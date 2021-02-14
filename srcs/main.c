@@ -11,10 +11,10 @@ int update_frame(t_vars *vars)
 	//put_rays_G(&data, vars, vars->pos->x, vars->pos->y, 0x00ff0000);
 	//put_circle(&data, vars->pos->x, vars->pos->y, 2, 0x00000000);
 	
-	update_player(vars->player);
-	update_player_sideways(vars->player);
+	update_player(vars);
+	update_player_sideways(vars->player, vars);
 	put_player(&data, vars->player);
-	cast_all_rays(&data, vars->player);
+	cast_all_rays(&data, vars->player, vars);
 	mlx_put_image_to_window(vars->mlx, vars->window, data.img, 0, 0);
 	return (0);
 }

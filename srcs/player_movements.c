@@ -1,6 +1,6 @@
 #include "cub3d.h"
 
-void update_player_sideways(t_player *player)
+void update_player_sideways(t_player *player, t_vars *vars)
 {
     double move_step;
 
@@ -11,30 +11,30 @@ void update_player_sideways(t_player *player)
     move_step = player->walk_sideways * player->move_speed;
     player->new_x = player->x + cos(player->rotation_angle - PI/2) * move_step;
     player->new_y = player->y + sin(player->rotation_angle - PI/2) * move_step;
-    if (!has_wall_at(player->new_x, player->new_y))
+    if (!has_wall_at(player->new_x, player->new_y, vars))
     {
         player->x = player->new_x;
         player->y = player->new_y;
     }
 }
 
-void update_player(t_player *player)
+void update_player(t_vars *vars)
 {
     double move_step;
 
-    player->rotation_angle += player->turn_direction * player->rotation_speed;
+    vars->player->rotation_angle += vars->player->turn_direction * vars->player->rotation_speed;
     //if (player->walk_direction != 0)
-        move_step = player->walk_direction * player->move_speed;
+        move_step = vars->player->walk_direction * vars->player->move_speed;
     //if (player->walk_sideways != 0)
     //    move_step = player->move_speed;
            //if (player->walk_direction != 0)
 
-    player->new_x = player->x + cos(player->rotation_angle) * move_step;
-    player->new_y = player->y + sin(player->rotation_angle) * move_step;
-    if (!has_wall_at(player->new_x, player->new_y))
+    vars->player->new_x = vars->player->x + cos(vars->player->rotation_angle) * move_step;
+    vars->player->new_y = vars->player->y + sin(vars->player->rotation_angle) * move_step;
+    if (!has_wall_at(vars->player->new_x, vars->player->new_y, vars))
     {
-        player->x = player->new_x;
-        player->y = player->new_y;
+        vars->player->x = vars->player->new_x;
+        vars->player->y = vars->player->new_y;
     }
 }
 
