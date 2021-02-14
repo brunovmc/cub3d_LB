@@ -30,7 +30,7 @@
 
 
 // ==== defines gustavo ====
-# define TILE_SIZE 30
+# define TILE_SIZE 35
 # define MAP_NUM_ROWS 10
 # define MAP_NUM_COLS 15
 

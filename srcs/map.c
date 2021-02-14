@@ -21,14 +21,15 @@ int has_wall_at(double x, double y, t_vars *vars) //adicionar argumento com grid
 
     //tile_x = vars->width / vars->map->cols;
     //tile_y = vars->height / vars->map->rows;
-    if (x < 0 || x > vars->width || y < 0 || y > vars->height)
+    if (x < 0 || x > vars->map->cols * TILE_SIZE || y < 0 || y > vars->map->rows * TILE_SIZE)
         return (TRUE);
     //map_grid_index_x = floor(x / tile_x);
     //map_grid_index_y = floor(y / tile_y);
     map_grid_index_x = floor(x / TILE_SIZE);
     map_grid_index_y = floor(y / TILE_SIZE);
- 
-    return (vars->map->grid[map_grid_index_y][map_grid_index_x] != 0);
+
+    //printf("grid[%i][%i]: %c\n", map_grid_index_y, map_grid_index_x, vars->map->cols * TILE_SIZE);
+    return (vars->map->grid[map_grid_index_y][map_grid_index_x] != '0');
 }
 
 void render_map(t_vars *vars, t_data data) //eventualmente mapa como argumento
