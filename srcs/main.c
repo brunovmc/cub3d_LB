@@ -4,17 +4,17 @@ int update_frame(t_vars *vars)
 {
 	t_data data;
 
-	data.img = mlx_new_image(vars->mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
+	data.img = mlx_new_image(vars->mlx, vars->width, vars->height);
 	data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);
-	render_map(data);
+	render_map(vars, data);
 	//put_line(&data, vars, vars->pos->x, vars->pos->y, 100, 0x0000ff00);
 	//put_rays_G(&data, vars, vars->pos->x, vars->pos->y, 0x00ff0000);
 	//put_circle(&data, vars->pos->x, vars->pos->y, 2, 0x00000000);
 	
 	update_player(vars->player);
 	update_player_sideways(vars->player);
-	put_player(&data, vars->player);
-	cast_all_rays(&data, vars->player);
+	//put_player(&data, vars->player);
+	//cast_all_rays(&data, vars->player);
 	mlx_put_image_to_window(vars->mlx, vars->window, data.img, 0, 0);
 	return (0);
 }

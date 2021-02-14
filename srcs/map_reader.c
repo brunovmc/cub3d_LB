@@ -79,7 +79,6 @@ int     read_file(const char *argv, t_vars *vars)
     {
         if (line[0] && check_header(line, vars))
         {
-            //strchr
             quantplayer += check_character_map(vars, line);
             if (ft_strlen(line) > vars->map->cols)
                 vars->map->cols = ft_strlen(line);

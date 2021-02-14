@@ -44,7 +44,7 @@
 # define WALL_STRIP_WIDTH 1
 # define NUM_RAYS (WINDOW_WIDTH / WALL_STRIP_WIDTH)
 
-# define MINIMAP_SCALE_FACTOR 1
+# define MINIMAP_SCALE_FACTOR 0.35
 
 # define BUFFER_SIZE 40
 
@@ -178,7 +178,8 @@ typedef struct s_vars {
 int     update_frame(t_vars *vars);
 void    my_pixel_put(t_data *data, int x, int y, int color);
 void    put_rectangle(t_data *data, int x, int y, int size_x, int size_y, int color);
-void    render_map(t_data data);
+void    render_map(t_vars *vars, t_data data);
+void    render_map2(t_vars *vars, t_data data);
 void    put_circle(t_data *data, int a, int b, int size, int color);
 void    print_str(t_vars *vars,  int x, int y, int color, char *str);
 int     ft_close(t_vars *vars);
