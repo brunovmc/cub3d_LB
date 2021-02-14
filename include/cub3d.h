@@ -192,7 +192,7 @@ int     keyreleased(int key, t_vars *vars);
 double  distancebetweenpoints(double x1, double y1, double x2, double y2);
 void    update_player(t_vars *vars);
 void    update_player_sideways(t_player *player, t_vars *vars);
-int     has_wall_at(double x, double y, t_vars *vars);
+char    has_wall_at(double x, double y, t_vars *vars);
 void    cast_all_rays(t_data *data, t_player *player, t_vars *vars);
 double  ray_size(t_ray *ray, t_player *player, t_vars *vars);
 void    horz_intercept(t_ray *ray, t_player *player, t_vars *vars);

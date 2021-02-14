@@ -1,35 +1,17 @@
 #include "cub3d.h"
 
-int has_wall_at(double x, double y, t_vars *vars) //adicionar argumento com grid aka mapa
+char has_wall_at(double x, double y, t_vars *vars) //adicionar argumento com grid aka mapa
 {
-    int grid[MAP_NUM_ROWS][MAP_NUM_COLS] = {
-        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-        {1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
-        {1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
-        {1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
-        {1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1},
-        {1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1},
-        {1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
-        {1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1},
-        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-    };
     int map_grid_index_x;
     int map_grid_index_y;
-    //float tile_x;
-    //float tile_y;
 
-    //tile_x = vars->width / vars->map->cols;
-    //tile_y = vars->height / vars->map->rows;
     if (x < 0 || x > vars->map->cols * TILE_SIZE || y < 0 || y > vars->map->rows * TILE_SIZE)
         return (TRUE);
-    //map_grid_index_x = floor(x / tile_x);
-    //map_grid_index_y = floor(y / tile_y);
     map_grid_index_x = floor(x / TILE_SIZE);
     map_grid_index_y = floor(y / TILE_SIZE);
 
     //printf("grid[%i][%i]: %c\n", map_grid_index_y, map_grid_index_x, vars->map->cols * TILE_SIZE);
-    return (vars->map->grid[map_grid_index_y][map_grid_index_x] != '0');
+    return (vars->map->grid[map_grid_index_y][map_grid_index_x]);
 }
 
 void render_map(t_vars *vars, t_data data) //eventualmente mapa como argumento
@@ -39,19 +21,6 @@ void render_map(t_vars *vars, t_data data) //eventualmente mapa como argumento
     int     tile_x;
     int     tile_y;
     int     tile_color;
-
-    int grid[MAP_NUM_ROWS][MAP_NUM_COLS] = {
-        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-        {1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
-        {1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
-        {1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
-        {1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1},
-        {1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1},
-        {1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
-        {1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1},
-        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-    };
 
     //printf("\nAQUI\n");
     i = 0;

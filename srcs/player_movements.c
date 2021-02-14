@@ -11,7 +11,7 @@ void update_player_sideways(t_player *player, t_vars *vars)
     move_step = player->walk_sideways * player->move_speed;
     player->new_x = player->x + cos(player->rotation_angle - PI/2) * move_step;
     player->new_y = player->y + sin(player->rotation_angle - PI/2) * move_step;
-    if (!has_wall_at(player->new_x, player->new_y, vars))
+    if (has_wall_at(player->new_x, player->new_y, vars) != '1')
     {
         player->x = player->new_x;
         player->y = player->new_y;
@@ -31,7 +31,7 @@ void update_player(t_vars *vars)
 
     vars->player->new_x = vars->player->x + cos(vars->player->rotation_angle) * move_step;
     vars->player->new_y = vars->player->y + sin(vars->player->rotation_angle) * move_step;
-    if (!has_wall_at(vars->player->new_x, vars->player->new_y, vars))
+    if (has_wall_at(vars->player->new_x, vars->player->new_y, vars) != '1')
     {
         vars->player->x = vars->player->new_x;
         vars->player->y = vars->player->new_y;
