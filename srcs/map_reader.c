@@ -34,9 +34,9 @@ void    init_player(t_vars *vars, char direction, int x, int y)
         vars->player->rotation_angle = NORTH;
     else if (direction == 'S')
         vars->player->rotation_angle = SOUTH;
-    if (direction == 'E')
+    else if (direction == 'E')
         vars->player->rotation_angle = EAST;
-    if (direction == 'W')
+    else if (direction == 'W')
         vars->player->rotation_angle = WEST;
 }
 

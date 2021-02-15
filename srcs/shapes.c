@@ -35,6 +35,8 @@ void put_player(t_data *data, t_player *player)
 {
     int x;
     int y;
+    int mini_x;
+    int mini_y;
 
     x = 0;
     while (x <= (player->x + player->radius))
@@ -44,7 +46,12 @@ void put_player(t_data *data, t_player *player)
         {
             if ((x - player->x) * (x - player->x) + (y - player->y) * 
                 (y - player->y) <= player->radius * player->radius)
-                my_pixel_put(data, x, y, 0x00000000);
+                {
+                    mini_x = x * MINIMAP_SCALE_FACTOR;
+                    mini_y = y * MINIMAP_SCALE_FACTOR;
+                    my_pixel_put(data, mini_x, mini_y, 0x00000000);
+                }
+                
             y++;
         }
         x++;

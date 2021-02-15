@@ -17,10 +17,12 @@ void    cast_all_rays(t_data *data, t_player *player, t_vars *vars)
     {   
         rays[col] = ray_size(&ray, player, vars);
         put_ray(data, player, ray.current_ray, rays[col]);
+        render3d_walls(vars, rays[col]);
         //ray.current_ray = normalize_angle(ray.current_ray + FOV_ANGLE / NUM_RAYS);
         ray.current_ray = normalize_angle(ray.current_ray + FOV_ANGLE / (vars->map->cols * TILE_SIZE));
         col++;
     }
+    //return(render3d_walls(vars, rays));
 }
 
 double    ray_size(t_ray *ray, t_player *player, t_vars *vars)
@@ -149,8 +151,8 @@ void put_ray(t_data *data, t_player *player, double angle, double distance)
     i = 0;
     while (i < distance)
     {
-        my_pixel_put(data, (player->x + cos(angle) * i),
-                     (player->y + sin(angle) * i), 0x00ff0000);
+        my_pixel_put(data, (player->x + cos(angle) * i) * MINIMAP_SCALE_FACTOR ,
+                     (player->y + sin(angle) * i) * MINIMAP_SCALE_FACTOR, 0x00ff0000);
         i++;
     }
 }

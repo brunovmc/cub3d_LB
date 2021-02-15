@@ -29,13 +29,13 @@ void render_map(t_vars *vars, t_data data) //eventualmente mapa como argumento
         k = 0;
         while (k < vars->map->cols)
         {
-            tile_x = (k * TILE_SIZE);// * MINIMAP_SCALE_FACTOR;
-            tile_y = (i * TILE_SIZE);// * MINIMAP_SCALE_FACTOR;
+            tile_x = (k * TILE_SIZE);
+            tile_y = (i * TILE_SIZE);
             tile_color = vars->map->grid[i][k] == '1' ? 0X0000FF00 : 0X00FFFFFF;
             //printf("%c", vars->map->grid[i][k]);
-            put_rectangle(&data, tile_x, tile_y, tile_x + TILE_SIZE, tile_y + TILE_SIZE, tile_color);
-            put_rectangle(&data, tile_x, tile_y, tile_x, tile_y + TILE_SIZE, 0X00000000);
-            put_rectangle(&data, tile_x, tile_y, tile_x + TILE_SIZE, tile_y, 0X00000000);
+            put_rectangle(&data, tile_x * MINIMAP_SCALE_FACTOR, tile_y * MINIMAP_SCALE_FACTOR, (tile_x + TILE_SIZE) * MINIMAP_SCALE_FACTOR, (tile_y + TILE_SIZE) * MINIMAP_SCALE_FACTOR, tile_color);
+            //put_rectangle(&data, tile_x, tile_y, tile_x, tile_y + TILE_SIZE, 0X00000000);
+            //put_rectangle(&data, tile_x, tile_y, tile_x + TILE_SIZE, tile_y, 0X00000000);
             k++;
         }
         //printf("\n");

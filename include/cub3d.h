@@ -204,6 +204,7 @@ int     ray_facing_right(double rotation_angle);
 void    put_ray(t_data *data, t_player *player, double angle, double distance);
 void    put_player(t_data *data, t_player *player);
 double  normalize_angle(double angle);
+void     render3d_walls(t_vars *vars, double rays);
 
 int     ft_error(int error_num);
 int     map_reader(int argc, char **argv, t_vars *vars);
