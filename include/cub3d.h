@@ -49,7 +49,7 @@
 # define BUFFER_SIZE 40
 
 # define ROTATION_SPEED 1.0
-# define WALK_SPEED 1
+# define WALK_SPEED 10
 
 // mensagens de erro
 

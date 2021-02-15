@@ -14,10 +14,10 @@ void put_rectangle(t_data *data, int x, int y, int size_x, int size_y, int color
     int init_x;
 
     init_x = x;
-    while (y <= size_y)
+    while (y < size_y)
     {
         x = init_x;
-        while (x <= size_x)
+        while (x < size_x)
         {
             my_pixel_put(data, x, y, color);
             x++;

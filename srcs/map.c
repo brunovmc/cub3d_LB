@@ -22,7 +22,8 @@ void render_map(t_vars *vars, t_data data) //eventualmente mapa como argumento
     int     tile_y;
     int     tile_color;
 
-    //printf("\nAQUI\n");
+    put_rectangle(&data, 0, 0, vars->width, vars->height / 2, 0X000000FF);
+    put_rectangle(&data, 0, vars->height / 2, vars->width, vars->height, 0X00FF00FF);
     i = 0;
     while (i < vars->map->rows)
     {
@@ -31,14 +32,10 @@ void render_map(t_vars *vars, t_data data) //eventualmente mapa como argumento
         {
             tile_x = (k * TILE_SIZE);
             tile_y = (i * TILE_SIZE);
-            tile_color = vars->map->grid[i][k] == '1' ? 0X0000FF00 : 0X00FFFFFF;
-            //printf("%c", vars->map->grid[i][k]);
-            put_rectangle(&data, tile_x * MINIMAP_SCALE_FACTOR, tile_y * MINIMAP_SCALE_FACTOR, (tile_x + TILE_SIZE) * MINIMAP_SCALE_FACTOR, (tile_y + TILE_SIZE) * MINIMAP_SCALE_FACTOR, tile_color);
-            //put_rectangle(&data, tile_x, tile_y, tile_x, tile_y + TILE_SIZE, 0X00000000);
-            //put_rectangle(&data, tile_x, tile_y, tile_x + TILE_SIZE, tile_y, 0X00000000);
+            if (vars->map->grid[i][k] == '1')
+                put_rectangle(&data, tile_x * MINIMAP_SCALE_FACTOR, tile_y * MINIMAP_SCALE_FACTOR, (tile_x + TILE_SIZE) * MINIMAP_SCALE_FACTOR, (tile_y + TILE_SIZE) * MINIMAP_SCALE_FACTOR, 0X00FFFFFF);
             k++;
         }
-        //printf("\n");
         i++;
     }
 }

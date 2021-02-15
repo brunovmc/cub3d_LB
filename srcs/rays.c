@@ -4,7 +4,7 @@ void    cast_all_rays(t_data *data, t_player *player, t_vars *vars)
 {
     double rayangle;
     //double rays[NUM_RAYS];
-    double rays[vars->map->cols * TILE_SIZE];
+    double rays[vars->width];
     int col;
     t_ray ray;
 
@@ -13,11 +13,10 @@ void    cast_all_rays(t_data *data, t_player *player, t_vars *vars)
     ray.current_ray = normalize_angle(player->rotation_angle) - (FOV_ANGLE / 2);
     col = 0;
     //while (col < NUM_RAYS)
-    printf("max width = %i\n", vars->max_width);
-    printf("width = %i\n", vars->width);
-    printf("cols * tile  = %i\n", vars->map->cols * TILE_SIZE);
-
-    while (col < vars->map->cols * TILE_SIZE)
+    // printf("max width = %i\n", vars->max_width);
+    // printf("width = %i\n", vars->width);
+    // printf("cols * tile  = %i\n", vars->map->cols * TILE_SIZE);
+    while (col < vars->width)
     {   
         rays[col] = ray_size(&ray, player, vars);
         put_ray(data, player, ray.current_ray, rays[col]);
@@ -25,10 +24,13 @@ void    cast_all_rays(t_data *data, t_player *player, t_vars *vars)
         //ray.current_ray = normalize_angle(ray.current_ray + FOV_ANGLE / NUM_RAYS);
         // my_pixel_put(data, 1200, 600, 0X0000FF00);
 
-        ray.current_ray = normalize_angle(ray.current_ray + FOV_ANGLE / (vars->map->cols * TILE_SIZE));
+        ray.current_ray = normalize_angle(ray.current_ray + FOV_ANGLE / vars->width);
 
         col++;
     }
+    // printf("rays col[0] = %f\n", rays[0]);
+    // printf("rays col[1] = %f\n", rays[1]);
+    // printf("rays col[col -1] = %f\n", rays[col - 1]);
     //return(render3d_walls(vars, rays));
 }
 
@@ -63,18 +65,13 @@ double    ray_size(t_ray *ray, t_player *player, t_vars *vars)
 
 void    horz_intercept(t_ray *ray, t_player *player, t_vars *vars)
 {
-    float tile_x;
-    float tile_y;
-
-    tile_x = TILE_SIZE;
-    tile_y = TILE_SIZE;
     ray->foundhorzwallhit = FALSE;
     ray->y_intercept = floor(player->y / TILE_SIZE) * TILE_SIZE;
     ray->y_intercept += ray_facing_down(ray->current_ray) ? TILE_SIZE : 0;
     ray->x_intercept = player->x + (ray->y_intercept - player->y) / tan(ray->current_ray);
-    ray->ystep = tile_y;
+    ray->ystep = TILE_SIZE;
     ray->ystep *= !ray_facing_down(ray->current_ray) ? -1 : 1;
-    ray->xstep = tile_x / tan(ray->current_ray);
+    ray->xstep = TILE_SIZE / tan(ray->current_ray);
     ray->xstep *= (!ray_facing_right(ray->current_ray) && ray->xstep > 0) ? -1 : 1;
     ray->xstep *= (ray_facing_right(ray->current_ray) && ray->xstep < 0) ? -1 : 1;
 }
@@ -83,7 +80,7 @@ void increment_horz_step(t_ray *ray, t_vars *vars)
 {
     ray->nexthorztouchx = ray->x_intercept;
     ray->nexthorztouchy = ray->y_intercept;
-    while (ray->nexthorztouchx >= 0 && ray->nexthorztouchx <= vars->width && ray->nexthorztouchy >= 0 && ray->nexthorztouchy <= vars->height)
+    while (ray->nexthorztouchx >= 0 && ray->nexthorztouchx < vars->width && ray->nexthorztouchy >= 0 && ray->nexthorztouchy < vars->height)
     {
         if (has_wall_at(ray->nexthorztouchx,
                         ray->nexthorztouchy - (!ray_facing_down(ray->current_ray) ? 1 : 0), vars) == '1')
@@ -103,18 +100,13 @@ void increment_horz_step(t_ray *ray, t_vars *vars)
 
 void vert_intercept(t_ray *ray, t_player *player, t_vars *vars)
 {
-    float tile_x;
-    float tile_y;
-
-    tile_x = TILE_SIZE;
-    tile_y = TILE_SIZE;
     ray->foundvertwallhit = FALSE;
     ray->x_intercept = floor(player->x / TILE_SIZE) * TILE_SIZE;
     ray->x_intercept += ray_facing_right(ray->current_ray) ? TILE_SIZE : 0;
     ray->y_intercept = player->y + (ray->x_intercept - player->x) * tan(ray->current_ray);
-    ray->xstep = tile_x;
+    ray->xstep = TILE_SIZE;
     ray->xstep *= !ray_facing_right(ray->current_ray) ? -1 : 1;
-    ray->ystep = tile_y * tan(ray->current_ray);
+    ray->ystep = TILE_SIZE * tan(ray->current_ray);
     ray->ystep *= (!ray_facing_down(ray->current_ray) && ray->ystep > 0) ? -1 : 1;
     ray->ystep *= (ray_facing_down(ray->current_ray) && ray->ystep < 0) ? -1 : 1;
 }
@@ -123,7 +115,7 @@ void increment_vert_step(t_ray *ray, t_vars *vars)
 {
     ray->nextverttouchx = ray->x_intercept;
     ray->nextverttouchy = ray->y_intercept;
-    while (ray->nextverttouchx >= 0 && ray->nextverttouchx <= vars->width && ray->nextverttouchy >= 0 && ray->nextverttouchy <= vars->height)
+    while (ray->nextverttouchx >= 0 && ray->nextverttouchx < vars->width && ray->nextverttouchy >= 0 && ray->nextverttouchy < vars->height)
     {
         if (has_wall_at(ray->nextverttouchx - (!ray_facing_right(ray->current_ray) ? 1 : 0),
                         ray->nextverttouchy, vars) == '1')
