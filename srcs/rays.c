@@ -13,13 +13,20 @@ void    cast_all_rays(t_data *data, t_player *player, t_vars *vars)
     ray.current_ray = normalize_angle(player->rotation_angle) - (FOV_ANGLE / 2);
     col = 0;
     //while (col < NUM_RAYS)
+    printf("max width = %i\n", vars->max_width);
+    printf("width = %i\n", vars->width);
+    printf("cols * tile  = %i\n", vars->map->cols * TILE_SIZE);
+
     while (col < vars->map->cols * TILE_SIZE)
     {   
         rays[col] = ray_size(&ray, player, vars);
         put_ray(data, player, ray.current_ray, rays[col]);
-        render3d_walls(vars, rays[col]);
+        render3d_walls(vars, data, rays[col], ray.current_ray, col);
         //ray.current_ray = normalize_angle(ray.current_ray + FOV_ANGLE / NUM_RAYS);
+        // my_pixel_put(data, 1200, 600, 0X0000FF00);
+
         ray.current_ray = normalize_angle(ray.current_ray + FOV_ANGLE / (vars->map->cols * TILE_SIZE));
+
         col++;
     }
     //return(render3d_walls(vars, rays));
@@ -76,7 +83,7 @@ void increment_horz_step(t_ray *ray, t_vars *vars)
 {
     ray->nexthorztouchx = ray->x_intercept;
     ray->nexthorztouchy = ray->y_intercept;
-    while (ray->nexthorztouchx >= 0 && ray->nexthorztouchx <= vars->map->cols * TILE_SIZE && ray->nexthorztouchy >= 0 && ray->nexthorztouchy <= vars->map->cols * TILE_SIZE)
+    while (ray->nexthorztouchx >= 0 && ray->nexthorztouchx <= vars->width && ray->nexthorztouchy >= 0 && ray->nexthorztouchy <= vars->height)
     {
         if (has_wall_at(ray->nexthorztouchx,
                         ray->nexthorztouchy - (!ray_facing_down(ray->current_ray) ? 1 : 0), vars) == '1')
@@ -116,7 +123,7 @@ void increment_vert_step(t_ray *ray, t_vars *vars)
 {
     ray->nextverttouchx = ray->x_intercept;
     ray->nextverttouchy = ray->y_intercept;
-    while (ray->nextverttouchx >= 0 && ray->nextverttouchx <= vars->map->cols * TILE_SIZE && ray->nextverttouchy >= 0 && ray->nextverttouchy <= vars->map->rows * TILE_SIZE)
+    while (ray->nextverttouchx >= 0 && ray->nextverttouchx <= vars->width && ray->nextverttouchy >= 0 && ray->nextverttouchy <= vars->height)
     {
         if (has_wall_at(ray->nextverttouchx - (!ray_facing_right(ray->current_ray) ? 1 : 0),
                         ray->nextverttouchy, vars) == '1')

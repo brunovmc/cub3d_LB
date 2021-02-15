@@ -36,20 +36,20 @@
 
 # define MAX_VALUE 3.40282e+038
 
-# define WINDOW_WIDTH (MAP_NUM_COLS * TILE_SIZE)
-# define WINDOW_HEIGHT (MAP_NUM_ROWS * TILE_SIZE)
+//# define WINDOW_WIDTH (MAP_NUM_COLS * TILE_SIZE)
+//# define WINDOW_HEIGHT (MAP_NUM_ROWS * TILE_SIZE)
 
 # define FOV_ANGLE (60 * PI / 180)
 
 # define WALL_STRIP_WIDTH 1
-# define NUM_RAYS (WINDOW_WIDTH / WALL_STRIP_WIDTH)
+//# define NUM_RAYS (WINDOW_WIDTH / WALL_STRIP_WIDTH)
 
 # define MINIMAP_SCALE_FACTOR 0.35
 
 # define BUFFER_SIZE 40
 
 # define ROTATION_SPEED 1.0
-# define WALK_SPEED 10
+# define WALK_SPEED 1
 
 // mensagens de erro
 
@@ -204,7 +204,7 @@ int     ray_facing_right(double rotation_angle);
 void    put_ray(t_data *data, t_player *player, double angle, double distance);
 void    put_player(t_data *data, t_player *player);
 double  normalize_angle(double angle);
-void     render3d_walls(t_vars *vars, double rays);
+void    render3d_walls(t_vars *vars,t_data *data, double rays, double current_ray, int col);
 
 int     ft_error(int error_num);
 int     map_reader(int argc, char **argv, t_vars *vars);
