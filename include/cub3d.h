@@ -215,7 +215,7 @@ int     header_values(t_vars *vars);
 int     check_resolution(char *line, t_vars *vars);
 int     check_texture(char *line, char c, t_vars *vars);
 int     aredigits(char * str);   //colocar na libft?
-unsigned long int   rgb_hex(int r, int g, int b);
+unsigned int     rgb_hex(int r, int g, int b);
 int     check_rgb(char *line, char c, t_vars *vars);
 int     allocate_map(char *line, t_vars *vars);
 char    **matrix_buffer(char **map, char *line, int cols);

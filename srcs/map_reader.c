@@ -232,9 +232,9 @@ int     header_full(t_vars *vars)
     return (FALSE);
 }
 
-    unsigned long int rgb_hex(int r, int g, int b)
+unsigned int rgb_hex(int r, int g, int b)
 {
-    return (((r & 0xff) << 16) + ((g & 0xff) << 8) + (b & 0xff)); 
+    return (0 << 24 | r << 16 | g << 8 | b); 
 }
 
 int     check_rgb(char *line, char c, t_vars *vars)
