@@ -5,6 +5,7 @@ void    cast_all_rays(t_data *data, t_player *player, t_vars *vars)
     double rayangle;
     //double rays[NUM_RAYS];
     double rays[vars->width];
+    float   distanceprojection;
     int col;
     t_ray ray;
 
@@ -16,13 +17,14 @@ void    cast_all_rays(t_data *data, t_player *player, t_vars *vars)
     // printf("max width = %i\n", vars->max_width);
     // printf("width = %i\n", vars->width);
     // printf("cols * tile  = %i\n", vars->map->cols * TILE_SIZE);
+    distanceprojection = (vars->width / 2) / tan(FOV_ANGLE / 2);
     while (col < vars->width)
     {   
         rays[col] = ray_size(&ray, player, vars);
         put_ray(data, player, ray.current_ray, rays[col]);
-        render3d_walls(vars, data, rays[col], ray.current_ray, col);
-        //ray.current_ray = normalize_angle(ray.current_ray + FOV_ANGLE / NUM_RAYS);
-        // my_pixel_put(data, 1200, 600, 0X0000FF00);
+        
+
+        render3d_walls(vars, data, rays[col], ray.current_ray, col, distanceprojection);
 
         ray.current_ray = normalize_angle(ray.current_ray + FOV_ANGLE / vars->width);
 
