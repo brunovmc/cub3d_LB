@@ -136,6 +136,63 @@ char **matrix_buffer(char **map, char *line, int cols)
     return (tmp);
 }
 
+int		is_char_allowed(char c)
+{
+	if (!c)
+		return (FALSE);
+	if (ft_strchr("012NSEW", c))
+		return (TRUE);
+	return (FALSE);
+}
+
+int		check_sides_map(t_vars *vars, int row, int col)
+{
+	if (((row == 0 || row == (vars->map->rows - 1)) || (col == 0 ||
+	col == vars->map->cols - 1)) &&
+	(!(ft_strchr("1", vars->map->grid[row][col]))))
+        ft_error(NOT_SURROUND_1);
+	else if ((row > 0 && row < vars->map->rows - 1) &&
+	(col > 0 && col < vars->map->cols - 1) &&
+	//(ft_strchr("02NSWE", vars->map->map[row][col])) &&
+	((!(is_char_allowed(vars->map->grid[row - 1][col]))) ||
+	(!(is_char_allowed(vars->map->grid[row + 1][col]))) ||
+	(!(is_char_allowed(vars->map->grid[row][col + 1]))) ||
+	(!(is_char_allowed(vars->map->grid[row][col - 1]))) ||
+	(!(is_char_allowed(vars->map->grid[row - 1][col - 1]))) ||
+	(!(is_char_allowed(vars->map->grid[row + 1][col - 1]))) ||
+	(!(is_char_allowed(vars->map->grid[row - 1][col + 1]))) ||
+	(!(is_char_allowed(vars->map->grid[row + 1][col + 1])))))
+		ft_error(INVALID_MAP);
+    //else
+    //    printf("AAAAAAA");
+    
+    return(1);
+}
+
+int     check_map(t_vars *vars)
+{
+    int i;
+    int j;
+
+    i = 0;
+    //printf("6\n");
+    while (i < vars->map->rows)
+    {
+        //printf("%i\n", i);
+        j = 0;
+        while (j < vars->map->cols)
+        {
+            //printf("%i", j);
+            //printf("%c",vars->map->map[i][j]);
+            check_sides_map(vars, i, j);
+            j++;
+        }
+        i++;
+    }
+    //printf("rows: %d\ncols: %d\n", vars->map->rows, vars->map->cols);
+    return (1);
+}
+
 int     normalize_map(int rows, int cols, t_vars *vars)
 {
     //char **map;
@@ -164,7 +221,7 @@ int     normalize_map(int rows, int cols, t_vars *vars)
     }
     vars->map->grid[i] = NULL;
     clear_pointer(vars->map->map);
-    return (0);
+    return (check_map(vars));
 }
 
 int clear_pointer(char **p)

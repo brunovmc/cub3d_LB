@@ -65,6 +65,8 @@ static char     g_errors[][50] =
     "Wrong character in map\n",
     "wrong number of players\n",
     "Map does not support empty line\n",
+    "Map must be surrounded by '1'\n",
+    "Invalip map\n",
     //header
     "Header is invalid\n",
     "Some value is duplicated on header\n",
@@ -91,6 +93,8 @@ enum e_errors
     WRONG_CHARACTER,
     WRONG_PLAYER,
     EMPTY_LINE,
+    NOT_SURROUND_1,
+    INVALID_MAP,
     //header
     INVALID_HEADER,
     ALREADY_ASSIGNED,
