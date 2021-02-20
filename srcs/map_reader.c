@@ -337,6 +337,8 @@ int     check_texture(char *line, char c, t_vars *vars)
 
     path = ft_split(line, ' ');
     ext = ft_split(path[1], '.');
+    if (!path[1])
+        ft_error(NOT_TEXTURE_FILE);
     if (path[2])
         ft_error(TOO_MANY_TXT_ARGS);
     if (ft_strncmp(ext[1], "xpm", ft_strlen(ext[1])) != 0)

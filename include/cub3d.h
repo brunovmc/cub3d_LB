@@ -75,6 +75,7 @@ static char     g_errors[][50] =
     //texture
     "Too many texture arguments\n",
     "File extension must be .xpm\n",
+    "File address does not exist\n",
     //rgb
     "Too many rgb arguments\n",
     "Invalid rgb number passed\n",
@@ -103,6 +104,7 @@ enum e_errors
     //texture
     TOO_MANY_TXT_ARGS,
     NOT_XPM,
+    NOT_TEXTURE_FILE,
     //rgb
     TOO_MANY_RGB_ARGS,
     WRONG_RGB,
