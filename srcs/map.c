@@ -5,7 +5,7 @@ char has_wall_at(double x, double y, t_vars *vars) //adicionar argumento com gri
     int map_grid_index_x;
     int map_grid_index_y;
 
-    if (x < 0 || x > vars->map->cols * TILE_SIZE || y < 0 || y > vars->map->rows * TILE_SIZE)
+    if (x < 0 || x >= vars->map->cols * TILE_SIZE || y < 0 || y >= vars->map->rows * TILE_SIZE)
         return (TRUE);
     map_grid_index_x = floor(x / TILE_SIZE);
     map_grid_index_y = floor(y / TILE_SIZE);

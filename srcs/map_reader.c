@@ -48,7 +48,7 @@ int     check_character_map(t_vars *vars, char *line)
 
     i = 0;
     quant = 0; //quant players
-    while (line[i] && ft_strchr(" 012NSWE\n\t", line[i]))
+    while (line[i] && ft_strchr(" 012NSWE\n", line[i]))
     {
         if (line[i] == 'N' || line[i] == 'S' || line[i] == 'E' || line[i] == 'W')
         {
@@ -149,11 +149,11 @@ int		check_sides_map(t_vars *vars, int row, int col)
 {
 	if (((row == 0 || row == (vars->map->rows - 1)) || (col == 0 ||
 	col == vars->map->cols - 1)) &&
-	(!(ft_strchr("1", vars->map->grid[row][col]))))
+	(!(ft_strchr("1 ", vars->map->grid[row][col]))))
         ft_error(NOT_SURROUND_1);
 	else if ((row > 0 && row < vars->map->rows - 1) &&
 	(col > 0 && col < vars->map->cols - 1) &&
-	//(ft_strchr("02NSWE", vars->map->map[row][col])) &&
+	(ft_strchr("02NSWE", vars->map->grid[row][col])) &&
 	((!(is_char_allowed(vars->map->grid[row - 1][col]))) ||
 	(!(is_char_allowed(vars->map->grid[row + 1][col]))) ||
 	(!(is_char_allowed(vars->map->grid[row][col + 1]))) ||
@@ -162,9 +162,12 @@ int		check_sides_map(t_vars *vars, int row, int col)
 	(!(is_char_allowed(vars->map->grid[row + 1][col - 1]))) ||
 	(!(is_char_allowed(vars->map->grid[row - 1][col + 1]))) ||
 	(!(is_char_allowed(vars->map->grid[row + 1][col + 1])))))
+    {
+        printf("row: %d - col: %d\n", row, col);
 		ft_error(INVALID_MAP);
+    }
     //else
-    //    printf("AAAAAAA");
+    //    printf("AAAAAAA\n");
     
     return(1);
 }

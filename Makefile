@@ -18,7 +18,7 @@ OBJS = $(patsubst $(SRCS_DIR)%.c,  $(OBJS_DIR)%.o,  $(SRCS))
 
 CC = 		clang
 HEAD = 		-I./include -I./$(LIBFT_DIR) -I./$(MLX_DIR)
-
+CFLAGS = 	-g
 LFLAGS =	-lbsd -lm -lX11 -lXext \
 			-L ./$(LIBFT_DIR) -lft \
 			-L ./$(MLX_DIR) -lmlx
@@ -27,11 +27,11 @@ RM = 		/bin/rm -rf
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT) $(MLX)
-	$(CC) $(OBJS) $(HEAD) $(LFLAGS) -o $@
+	$(CC) $(OBJS) $(HEAD) $(CFLAGS) $(LFLAGS) -o $@
 
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
 	mkdir -p $(OBJS_DIR)
-	$(CC) $(HEAD) -c $< -o $@
+	$(CC) $(HEAD) $(CFLAGS) -c $< -o $@
 
 $(MLX):
 	make -C $(MLX_DIR)

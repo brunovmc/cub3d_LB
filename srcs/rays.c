@@ -19,7 +19,9 @@ void    cast_all_rays(t_data *data, t_player *player, t_vars *vars)
     // printf("cols * tile  = %i\n", vars->map->cols * TILE_SIZE);
     distanceprojection = (vars->width / 2) / tan(FOV_ANGLE / 2);
     while (col < vars->width)
-    {   
+    //while (col < 1)
+    {  
+        //ray->foundhorzwallhit = FALSE;
         rays[col] = ray_size(&ray, player, vars);
         put_ray(data, player, ray.current_ray, rays[col]);
         
@@ -80,9 +82,14 @@ void    horz_intercept(t_ray *ray, t_player *player, t_vars *vars)
 
 void increment_horz_step(t_ray *ray, t_vars *vars)
 {
+    int max_width;
+    int max_height;
+
+    max_width = TILE_SIZE * vars->map->cols;
+    max_height = TILE_SIZE * vars->map->rows;
     ray->nexthorztouchx = ray->x_intercept;
     ray->nexthorztouchy = ray->y_intercept;
-    while (ray->nexthorztouchx >= 0 && ray->nexthorztouchx < vars->width && ray->nexthorztouchy >= 0 && ray->nexthorztouchy < vars->height)
+    while (ray->nexthorztouchx >= 0 && ray->nexthorztouchx <= max_width && ray->nexthorztouchy >= 0 && ray->nexthorztouchy <= max_height)
     {
         if (has_wall_at(ray->nexthorztouchx,
                         ray->nexthorztouchy - (!ray_facing_down(ray->current_ray) ? 1 : 0), vars) == '1')
@@ -115,9 +122,14 @@ void vert_intercept(t_ray *ray, t_player *player, t_vars *vars)
 
 void increment_vert_step(t_ray *ray, t_vars *vars)
 {
+    int max_width;
+    int max_height;
+
+    max_width = TILE_SIZE * vars->map->cols -1;
+    max_height = TILE_SIZE * vars->map->rows - 1;
     ray->nextverttouchx = ray->x_intercept;
     ray->nextverttouchy = ray->y_intercept;
-    while (ray->nextverttouchx >= 0 && ray->nextverttouchx < vars->width && ray->nextverttouchy >= 0 && ray->nextverttouchy < vars->height)
+    while (ray->nextverttouchx >= 0 && ray->nextverttouchx <= max_width && ray->nextverttouchy >= 0 && ray->nextverttouchy <= max_height)
     {
         if (has_wall_at(ray->nextverttouchx - (!ray_facing_right(ray->current_ray) ? 1 : 0),
                         ray->nextverttouchy, vars) == '1')
@@ -137,12 +149,12 @@ void increment_vert_step(t_ray *ray, t_vars *vars)
 
 int ray_facing_down(double rotation_angle)
 {
-    return ((rotation_angle > 0 && rotation_angle < PI));
+    return ((rotation_angle >= 0 && rotation_angle <= PI));
 }
 
 int ray_facing_right(double rotation_angle)
 {
-    return ((rotation_angle < 0.5 * PI || rotation_angle > 1.5 * PI));
+    return ((rotation_angle <= 0.5 * PI || rotation_angle >= 1.5 * PI));
 }
 
 void put_ray(t_data *data, t_player *player, double angle, double distance)

@@ -66,7 +66,7 @@ static char     g_errors[][50] =
     "wrong number of players\n",
     "Map does not support empty line\n",
     "Map must be surrounded by '1'\n",
-    "Invalip map\n",
+    "Invalid map\n",
     //header
     "Header is invalid\n",
     "Some value is duplicated on header\n",

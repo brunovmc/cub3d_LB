@@ -17,7 +17,10 @@ void    render3d_walls(t_vars *vars, t_data *data, float raydistance, float curr
     real_wall_dist = raydistance * cos(current_ray - vars->player->rotation_angle);
 
     //distanceprojection = (vars->width / 2) / (tan(FOV_ANGLE / 2));
-    wallstripheight = (TILE_SIZE / real_wall_dist) * distanceprojection;
+    wallstripheight = (TILE_SIZE / real_wall_dist) * distanceprojection <= vars->height ?
+                       (TILE_SIZE / real_wall_dist) * distanceprojection :
+                       vars->height;
+
     put_rectangle(data, i * WALL_STRIP_WIDTH,
                   (vars->height / 2) - (wallstripheight / 2),
                   i * WALL_STRIP_WIDTH + WALL_STRIP_WIDTH,
