@@ -40,6 +40,22 @@ void    init_player(t_vars *vars, char direction, int x, int y)
         vars->player->rotation_angle = WEST;
 }
 
+// t_sprites    *add_sprite(t_vars *vars)
+// {
+//     void **new_sprites_list;
+//     int  i;
+
+//     new_sprites_list = calloc(vars->map->n_sprites, sizeof(vars->sprites));
+//     i = 0;
+//     while (i < vars->map->n_sprites)
+//     {
+//         new_sprites_list[i] = vars->sprites[i];
+//         i++;
+//     }
+//     if (vars->sprites[vars->map->n_sprites -1] > 0)
+//         free(*vars->sprites);
+//     return (*new_sprites_list);
+// }
 
 int     check_character_map(t_vars *vars, char *line)
 {
@@ -56,7 +72,13 @@ int     check_character_map(t_vars *vars, char *line)
             quant++;
         }
         if (line[i] == '2')
-            vars->map->quantsprites++;
+        {
+            //vars->sprites[vars->map->n_sprites] = add_sprite(vars);
+            //vars->sprites[vars->map->n_sprites]->x = vars->map->rows;
+            //vars->sprites[vars->map->n_sprites]->y = i;
+            //vars->sprites[vars->map->n_sprites]->rotation_angle = vars->player->rotation_angle * PI;
+            vars->map->n_sprites++;
+        }
         i++;
     }
     if (i != ft_strlen(line))
@@ -91,7 +113,7 @@ int     read_file(const char *argv, t_vars *vars)
         ret = get_next_line(fd, &line);
     }
     printf("quantplayer: %i\n", quantplayer);
-    printf("quantsprite: %i\n", vars->map->quantsprites);
+    printf("n_sprite: %i\n", vars->map->n_sprites);
     if (quantplayer != 1)
         ft_error(WRONG_PLAYER);
     printf("rows = %i\n", vars->map->rows);
@@ -278,7 +300,8 @@ void    init_header(t_vars *vars)
     vars->map->s = NULL;
     vars->map->ceiling = -1;
     vars->map->floor = -1;
-    vars->map->quantsprites = 0;
+    vars->map->n_sprites = 0;
+    // vars->sprites = NULL;
     mlx_get_screen_size(vars->mlx, &vars->max_width, &vars->max_height);
 }
 

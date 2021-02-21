@@ -27,8 +27,12 @@ int main(int argc, char **argv)
 	t_player 	player;
 	t_map		map; //achei melhor lancar map aqui
 
+	vars = (t_vars) {0};
+
 	vars.player = &player; 
 	vars.map = &map;
+	
+	
 
 	// vars.map->no = '\0';
 	// vars.map->so = '\0';

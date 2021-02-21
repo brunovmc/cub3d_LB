@@ -33,7 +33,7 @@ void render_map(t_vars *vars, t_data data) //eventualmente mapa como argumento
                 put_rectangle(&data, tile_x * MINIMAP_SCALE_FACTOR, 
                 tile_y * MINIMAP_SCALE_FACTOR, 
                 (tile_x + TILE_SIZE) * MINIMAP_SCALE_FACTOR, 
-                (tile_y + TILE_SIZE) * MINIMAP_SCALE_FACTOR, 0X00FFFFFF);
+                (tile_y + TILE_SIZE) * MINIMAP_SCALE_FACTOR, 0X00000000);
             k++;
         }
         i++;

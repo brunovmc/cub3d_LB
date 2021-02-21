@@ -121,7 +121,7 @@ typedef struct s_map {
     char     *we; 
     char     *ea;
     char     *s;
-    int      quantsprites;
+    int      n_sprites;
     int      floor;
     int      ceiling;
 }              t_map; 
@@ -165,6 +165,17 @@ typedef struct s_player {
     float    rotation_speed;
 }              t_player;
 
+typedef struct s_pos {
+    float   x;
+    float   y;
+}              t_pos;
+
+typedef struct  s_sprites {
+    t_pos      pos;
+    float      rotation_angle;
+    float      dist;
+}               t_sprites;
+
 typedef struct s_data {
 	void	 *img;
 	char	 *addr;
@@ -174,15 +185,16 @@ typedef struct s_data {
 }		       t_data;
 
 typedef struct s_vars {
-	void	 *mlx;
-	void	 *window;
-    int      width;
-    int      height;
-    int      max_width;
-    int      max_height;
-	t_data   *data;
-    t_player *player;
-    t_map    *map;
+	void	    *mlx;
+	void	    *window;
+    int         width;
+    int         height;
+    int         max_width;
+    int         max_height;
+	t_data      *data;
+    t_player    *player;
+    t_map       *map;
+    // t_sprites   *sprites;
 }              t_vars;
 
 int     update_frame(t_vars *vars);
@@ -231,6 +243,7 @@ void    init_header(t_vars *vars);
 int     header_full(t_vars *vars);
 int     check_character_map(t_vars *vars, char *line);
 void    init_player(t_vars *vars,char direction,int x,int y);
+t_sprites *add_sprite(t_vars *vars);
 
 int     newline(char *s_line);
 char    *cleanline(char **line, char *s_line, int j);
